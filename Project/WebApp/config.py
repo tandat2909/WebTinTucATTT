@@ -1,7 +1,7 @@
 
 class thamso:
-    server = 'TANDAT_2909\DBSQL2019_01'
-    database = 'DBTinTuc'
+    server = 'LAPTOP-HAKATAKI'
+    database = 'master'
     username = 'sa'
     password = 'root'
     driver = 'ODBC+Driver+17+for+SQL+Server'

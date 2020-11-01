@@ -15,4 +15,3 @@ from WebApp.admin import adminPage
 
 db.create_all()
 
-

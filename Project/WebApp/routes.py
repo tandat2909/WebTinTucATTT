@@ -7,13 +7,18 @@ from sqlalchemy import func
 from WebApp.DataModels.AccountModels import Account
 
 from WebApp.Forms.FormLogin import LoginForm
-
+import WebApp.rotutedo
 
 @app.route('/')
 @app.route('/Home')
 def Home():
     return render_template("Home.html",current_user= current_user)
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("Home")
 
 @app.route("/login-admin", methods=['GET', 'POST'])
 def login_admin():
@@ -40,6 +45,8 @@ def login():
     return render_template('login/login.html', title='Sign In', form=form)
 
 
+
+
 if __name__ == '__main__':
     # print(app.secret_key)
-    app.run(debug=True)
+    app.run(debug=True,port=5001)
