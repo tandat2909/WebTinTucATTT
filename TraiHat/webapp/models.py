@@ -1,5 +1,3 @@
-from werkzeug.security import generate_password_hash, check_password_hash
-
 from webapp import app, db, login
 import uuid, datetime
 from sqlalchemy import Column, Enum as EnumSQL, Integer, String, DATETIME, Float, ForeignKey, BigInteger, Boolean, \

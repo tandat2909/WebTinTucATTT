@@ -188,8 +188,8 @@ def changepassword():
         return redirect(url_for('login'))
     return render_template('ChangePassword.html',form=form)
 
-@app.route('user/delete/blog',methods=["POST"])
-@app.route('admin/delete/blog',methods=["POST"])
+@app.route('/user/delete/blog',methods=["POST"])
+@app.route('/admin/delete/blog',methods=["POST"])
 @login_required
 def deleteBlog():
     '''
@@ -201,7 +201,7 @@ def deleteBlog():
     '''
     pass
 
-@app.route('admin/delete/user',methods=["POST"])
+@app.route('/admin/delete/user',methods=["POST"])
 @login_required_Admin
 def deleteUser():
     '''
