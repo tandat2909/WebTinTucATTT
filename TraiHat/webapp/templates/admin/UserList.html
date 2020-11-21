@@ -1,0 +1,118 @@
+    {% extends 'admin/base.html' %}
+    {{super()}}
+
+{% block title %}
+<title> {{title}}</title>
+{% endblock %}
+
+{% block css_header %}
+    <link rel="stylesheet" href="{{url_for('static',filename='admin2/css/sweetalert.css')}}">
+{% endblock %}
+
+{% block body %}
+<div class="content-wrapper container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title">
+                <h1>{{title}} <small></small></h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{url_for('index_admin')}}"><i class="fa fa-home"></i></a></li>
+                    <li class="active">{{title}}</li>
+                </ol>
+            </div>
+
+
+        </div>
+    </div><!-- end .page title-->
+    <div class="row users-row">
+
+        {% for item in listuser %}
+
+            <div class="col-md-6">
+                <div class="user-col">
+
+                    <div class="media">
+                        <a class="pull-left" href="{{url_for('profile',id = item.id)}}">
+                            <img class="media-object img-circle"
+                                 src="{{url_for('static',filename= 'admin2/images/avtar-2.jpg')}}" alt="100x100"
+                                 data-src="holder.js/100x100" style="width: 100px; height: 100px;">
+                        </a>
+                        <div class="media-body">
+                            <h3 class="follower-name">{{item.name}}
+                                <span class="label label-sm label-info" style="margin-left: 2em">{{item.user_role.name}}</span>
+                                <span class="label label-sm label-info" style="margin-left: 0,5em">{{item.active.name}}</span>
+                            </h3>
+
+
+                            <div><i class="fa fa-map-marker"></i> {{item.address}}</div>
+                            <div><i class="fa fa-briefcase"></i> Software Engineer at <a href="#">SomeCompany, Inc.</a>
+                            </div>
+
+                            <div style="height: 20px;"></div>
+
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <a href="{{url_for('profile',id = item.id)}}">
+                                    <button class="btn btn-success btn-3d btn-sm"> Profile
+                                    </button>
+                                    </a>
+                                </div><!-- btn-group -->
+                                <div class="btn-group">
+                                    <a href="mailto:{{item.email}}">
+                                        <button class="btn btn-info btn-3d btn-sm"><i class="fa fa-envelope-o"></i> Send
+                                            Message
+                                        </button>
+                                    </a>
+                                </div><!-- btn-group -->
+                                <div class="btn-group">
+
+                                    <button class="warning-alert btn-sweet-alert btn btn-success btn-3d btn-sm"
+                                            {% if item.active.value %}
+                                                value="true"> Lock Account
+                                            {% else %}
+                                                value="false"> UnLock
+                                            {% endif %}
+                                    </button>
+
+                                </div><!-- btn-group -->
+                            </div><!-- btn-toolbar -->
+                        </div><!-- media-body -->
+                    </div>
+
+                </div>
+            </div><!--.col-6-->
+
+        {% endfor %}
+    </div>
+
+
+</div>
+{% endblock %}
+
+
+{% block script%}
+{{super()}}
+<script src="{{url_for('static',filename='admin2/js/sweet-alert/sweetalert.min.js')}}"></script>
+<script>
+document.querySelector('.warning-alert').onclick = function () {
+
+                swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this imaginary file!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#DD6B55',
+                    confirmButtonText: "Lock it!",
+                    closeOnConfirm: false,
+                    inputType: "text",
+                    inputPlaceholder: "sssssss",
+                    inputValue: "id",
+                    showLoaderOnConfirm: true
+
+                },
+                function () {
+                    swal("Lock!", "Your imaginary file has been deleted!", "success");
+                });
+            };
+</script>
+{% endblock %}

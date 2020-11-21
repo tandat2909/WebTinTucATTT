@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Flashy Error Page a Flat Responsive Widget Template :: w3layouts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords"
+          content="Smart Error Page Responsive, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+
+    <link href="{{url_for('static',filename='error/css/font_Raleway.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename = 'error/css/Poiret.css')}}" rel="stylesheet">
+
+    <link href="{{url_for('static',filename = 'error/css/style.css')}}" rel="stylesheet" type="text/css" media="all"/>
+
+<body>
+<div class="container demo-2">
+    <div class="content">
+        <div id="large-header" class="large-header">
+            <h1 class="header-w3ls " style="position: inherit;left: 0">
+                {% if ms == None %}
+                Error Page
+                {% else %}
+                {{ms}}
+                {% endif %}
+            </h1>
+            <p class="w3-agileits1">Oops!</p>
+
+            <img src="{{url_for('static',filename = 'error/images/owl.gif')}}" alt="flashy" class="w3l">
+            <h2 class="main-title">{{code}}</span></h2>
+            <div style="position: absolute; top: 79%;left: 44%;">
+                <a href="/">
+                    <button style="--content: 'Goto Home';">
+                        <div class="left"></div>
+                        Goto Home
+                        <div class="right"></div>
+                    </button>
+                </a>
+            </div>
+
+            <p class="w3-agileits2">We can't seem to find the page you're looking for.</p>
+
+            <canvas id="demo-canvas"></canvas>
+            <p class="copyright">© 2017 Flashy Error Page. All Rights Reserved | Design by <a href="" target="_blank">Tấn
+                Đạt</a></p>
+        </div>
+    </div>
+</div>
+<!-- js files -->
+<script src="{{url_for('static',filename = 'error/js/rAF.js')}}"></script>
+<script src="{{url_for('static',filename = 'error/js/demo-2.js')}}"></script>
+<!-- /js files -->
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% macro messages() %}
+  <div style="position: absolute; left: 20% ; right: 20%">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, m in messages %}
+
+                    {% if category %}
+                        {# alert-error changed to alert-danger in bootstrap 3, mapping is for backwards compatibility #}
+                        {% set mapping = {'message': 'info', 'error': 'danger','success':'success','warning':'warning'} %}
+                        <div class="alert alert-{{ mapping.get(category, category) }}" style="padding:10px 15px 10px; margin-bottom: 5px" >
+
+                    {% else %}
+                        <div class="alert alert-dismissable">
+                    {% endif %}
+                             <button aria-hidden="true" data-dismiss="alert" style="z-index: 10" class="close" type="button">×
+                </button>
+                            <p>{{ m }}</p>
+                        </div>
+
+                {% endfor %}
+            {% endif %}
+
+        </div>
+        {% endwith %}
+
+{% endmacro %}
