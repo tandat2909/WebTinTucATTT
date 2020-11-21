@@ -1,0 +1,45 @@
+{% extends "Base2.html" %}
+
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('static',filename='css/HomeStyle.css') }}">
+{% endblock head %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+
+{% block body_left %}
+
+    <div class="tech-no">
+        <!-- technology-top -->
+
+        <div class="tc-ch wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
+
+            <div class="tch-img">
+                <a href="singlepage.html"><img src="{{ url_for('static',filename = 'base2/images/t4.jpg')}}" class="img-responsive" alt=""></a>
+            </div>
+
+            <h3><a href="singlepage.html">Lorem Ipsum is simply</a></h3>
+            <h6>BY <a href="singlepage.html">ADAM ROSE </a>JULY 10 2016.</h6>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud eiusmod tempor incididunt ut labore et dolore
+                magna aliqua exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>Ut enim ad minim veniam, quis nostrud eiusmod tempor incididunt ut labore et dolore magna aliqua
+                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <div class="bht1">
+                <a href="singlepage.html">Continue Reading</a>
+            </div>
+            {% include 'Icon_soci.html' %}
+            <div class="clearfix"></div>
+		</div>
+	</div>
+
+
+{% endblock %}
+
+
+{% block script %}
+
+{% endblock %}
