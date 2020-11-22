@@ -284,6 +284,7 @@ def blog():
         kế thừa page.html tạo trang mới để hiển thị nội dung blog
     :return:
     '''
+
     pass
 
 @app.route("/aboutus")
@@ -311,11 +312,9 @@ def contact():
     params = {
         'title': "Home",
         'nav_contact':'active'
-
     }
 
     return render_template('home/contact.html',params=params)
-
 
 
 @app.errorhandler(404)
