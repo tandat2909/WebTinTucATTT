@@ -1,7 +1,9 @@
 <!DOCTYPE HTML>
 
 <head>
-    <title>{% block title %} {% endblock %}</title>
+    {% block title %}
+        <title> {{ params.get('title') }} </title>
+    {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
@@ -60,9 +62,9 @@
                 <div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
                     <nav class="link-effect-7" id="link-effect-7">
                         <ul class="nav navbar-nav">
-                            <li class="active act"><a href="/">Home</a></li>
-                            <li><a href="{{url_for('about')}}">About</a></li>
-                            <li><a href="{{url_for('contact')}}">Contact</a></li>
+                            <li class="{{ params.get('nav_home')  }} act"><a href="/">Home</a></li>
+                            <li class="{{ params.get('nav_about')}} act" ><a href="{{url_for('aboutus')}}">About</a></li>
+                            <li class="{{ params.get('nav_contact') }} act"><a href="{{url_for('contact')}}">Contact</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -77,7 +79,7 @@
 
 <!-- banner -->
 {% block banner %}
-    {% include 'banner.html' %}
+    {% include 'home/banner.html' %}
 {% endblock %}
 <!-- endbanner -->
 

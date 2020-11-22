@@ -3,31 +3,31 @@
 
 <!-- Mirrored from themeforestdemo.com/templates/shapebootstrap/html/be-admin/empty_page.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 18 May 2017 03:24:12 GMT -->
 <head>
-    {% block head%}
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    {% block title %}
-    <title>Home-Admin</title>
-    {% endblock %}
+    {% block head %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        {% block title %}
+            <title>Home-Admin</title>
+        {% endblock %}
 
-    <!-- Bootstrap -->
-    <link href="{{url_for('static',filename = 'admin2/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{url_for('static',filename = 'admin2/css/waves.min.css')}}" type="text/css" rel="stylesheet">
-    <!--        <link rel="stylesheet" href="css/nanoscroller.css">-->
-    <link href="{{url_for('static',filename = 'admin2/css/menu-light.css')}}" type="text/css" rel="stylesheet">
-    <link href="{{url_for('static',filename = 'admin2/css/style.css')}}" type="text/css" rel="stylesheet">
-    <link href="{{url_for('static',filename = 'admin2/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+        <!-- Bootstrap -->
+        <link href="{{ url_for('static',filename = 'admin2/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static',filename = 'admin2/css/waves.min.css') }}" type="text/css" rel="stylesheet">
+        <!--        <link rel="stylesheet" href="css/nanoscroller.css">-->
+        <link href="{{ url_for('static',filename = 'admin2/css/menu-light.css') }}" type="text/css" rel="stylesheet">
+        <link href="{{ url_for('static',filename = 'admin2/css/style.css') }}" type="text/css" rel="stylesheet">
+        <link href="{{ url_for('static',filename = 'admin2/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    {% block css_header %}
-    {% endblock %}
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        {% block css_header %}
+        {% endblock %}
     {% endblock %}
 </head>
 <body>
@@ -38,23 +38,35 @@
         {% include 'admin/navheader.html' %}
     {% endblock %}
 
-
 </nav>
 <section class="page">
 
     {% block nav_left %}
         {% include 'admin/navleft.html' %}
-    {%endblock%}
+    {% endblock %}
 
     <div id="wrapper">
         {% block messages %}
             {% import 'layout.html' as layout with context -%}
-            {{ layout.messages()}}
+            {{ layout.messages() }}
         {% endblock %}
 
-        {% block body %}
 
-        {% endblock %}
+        <div class="content-wrapper container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title">
+                        <h1> {{ params.get('title') }} <small></small></h1>
+                        <ol class="breadcrumb">
+                            <li><a href="{{ '/admin' if current_user.user_role.name =='admin' else '/user' }}"><i class="fa fa-home"></i></a></li>
+                            <li class="active">{{ params.get('title') }}</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- end .page title-->
+            {% block body %} {% endblock %}
+        </div>
+
     </div>
 
 
@@ -62,8 +74,8 @@
 
 
 {% block script %}
-     {% import 'admin/lib.html' as lib with context -%}
-        {{lib.lib_base()}}
+    {% import 'admin/lib.html' as lib with context -%}
+    {{ lib.lib_base() }}
 {% endblock %}
 </body>
 

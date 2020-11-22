@@ -1,0 +1,22 @@
+{% extends 'admin/base.html' if current_user.user_role.name == "Admin" else 'user/base.html'  %}
+
+{% block css_head %}
+    {{ super() }}
+    <!--
+    render dưới cùng thẻ head
+    vd: <link href="style.css" rel="stylesheet">
+     -->
+
+{% endblock %}
+
+{% block script %}
+    {{ super() }}
+    <!--
+        render sau thẻ đóng </body>
+    vd: <script src="" ></script>
+     -->
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}

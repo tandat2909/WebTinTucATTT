@@ -1,13 +1,9 @@
-{% extends "Base2.html" %}
+{% extends "home/base2.html" %}
 
 {% block head %}
 {{ super() }}
 <link href="{{ url_for('static',filename='css/HomeStyle.css') }}">
 {% endblock head %}
-
-{% block title %}
-Home
-{% endblock title %}
 
 
 {% block body_left %}
