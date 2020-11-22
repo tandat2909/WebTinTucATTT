@@ -28,11 +28,11 @@
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{ url_for('index') }}" target="_blank">Home</a></li>
                         <li><a href="lockscreen.html">Lockscreen</a></li>
-                        <li><a href="{{ url_for('changepassword') }}">Change password</a></li>
-                        <li><a href="{{ url_for('bloglist').replace("/admin/","/user/",1) }}">Blog list</a></li>
-                        <li><a href="{{ url_for('blogdetail').replace("/admin/","/user/",1) }}">Blog detail</a></li>
+                        <li><a href="{{ url_for('change_password') }}">Change password</a></li>
+                        <li><a href="{{ url_for('blog_list').replace("/admin/","/user/",1) }}">Blog list</a></li>
+                        <li><a href="{{ url_for('blog_detail').replace("/admin/","/user/",1) }}">Blog detail</a></li>
                         <li><a href="{{ url_for('contact') }}" target="_blank">Contact Page</a></li>
-                        <li><a href="{{ url_for('aboutus') }}" target="_blank">About Page</a></li>
+                        <li><a href="{{ url_for('about_us') }}" target="_blank">About Page</a></li>
 
                     </ul>
 
@@ -43,6 +43,7 @@
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{ url_for('profile').replace("/admin/","/user/",1) }}">profile</a></li>
+                        <li><a href="{{ url_for('change_password') }}">Change password</a></li>
 
 
                     </ul>
@@ -52,8 +53,8 @@
                     <a href="#"><i class="fa fa-pencil"></i> <span class="nav-label">Blog</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        <li><a href="{{ url_for('bloglist').replace("/admin/","/user/",1) }}">Blog list</a></li>
-                        <li><a href="{{ url_for('blogdetail').replace("/admin/","/user/",1) }}">Blog post</a></li>
+                        <li><a href="{{ url_for('blog_list').replace("/admin/","/user/",1) }}">Blog list</a></li>
+                        <li><a href="{{ url_for('blog_detail').replace("/admin/","/user/",1) }}">Blog post</a></li>
                     </ul>
                 </li>
 
