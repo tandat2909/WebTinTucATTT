@@ -98,14 +98,26 @@ def loginAdmin():
 @app.route("/admin/profile")
 @login_required
 def profile():
+   # request.args.get('id')
+   # http: // 127.0.0.1: 5000 / admin / profile?id = 3f7d454b - 0283 - 4389 - a439 - b5e0b3a4c650
     '''
     hiển thị thong tin chi tiết của user
     :return:
     '''
+
+
+    params = {
+        'title': "Profile",
+        'nav_profile': 'active',
+
+    }
     if current_user.user_role.id == models.EUserRole.admin.value:
-        id = request.args.get("id")
-        return id
-    return str(current_user.id)
+        params['user'] = models.User.query.filter(models.User.user_name == "user").first()
+        return render_template('profile.html',params=params)
+
+
+    params['user'] = current_user
+    return render_template('profile.html',params=params)
 
 @app.route("/user/bloglist")
 @app.route("/admin/bloglist")
@@ -116,25 +128,39 @@ def bloglist():
     user: hiển bài viết của user đó
     :return:
     '''
+
+    listblog = models.QL_BaiViet.query.all()
+
+    params = {
+        'title':"Blog List",
+        'nav_blog': 'active',
+        'listblog': listblog
+    }
+
     if current_user.user_role.id == models.EUserRole.admin.value:
-        listblog = models.QL_BaiViet.query.all()
+
         print(listblog)
-        return render_template('admin/index.html',listblog = listblog)
-    return str(current_user.id)
+        return render_template('bloglist.html',params = params)
+    return render_template('bloglist.html', params=params)
 
     #return render_template('bloglist.html',listblock = listblog)
 
 @app.route("/user/blog")
 @app.route("/admin/blog")
-def bloguser():
+def blogdetail():
     '''
     hiển thị detail blog
     dùng template admin (blog.html)
     :return:
     '''
+    params = {
+        'title': "title bài viết",
+        'nav_blog': 'active',
+
+    }
     if current_user.user_role.id == models.EUserRole.admin.value:
-        pass
-    return str(current_user.id)
+        return render_template('blogdetail.html',params=params)
+    return render_template('blogdetail.html', params=params)
 
     #return render_template('bloglist.html',listblock = listblog)
 
@@ -145,8 +171,13 @@ def index_admin():
     hiển thị biểu đồ or bài viết
     :return:
     '''
+    params = {
+        'title': "Dashboard",
+        'nav_dashboard': 'active',
 
-    return render_template('admin/index.html')
+    }
+
+    return render_template('admin/index.html',params=params)
 
 @app.route('/admin/userlist')
 @login_required_Admin
@@ -155,10 +186,15 @@ def userlist():
     hiển thị tất cả user trừ tài khoản admin hiện tại
     :return:
     '''
+    params = {
+        'title': "User List",
+        'nav_profile': 'active',
+
+    }
     #test lấy dữ liệu
     listuser = models.User.query.all()
-    print(listuser)
-    return render_template('admin/UserList.html',title = "User List" ,listuser = listuser)
+    params['listuser'] = listuser
+    return render_template('admin/UserList.html',params=params)
 
 @app.route('/user')
 @login_required
@@ -167,7 +203,13 @@ def index_user():
     hiển thị list bài viết của user đây
     :return:
     '''
-    return render_template('page.html')
+    #paramenter chứa danh sách tham số truyền ra template
+    params= {
+        'title' : 'Dashboard',
+        'nav_dashboard': 'active',
+    }
+
+    return render_template('user/index.html',params=params)
 
 @app.route('/changepw',methods=["POST","GET"])
 @login_required
@@ -177,6 +219,12 @@ def changepassword():
     chưa làm : mã hóa mật khẩu
     :return:
     '''
+    params = {
+        'title': "Change password",
+        'nav_blog': 'active',
+
+    }
+
     form = FormChange.FormChangePassword()
     if form.validate_on_submit():
         user = form.get_user()
@@ -197,8 +245,9 @@ def deleteBlog():
     admin: delete all blog
     nhận id bài viết
     gửi lên dạng post form có csrf
-    :return:
+    :return: trang bloglist dùng redirect()
     '''
+
     pass
 
 @app.route('/admin/delete/user',methods=["POST"])
@@ -208,7 +257,7 @@ def deleteUser():
     xóa user bằng cách cho trường active của user đó  = False or user.active = models.EStatus.InActive
     gửi yêu cầu dạng form có csrf
 
-    :return:
+    :return: userlist dùng  redirect()
     '''
     pass
 #================== làm cho anonymous ========================================
@@ -220,7 +269,13 @@ def index():
     hiểm thị list các blog xắp xếp theo time giảm dần
     :return:
     '''
-    return render_template("index.html")
+
+    params = {
+        'title': "Home",
+
+    }
+
+    return render_template("home/index.html",params=params)
 
 @app.route('/blog')
 def blog():
@@ -231,28 +286,44 @@ def blog():
     '''
     pass
 
-@app.route("/about")
-def about():
+@app.route("/aboutus")
+def aboutus():
     '''
     còn time thì làm hiển thị thông tin của nhóm mình ở đây
     :return:
     '''
-    return render_template('page.html')
+
+    params = {
+        'title': "Home",
+        'nav_about':'active'
+
+    }
+
+    return render_template('home/aboutus.html',params=params)
 
 @app.route("/contact")
 def contact():
+
     '''
     làm không làm cũng đc
     :return:
     '''
-    return render_template('page.html')
+    params = {
+        'title': "Home",
+        'nav_contact':'active'
+
+    }
+
+    return render_template('home/contact.html',params=params)
 
 
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('error.html',code = 404, ms = 'Error Pagee'), 404
-
+    return render_template('error.html',code = 404, ms = 'Error Page'), 404
+@app.errorhandler(500)
+def special_exception_handler(error):
+    return render_template('error.html', code=500, ms='connection failed'.capitalize()), 500
 
 if __name__ == "__main__":
 

@@ -11,25 +11,5 @@
 
 {% block body %}
 
-<div class="content-wrapper container">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="page-title">
-                <h1>Empty Page <small></small></h1>
-                <ol class="breadcrumb">
-                    <li><a href="{{url_for('index_admin')}}"><i class="fa fa-home"></i></a></li>
-                    <li class="active">Empty page</li>
-                </ol>
-            </div>
-
-        </div>
-    </div><!-- end .page title-->
-    {% include 'admin/list.html' %}
-</div>
-
 {% endblock %}
-{% block script %}
-    {{super()}}
-     {% import 'admin/lib.html' as lib with context -%}
-        {{lib.lib_dataTables()}}
-{% endblock %}
+
