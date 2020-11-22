@@ -1,7 +1,8 @@
 
 import hashlib
-
+import datetime
 from webapp.config import Config
+from webapp import models
 
 
 def check_password(pw_hash='',pw_check=''):
@@ -12,6 +13,8 @@ def check_password(pw_hash='',pw_check=''):
 def generate_password(pw):
     pw_hash = hashlib.sha256((pw+Config.KEYPASS).encode('utf-8')).hexdigest()
     return pw_hash
+
+
 
 if __name__ == '__main__':
 
