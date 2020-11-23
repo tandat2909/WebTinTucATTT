@@ -9,4 +9,4 @@ def encodeID(value):
     except:
         return ''
 
-app.jinja_env.filters['encodeID'] = utils.encodeID
+app.jinja_env.filters['encodeID'] = encodeID

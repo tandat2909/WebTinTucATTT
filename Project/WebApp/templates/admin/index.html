@@ -1,6 +1,0 @@
-{% extends 'admin/master.html' %}
-{% if current_user.is_authenticated %}
-    <h1>CHÀO MỪNG ĐẾN TRANG QUẢN TRỊ!!!</h1>
-{% else %}
-    {% include 'admin/login_admin.html' %}
-{% endif %}
