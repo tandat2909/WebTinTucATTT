@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>
+            {% block title %}
+                {{ title }}
+            {% endblock %}
+        </title>
+        <link href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+        <script src="../static/js/Bootstrap/bootstrap.min.js"></script>
+        <script src="{{ url_for("static", filename="js/Jquey/jquery.min.js") }} "></script>
+        <link href="{{ url_for('static',filename = 'css/base/base.css') }}" rel="stylesheet">
+        <link href="../static/css/base/general-file.css" rel="stylesheet">
+    {% endblock %}
+</head>
+<body>
+<!-- Start SVG -->
+<div class="hidden">
+    <svg id="letter-E" viewBox="0 0 32 32">
+        <path fill="#9f224e" style="fill: var(--color1, #9f224e)"
+              d="M10.783 7.811h15.652v-4.226h-20.87v24.83h20.87v-4.226h-15.652v-5.811h7.304v-4.755h-7.304v-5.811z"></path>
+        <path fill="#9f224e" style="fill: var(--color1, #9f224e)"
+              d="M28.5 32c0.828 0 1.5-0.682 1.5-1.524v-28.952c0-0.842-0.672-1.524-1.5-1.524h-25c-0.829 0-1.5 0.682-1.5 1.524v28.952c0 0.842 0.671 1.524 1.5 1.524h25zM26.586 9.396h-14.238v2.642h5.89c0.864 0 1.414 0.765 1.414 1.64v4.755c0 0.875-0.55 1.529-1.414 1.529h-5.89v2.642h14.238c0.864 0 1.414 0.766 1.414 1.64v4.226c0 0.875-0.55 1.529-1.414 1.529h-20.869c-0.865 0-1.717-0.655-1.717-1.529v-24.83c0-0.875 0.852-1.64 1.717-1.64h20.869c0.864 0 1.414 0.765 1.414 1.64v4.226c0 0.875-0.55 1.529-1.414 1.529z"></path>
+        <path fill="#fff" style="fill: var(--color2, #fff)"
+              d="M28 28.471v-4.226c0-0.875-0.55-1.64-1.414-1.64h-14.238v-2.642h5.89c0.864 0 1.414-0.655 1.414-1.529v-4.755c0-0.875-0.55-1.64-1.414-1.64h-5.89v-2.642h14.238c0.864 0 1.414-0.655 1.414-1.529v-4.226c0-0.875-0.55-1.64-1.414-1.64h-20.869c-0.865 0-1.717 0.765-1.717 1.64v24.83c0 0.875 0.852 1.529 1.717 1.529h20.869c0.864 0 1.414-0.655 1.414-1.529zM26.435 7.811h-15.652v5.811h7.304v4.755h-7.304v5.811h15.652v4.226h-20.87v-24.83h20.87v4.226z"></path>
+    </svg>
+    <svg id="time" viewBox="0 0 32 32">
+        <path d="M16 0c-8.8 0-16 7.2-16 16s7.2 16 16 16c8.8 0 16-7.2 16-16s-7.2-16-16-16zM16 28c-6.6 0-12-5.4-12-12s5.4-12 12-12c6.6 0 12 5.4 12 12s-5.4 12-12 12z"></path>
+        <path d="M18 8h-4v10h10v-4h-6v-6z"></path>
+    </svg>
+    <svg id="Search" viewBox="0 0 32 32">
+        <path d="M14 28c-7.72 0-14-6.28-14-14s6.28-14 14-14c7.72 0 14 6.28 14 14s-6.28 14-14 14zM14 4c-5.514 0-10 4.486-10 10s4.486 10 10 10c5.514 0 10-4.486 10-10s-4.486-10-10-10z"></path>
+        <path d="M31.414 28.586l-4.786-4.786c-0.821 1.057-1.771 2.007-2.828 2.828l4.786 4.786c0.185 0.186 0.406 0.334 0.648 0.435s0.503 0.153 0.766 0.153 0.523-0.052 0.766-0.153c0.243-0.101 0.463-0.249 0.648-0.435s0.333-0.406 0.434-0.649 0.152-0.503 0.152-0.765c0-0.263-0.052-0.523-0.152-0.765s-0.248-0.463-0.434-0.649z"></path>
+    </svg>
+    <svg id="User" viewBox="0 0 32 32">
+        <path d="M16 16c4.418 0 8-3.582 8-8s-3.582-8-8-8c-4.418 0-8 3.582-8 8s3.582 8 8 8z"></path>
+        <path d="M32 26.4c0.003-0.766-0.214-1.516-0.627-2.161s-1.002-1.157-1.699-1.475c-4.312-1.876-8.972-2.818-13.674-2.764-4.702-0.054-9.362 0.888-13.674 2.764-0.696 0.318-1.286 0.83-1.699 1.475s-0.63 1.395-0.627 2.161v5.6h32v-5.6z"></path>
+    </svg>
+    <svg id="Home" viewBox="0 0 32 32">
+        <path d="M21.909 31.85h4c1.2 0 2-0.8 2-2v-14h2c0.6 0 1.2-0.2 1.6-0.6 0.8-0.8 0.6-2-0.2-2.8l-14-12c-0.8-0.6-1.8-0.6-2.6 0l-14 12c-0.8 0.8-1 2-0.2 2.8 0.2 0.4 0.8 0.6 1.4 0.6h2v14c0 1.2 0.8 2 2 2h4c1.2 0 2-0.8 2-2v-6h8v6c0 1.2 0.8 2 2 2z"></path>
+    </svg>
+    <svg id="Youtube" viewBox="0 0 32 32">
+        <path d="M31.331 7.52c-0.368-1.386-1.452-2.477-2.829-2.847-2.496-0.673-12.502-0.673-12.502-0.673s-10.007 0-12.502 0.673c-1.377 0.37-2.461 1.462-2.829 2.847-0.669 2.512-0.669 7.752-0.669 7.752s0 5.24 0.669 7.752c0.368 1.386 1.452 2.432 2.829 2.802 2.496 0.673 12.502 0.673 12.502 0.673s10.007 0 12.502-0.673c1.377-0.37 2.461-1.416 2.829-2.802 0.669-2.512 0.669-7.752 0.669-7.752s0-5.241-0.669-7.752v0zM12.727 20.031v-9.516l8.364 4.758-8.364 4.758z"></path>
+    </svg>
+
+    <svg id="logovn" width="150" height="28" viewBox="0 0 150 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M78.3145 19.4527V8.34871H88.0859C88.9399 8.34871 89.6122 8.52737 90.0381 8.8856C90.405 9.18382 90.6499 9.78071 90.6499 10.498V13.0052C90.6499 13.722 90.405 14.3185 90.0381 14.6167C89.6122 14.9754 88.9399 15.1536 88.0859 15.1536H80.9399V19.4527H78.3145ZM86.864 10.2589H80.9399V13.2429H86.864C87.3518 13.2429 87.6577 13.1847 87.8418 13.0052C87.964 12.8856 88.0859 12.6465 88.0859 12.3483V11.154C88.0859 10.8554 87.964 10.6163 87.8418 10.498C87.6577 10.3189 87.3518 10.2589 86.864 10.2589Z"
+              fill="#828282"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M92.8647 19.4527V8.34871H102.575C103.492 8.34871 104.162 8.52737 104.588 8.8856C104.956 9.18382 105.201 9.78071 105.201 10.498V13.1243C105.201 13.8998 104.956 14.4385 104.588 14.7367C104.162 15.0945 103.492 15.2736 102.575 15.2736H101.109L106.362 19.4527H102.575L97.9952 15.2736H95.4893V19.4527H92.8647ZM101.415 10.2589H95.4893V13.3634H101.415C101.902 13.3634 102.209 13.3029 102.391 13.1847C102.513 13.0647 102.637 12.8256 102.637 12.4683V11.154C102.637 10.8554 102.513 10.6163 102.391 10.498C102.209 10.3189 101.902 10.2589 101.415 10.2589Z"
+              fill="#828282"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M108.316 19.4527V8.34871H119.978V10.2589H111.002V12.7065H116.253V14.6167H111.002V17.3629H120.1V19.4527H108.316Z"
+              fill="#828282"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M132.507 10.3189H125.058V12.7065H132.142C133.24 12.7065 134.034 12.8856 134.401 13.2434C134.826 13.6025 135.011 14.3185 135.011 15.3336V16.8265C135.011 17.8398 134.826 18.5563 134.401 18.9154C134.034 19.2736 133.24 19.4527 132.142 19.4527H125.121C124.02 19.4527 123.29 19.2736 122.86 18.9154C122.495 18.5563 122.311 17.8398 122.311 16.8265V16.5269L124.633 16.05V17.3629H132.631V14.8558H125.547C124.449 14.8558 123.717 14.6767 123.35 14.2589C122.921 13.8998 122.737 13.2434 122.737 12.2287V10.9754C122.737 9.96071 122.921 9.30382 123.35 8.9456C123.717 8.52737 124.449 8.34871 125.547 8.34871H132.019C133.118 8.34871 133.851 8.52737 134.218 8.8856C134.643 9.24382 134.826 9.90071 134.826 10.7954V11.0354L132.507 11.5718V10.3189Z"
+              fill="#828282"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M147.556 10.3189H140.109V12.7065H147.192C148.291 12.7065 149.024 12.8856 149.449 13.2434C149.817 13.6025 150 14.3185 150 15.3336V16.8265C150 17.8398 149.817 18.5563 149.449 18.9154C149.024 19.2736 148.291 19.4527 147.192 19.4527H140.17C139.071 19.4527 138.279 19.2736 137.91 18.9154C137.481 18.5563 137.301 17.8398 137.301 16.8265V16.5269L139.623 16.05V17.3629H147.679V14.8558H140.597C139.499 14.8558 138.764 14.6767 138.339 14.2589C137.972 13.8998 137.788 13.2434 137.788 12.2287V10.9754C137.788 9.96071 137.972 9.30382 138.339 8.9456C138.764 8.52737 139.499 8.34871 140.597 8.34871H147.069C148.108 8.34871 148.839 8.52737 149.267 8.8856C149.694 9.24382 149.879 9.90071 149.879 10.7954V11.0354L147.556 11.5718V10.3189Z"
+              fill="#828282"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M61.1093 19.4527L66.4825 13.7812L60.9871 8.34871H64.5289L68.133 12.1092L71.6116 8.34871H74.603L69.6584 13.4825L75.8253 19.4527H72.2225L68.0721 15.1536L64.2234 19.4527H61.1093Z"
+              fill="#828282"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M6.59501 19.4527L0 8.34871H3.05319L7.63274 16.4078L12.0287 8.34871H14.6541L8.42638 19.4527H6.59501Z"
+              fill="#828282"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M16.7261 19.4527V8.34871H18.4965L26.4947 14.9154C26.8006 15.1536 27.0461 15.3331 27.2284 15.5127C27.4729 15.6914 27.6556 15.93 27.8393 16.11C27.7779 15.5127 27.7161 15.0345 27.7161 14.7967V14.1985V8.34871H30.0984V19.4527H28.2675L19.9006 12.5874C19.7188 12.4083 19.5347 12.2887 19.4124 12.1092C19.2288 11.99 19.1093 11.8709 18.9865 11.6918C19.0474 12.0496 19.0474 12.3483 19.0474 12.7065C19.1093 13.0052 19.1093 13.2429 19.1093 13.4825V19.4527H16.7261Z"
+              fill="#828282"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M58.2163 26.6667C58.2163 27.4031 57.6059 28 56.8527 28H34.1254C33.3722 28 32.7617 27.4031 32.7617 26.6667V1.33333C32.7617 0.596889 33.3722 0 34.1254 0H56.8527C57.6059 0 58.2163 0.596889 58.2163 1.33333V26.6667Z"
+              fill="#9F224E"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M40.9435 10.7135V11.1579V12.0002H42.5322H47.3072V16.0002H42.5322H40.9435V16.9357V17.3802V18.269V19.6024V20.889H42.5322H54.5799V24.4446H41.9844H36.3981V3.55571H41.9844H54.5799V7.11126H42.5322H40.9435V8.49126V9.8246V10.7135ZM42.3072 8.4446H54.7117C55.4645 8.4446 55.9436 7.89393 55.9436 7.15793V3.60238C55.9436 2.86638 55.4645 2.22238 54.7117 2.22238H41.9844H36.5299C35.7767 2.22238 35.0344 2.86638 35.0344 3.60238V24.4913C35.0344 25.2273 35.7767 25.7779 36.5299 25.7779H41.9844H54.7117C55.4645 25.7779 55.9436 25.2273 55.9436 24.4913V20.9357C55.9436 20.1997 55.4645 19.5557 54.7117 19.5557H42.3072V18.269V17.3335H47.439C48.1917 17.3335 48.6708 16.7828 48.6708 16.0468V12.0468C48.6708 11.3108 48.1917 10.6668 47.439 10.6668H42.3072V9.8246V8.4446Z"
+              fill="white"/>
+    </svg>
+
+</div>
+
+<!-- end SVC -->
+
+<header class="section top-header " data-campaign="Header">
+    <div class="container ">
+        <a href="javascript:;" class="all-menu all-menu-tablet"><span class="hamburger"></span></a>
+        <h1><a href="" class="logo">
+            <svg class="ic ic-logovn">
+                <use xlink:href="#logovn"></use>
+            </svg>
+        </a></h1>
+        <span class="time-now " id="time-now_js"> Thứ ba, 20/10/2020</span>
+        <script>
+            var date_header = new Date();
+            var arrStrDay = ["Chủ Nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"]
+            var strDate = arrStrDay[date_header.getDay()] + ", " + date_header.getDate() + "/" + (date_header.getMonth() + 1) + "/" + date_header.getFullYear()
+            document.getElementById("time-now_js").innerText = strDate;
+        </script>
+
+        <div class="right">
+            <h2><a href="tin-tuc-24h" class="btn24hqua " title="Mới nhất">
+                <svg class="ic ic-24h">
+                    <use xlink:href="#time">
+
+                    </use>
+                </svg>
+                Mới nhất</a>
+            </h2>
+            <a href="" class="evne" title="VnExpress International">
+                <svg class="ic ic-evne">
+                    <use xlink:href="#letter-E">
+
+                    </use>
+
+                </svg>
+                International</a>
+            <!-- from tiềm kiếm trên head -->
+            <form class="search search-vne" action="" id="formSearchHeader">
+                <input id="keywordHeader" type="text" name="q" placeholder="Tìm kiếm" autocomplete="off">
+                <button type="submit" title="Tìm kiếm" class="btn-search-vne" id="buttonSearchHeader">
+                    <svg class="ic ic-search">
+                        <use xlink:href="#Search"></use>
+                    </svg>
+                </button>
+            </form>
+            <div id="myvne_taskbar">
+                <div id="myvne" class="myvne_taskbar">
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('logout') }}" class="log_txt" title="Đăng Xuất">
+                        <svg class="ic ic-user">
+                            <use xlink:href="#User"></use>
+                        </svg>
+
+                    Đăng xuất</a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" class="log_txt" title="Đăng Nhập">
+                        <svg class="ic ic-user">
+                            <use xlink:href="#User"></use>
+                        </svg>
+                        Đăng nhập
+                    </a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header> <!--end header-->
+<!--main_menu menu PC-->
+<section class="section wrap-main-nav" id="wrap-main-nav" data-campaign="Header">
+    <nav class="main-nav">
+        <ul class="parent">
+            <li class=" home">
+                <a href="" class="flexbox" title="Trang chủ" data-medium="Menu-Home">
+
+                    <svg class="ic ic-home">
+                        <use xlink:href="#Home"></use>
+                    </svg>
+                    <svg class="ic ic-evne">
+                        <use xlink:href="#letter-E"></use>
+                    </svg>
+                </a>
+            </li>
+            <li class=" thoisu">
+                <a title="Thời sự" href>
+                    Thời sự </a>
+                <ul class=" sub">
+                    <li>
+                        <a title="Chính trị" href=>Chính trị</a>
+                    </li>
+
+                    <li>
+                        <a title="Giao thông" href>Giao thông</a>
+                    </li>
+
+                    <li>
+                        <a title="Mekong" href>Mekong</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="gocnhin">
+                <a title="Góc nhìn" href>
+                    Góc nhìn </a>
+            </li>
+            <li class="thegioi">
+                <a title="Thế giới" href>
+                    Thế giới </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Tư liệu" href>Tư liệu</a>
+                    </li>
+
+                    <li>
+                        <a title="Phân tích" href>Phân tích</a>
+                    </li>
+
+                    <li>
+                        <a title="Người Việt 5 châu" href=>Người Việt 5 châu</a>
+                    </li>
+
+                    <li>
+                        <a title="Cuộc sống đó đây" href=>Cuộc sống đó đây</a>
+                    </li>
+
+                    <li>
+                        <a title="Quân sự" href>Quân sự</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="video">
+                <a title="Video" href>
+                    Video </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Thời sự" href>Thời sự</a>
+                    </li>
+
+                    <li>
+                        <a title="Nhịp sống" href>Nhịp sống</a>
+                    </li>
+
+                    <li>
+                        <a title="Food" href>Food</a>
+                    </li>
+
+                    <li>
+                        <a title="Cuộc sống 4.0" href>Cuộc sống 4.0</a>
+                    </li>
+
+                    <li>
+                        <a title="Tôi kể" href>Tôi kể</a>
+                    </li>
+
+                    <li>
+                        <a title="The Changers" href>The Changers</a>
+                    </li>
+
+                    <li>
+                        <a title="Giải trí" href>Giải trí</a>
+                    </li>
+
+                    <li>
+                        <a title="Du lịch" href>Du lịch</a>
+                    </li>
+
+                    <li>
+                        <a title="Thể thao" href>Thể thao</a>
+                    </li>
+
+                    <li>
+                        <a title="Thế giới" href>Thế giới</a>
+                    </li>
+
+                    <li>
+                        <a title="Pháp luật" href>Pháp luật</a>
+                    </li>
+
+                    <li>
+                        <a title="Kinh doanh" href>Kinh doanh</a>
+                    </li>
+
+                    <li>
+                        <a title="Khoa học" href>Khoa học</a>
+                    </li>
+
+                    <li>
+                        <a title="Giáo dục" href>Giáo dục</a>
+                    </li>
+
+                    <li>
+                        <a title="Sức khỏe" href>Sức khỏe</a>
+                    </li>
+
+                    <li>
+                        <a title="Kid-lab" href>Kid-lab</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="kinhdoanh">
+                <a title="Kinh doanh" href>
+                    Kinh doanh </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Quốc tế" href>Quốc tế</a>
+                    </li>
+
+                    <li>
+                        <a title="Doanh nghiệp" href>Doanh nghiệp</a>
+                    </li>
+
+                    <li>
+                        <a title="Chứng khoán" href>Chứng khoán</a>
+                    </li>
+
+                    <li>
+                        <a title="Bất động sản" href>Bất động sản</a>
+                    </li>
+
+                    <li>
+                        <a title="Ebank" href>Ebank</a>
+                    </li>
+
+                    <li>
+                        <a title="Vĩ mô" href>Vĩ mô</a>
+                    </li>
+
+                    <li>
+                        <a title="Tiền của tôi" href>Tiền của tôi</a>
+                    </li>
+
+                    <li>
+                        <a title="Hàng hóa" href>Hàng hóa</a>
+                    </li>
+
+                    <li>
+                        <a title="Startup" href>Startup</a>
+                    </li>
+
+                    <li>
+                        <a title="Vận hành số" href>Vận hành số</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="giaitri">
+                <a title="Giải trí" href>
+                    Giải trí </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Giới sao" href>Giới sao</a>
+                    </li>
+
+                    <li>
+                        <a title="Video" href>Video</a>
+                    </li>
+
+                    <li>
+                        <a title="Phim" href=>Phim</a>
+                    </li>
+
+                    <li>
+                        <a title="Nhạc" href>Nhạc</a>
+                    </li>
+
+                    <li>
+                        <a title="Thời trang" href>Thời trang</a>
+                    </li>
+
+                    <li>
+                        <a title="Làm đẹp" href>Làm đẹp</a>
+                    </li>
+
+                    <li>
+                        <a title="Sách" href>Sách</a>
+                    </li>
+
+                    <li>
+                        <a title="Sân khấu - Mỹ thuật" href>Sân khấu - Mỹ thuật</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="thethao">
+                <a title="Thể thao" href>
+                    Thể thao </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Video" href>Video</a>
+                    </li>
+
+                    <li>
+                        <a title="Bóng đá" href>Bóng đá</a>
+                    </li>
+
+                    <li>
+                        <a title="Tennis" href>Tennis</a>
+                    </li>
+
+                    <li>
+                        <a title="VM 2020" href>VM 2020</a>
+                    </li>
+
+                    <li>
+                        <a title="Các môn khác" href>Các môn khác</a>
+                    </li>
+
+                    <li>
+                        <a title="Hậu trường" href>Hậu trường</a>
+                    </li>
+
+                    <li>
+                        <a title="Ảnh" href>Ảnh</a>
+                    </li>
+
+                    <li>
+                        <a title="Tường thuật" href>Tường thuật</a>
+                    </li>
+
+                    <li>
+                        <a title="F1" href>F1</a>
+                    </li>
+
+                    <li>
+                        <a title="World Cup 2022" href>World Cup 2022</a>
+                    </li>
+
+                    <li>
+                        <a title="Lịch thi đấu" href>Lịch thi đấu</a>
+                    </li>
+
+                    <li>
+                        <a title="V-Race" href>V-Race</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="phapluat">
+                <a title="Pháp luật" href>
+                    Pháp luật </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Hồ sơ phá án" href>Hồ sơ phá án</a>
+                    </li>
+
+                    <li>
+                        <a title="Tư vấn" href>Tư vấn</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="giaoduc">
+                <a title="Giáo dục" href>
+                    Giáo dục </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Tuyển sinh" href>Tuyển sinh</a>
+                    </li>
+
+                    <li>
+                        <a title="Điểm thi 2020" href>Điểm thi 2020</a>
+                    </li>
+
+                    <li>
+                        <a title="Du học" href>Du học</a>
+                    </li>
+
+                    <li>
+                        <a title="Học tiếng Anh" href>Học tiếng Anh</a>
+                    </li>
+
+                    <li>
+                        <a title="Trắc nghiệm" href>Trắc nghiệm</a>
+                    </li>
+
+                    <li>
+                        <a title="Kid-lab" href>Kid-lab</a>
+                    </li>
+
+                    <li>
+                        <a title="Giáo dục 4.0" href>Giáo dục 4.0</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="suckhoe">
+                <a title="Sức khỏe" href>
+                    Sức khỏe </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Tin tức" href>Tin tức</a>
+                    </li>
+
+                    <li>
+                        <a title="Tư vấn" href>Tư vấn</a>
+                    </li>
+
+                    <li>
+                        <a title="Dinh dưỡng" href>Dinh dưỡng</a>
+                    </li>
+
+                    <li>
+                        <a title="Khỏe đẹp" href>Khỏe đẹp</a>
+                    </li>
+
+                    <li>
+                        <a title="Đàn ông" href>Đàn ông</a>
+                    </li>
+
+                    <li>
+                        <a title="Các bệnh" href>Các bệnh</a>
+                    </li>
+
+                    <li>
+                        <a title="Podcast" href>Podcast</a>
+                    </li>
+
+                    <li>
+                        <a title="Ung thư" href>Ung thư</a>
+                    </li>
+
+                    <li>
+                        <a title="Vaccine" href>Vaccine</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="doisong">
+                <a title="Đời sống" href>
+                    Đời sống </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Tổ ấm" href>Tổ ấm</a>
+                    </li>
+
+                    <li>
+                        <a title="Bài học sống" href>Bài học sống</a>
+                    </li>
+
+                    <li>
+                        <a title="Nhà" href>Nhà</a>
+                    </li>
+
+                    <li>
+                        <a title="Tiêu dùng" href>Tiêu dùng</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dulich">
+                <a title="Du lịch" href>
+                    Du lịch </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Điểm đến" href>Điểm đến</a>
+                    </li>
+
+                    <li>
+                        <a title="Dấu chân" href>Dấu chân</a>
+                    </li>
+
+                    <li>
+                        <a title="Tư vấn" href>Tư vấn</a>
+                    </li>
+
+                    <li>
+                        <a title="Ảnh" href=>Ảnh</a>
+                    </li>
+
+                    <li>
+                        <a title="Cẩm nang" href>Cẩm nang</a>
+                    </li>
+
+                    <li>
+                        <a title="Safe Go" href>Safe Go</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="khoahoc">
+                <a title="Khoa học" href>
+                    Khoa học </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Tin tức" href>Tin tức</a>
+                    </li>
+
+                    <li>
+                        <a title="Phát minh" href>Phát minh</a>
+                    </li>
+
+                    <li>
+                        <a title="Ứng dụng" href>Ứng dụng</a>
+                    </li>
+
+                    <li>
+                        <a title="Thế giới tự nhiên" href>Thế giới tự nhiên</a>
+                    </li>
+
+                    <li>
+                        <a title="Thường thức" href>Thường thức</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sohoa">
+                <a title="Số hóa" href>
+                    Số hóa </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Công nghệ" href>Công nghệ</a>
+                    </li>
+
+                    <li>
+                        <a title="Sản phẩm" href="so-hoa/san-pham" data-medium="Menu-SanPham"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-SanPham&amp;vn_term=Desktop"
+                           data-itm-added="1">Sản phẩm</a>
+                    </li>
+
+                    <li>
+                        <a title="Diễn đàn" href="so-hoa/dien-dan" data-medium="Menu-DienDan"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-DienDan&amp;vn_term=Desktop"
+                           data-itm-added="1">Diễn đàn</a>
+                    </li>
+
+                    <li>
+                        <a title="Sản phẩm tôi yêu"
+                           href="so-hoa/su-kien/binh-chon-san-pham-2020/gala"
+                           data-medium="Menu-SanPhamToiYeu"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-SanPhamToiYeu&amp;vn_term=Desktop"
+                           data-itm-added="1">Sản phẩm tôi yêu</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="xe">
+                <a title="Xe" href="oto-xe-may" data-medium="Menu-Xe"
+                   data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-Xe&amp;vn_term=Desktop"
+                   data-itm-added="1">
+                    Xe </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Thị trường" href="oto-xe-may/thi-truong"
+                           data-medium="Menu-ThiTruong"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-ThiTruong&amp;vn_term=Desktop"
+                           data-itm-added="1">Thị trường</a>
+                    </li>
+
+                    <li>
+                        <a title="Tư vấn" href="oto-xe-may/tu-van" data-medium="Menu-TuVan"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-TuVan&amp;vn_term=Desktop"
+                           data-itm-added="1">Tư vấn</a>
+                    </li>
+
+                    <li>
+                        <a title="Đánh giá" href="oto-xe-may/danh-gia" data-medium="Menu-DanhGia"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-DanhGia&amp;vn_term=Desktop"
+                           data-itm-added="1">Đánh giá</a>
+                    </li>
+
+                    <li>
+                        <a title="Diễn đàn" href="oto-xe-may/dien-dan" data-medium="Menu-DienDan"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-DienDan&amp;vn_term=Desktop"
+                           data-itm-added="1">Diễn đàn</a>
+                    </li>
+
+                    <li>
+                        <a title="Video" href="oto-xe-may/video" data-medium="Menu-Video"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-Video&amp;vn_term=Desktop"
+                           data-itm-added="1">Video</a>
+                    </li>
+
+                    <li>
+                        <a title="Bảng giá" href="interactive/2016/bang-gia-xe#all;all"
+                           data-medium="Menu-BangGia"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-BangGia&amp;vn_term=Desktop"
+                           data-itm-added="1">Bảng giá</a>
+                    </li>
+
+                    <li>
+                        <a title="Xe xanh" href="oto-xe-may/xe-xanh" data-medium="Menu-XeXanh"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-XeXanh&amp;vn_term=Desktop"
+                           data-itm-added="1">Xe xanh</a>
+                    </li>
+
+                    <li>
+                        <a title="Thi bằng lái" href="oto-xe-may/thi-bang-lai"
+                           data-medium="Menu-ThiBangLai"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-ThiBangLai&amp;vn_term=Desktop"
+                           data-itm-added="1">Thi bằng lái</a>
+                    </li>
+
+                    <li>
+                        <a title="Mua bán" href="https://raovat.vnexpress.net/o-to-xe" data-medium="Menu-MuaBan"
+                           target="_blank"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-MuaBan&amp;vn_term=Desktop"
+                           data-itm-added="1">Mua bán</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="ykien">
+                <a title="Ý kiến" href="y-kien" data-medium="Menu-YKien"
+                   data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-YKien&amp;vn_term=Desktop"
+                   data-itm-added="1">
+                    Ý kiến </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Thời sự" href="y-kien/thoi-su" data-medium="Menu-ThoiSu"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-ThoiSu&amp;vn_term=Desktop"
+                           data-itm-added="1">Thời sự</a>
+                    </li>
+
+                    <li>
+                        <a title="Đời sống" href="y-kien/doi-song" data-medium="Menu-DoiSong"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-DoiSong&amp;vn_term=Desktop"
+                           data-itm-added="1">Đời sống</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="tamsu">
+                <a title="Tâm sự" href="tam-su" data-medium="Menu-TamSu"
+                   data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-TamSu&amp;vn_term=Desktop"
+                   data-itm-added="1">
+                    Tâm sự </a>
+                <ul class="sub">
+                    <li>
+                        <a title="Chuyên gia gỡ rối" href="tam-su/chuyen-gia-go-roi"
+                           data-medium="Menu-ChuyenGiaGoRoi"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-ChuyenGiaGoRoi&amp;vn_term=Desktop"
+                           data-itm-added="1">Chuyên gia gỡ rối</a>
+                    </li>
+
+                    <li>
+                        <a title="Hẹn hò" href="tam-su/hen-ho" data-medium="Menu-HenHo"
+                           data-itm-source="#vn_source=Home&amp;vn_campaign=Header&amp;vn_medium=Menu-HenHo&amp;vn_term=Desktop"
+                           data-itm-added="1">Hẹn hò</a>
+                    </li>
+                </ul>
+            </li>
+            </li>
+        </ul>
+    </nav>
+
+</section>
+<!--End main_menu-->
+
+
+<!-- Start main Content -->
+<main>
+    <div class="section top-header">
+        <div class="container mt-3 mb-4">
+            {% block conten %}
+            {% endblock %}
+        </div>
+    </div>
+</main>
+
+
+<!-- End Content -->
+<footer class="footer container" data-component-runtime="js" data-component-function="initLayout"
+        data-component-input="{}" id="wrapper_footer" data-campaign="Footer">
+    <div class="inner-footer width_common">
+        <ul class="list-menu-footer">
+            <li class="item-menu"><a href="" title="Trang chủ"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-Home&amp;vn_term=Desktop"
+                                     data-itm-added="1">Trang chủ</a></li>
+            <li class="item-menu"><a href="" data-medium="Menu-Video" title="Video"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-Video&amp;vn_term=Desktop"
+                                     data-itm-added="1">Video</a></li>
+            <li class="item-menu"><a href="" data-medium="Menu-Anh" title="Ảnh"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-Anh&amp;vn_term=Desktop"
+                                     data-itm-added="1">Ảnh</a></li>
+            <li class="item-menu"><a href="" data-medium="Menu-Infographics"
+                                     title="Infographics"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-Infographics&amp;vn_term=Desktop"
+                                     data-itm-added="1">Infographics</a></li>
+            <li class="item-menu border-top" style="padding-top: 15px;border-top: 1px solid #e5e5e5;"><a
+                    href="" data-medium="Menu-MoiNhat" title="Mới nhất"
+                    data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-MoiNhat&amp;vn_term=Desktop"
+                    data-itm-added="1">Mới nhất</a></li>
+            <li class="item-menu"><a href="" data-medium="Menu-XemNhieu"
+                                     title="Xem nhiều"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-XemNhieu&amp;vn_term=Desktop"
+                                     data-itm-added="1">Xem nhiều</a></li>
+            <li class="item-menu"><a href="" data-medium="Menu-TinNong" title="Tin nóng"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-TinNong&amp;vn_term=Desktop"
+                                     data-itm-added="1">Tin nóng</a></li>
+        </ul>
+        <ul class="list-menu-footer">
+            <li class="item-menu"><a href="thoi-su" data-medium="Menu-ThoiSu" title="Thời sự"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-ThoiSu&amp;vn_term=Desktop"
+                                     data-itm-added="1">Thời sự</a></li>
+            <li class="item-menu"><a href="goc-nhin" data-medium="Menu-GocNhin" title="Góc nhìn"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-GocNhin&amp;vn_term=Desktop"
+                                     data-itm-added="1">Góc nhìn</a></li>
+            <li class="item-menu"><a href="the-gioi" data-medium="Menu-TheGioi" title="Thế giới"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-TheGioi&amp;vn_term=Desktop"
+                                     data-itm-added="1">Thế giới</a></li>
+            <li class="item-menu"><a href="kinh-doanh" data-medium="Menu-KinhDoanh"
+                                     title="Kinh doanh"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-KinhDoanh&amp;vn_term=Desktop"
+                                     data-itm-added="1">Kinh doanh</a></li>
+            <li class="item-menu"><a href="phap-luat" data-medium="Menu-PhapLuat"
+                                     title="Pháp luật"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-PhapLuat&amp;vn_term=Desktop"
+                                     data-itm-added="1">Pháp luật</a></li>
+        </ul>
+        <ul class="list-menu-footer">
+            <li class="item-menu"><a href="giai-tri" data-medium="Menu-GiaiTri" title="Giải trí"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-GiaiTri&amp;vn_term=Desktop"
+                                     data-itm-added="1">Giải trí</a></li>
+            <li class="item-menu"><a href="the-thao" data-medium="Menu-TheThao" title="Thể thao"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-TheThao&amp;vn_term=Desktop"
+                                     data-itm-added="1">Thể thao</a></li>
+            <li class="item-menu"><a href="du-lich" data-medium="Menu-DuLich" title="Du lịch"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-DuLich&amp;vn_term=Desktop"
+                                     data-itm-added="1">Du lịch</a></li>
+            <li class="item-menu"><a href="khoa-hoc" data-medium="Menu-KhoaHoc" title="Khoa học"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-KhoaHoc&amp;vn_term=Desktop"
+                                     data-itm-added="1">Khoa học</a></li>
+            <li class="item-menu"><a href="so-hoa" data-medium="Menu-SoHoa" title="Số hóa"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-SoHoa&amp;vn_term=Desktop"
+                                     data-itm-added="1">Số hóa</a></li>
+            <li class="item-menu"><a href="oto-xe-may" data-medium="Menu-Xe" title="Xe"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-Xe&amp;vn_term=Desktop"
+                                     data-itm-added="1">Xe</a></li>
+        </ul>
+        <ul class="list-menu-footer">
+            <li class="item-menu"><a href="giao-duc" data-medium="Menu-GiaoDuc" title="Giáo dục"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-GiaoDuc&amp;vn_term=Desktop"
+                                     data-itm-added="1">Giáo dục</a></li>
+            <li class="item-menu"><a href="suc-khoe" data-medium="Menu-SucKhoe" title="Sức khỏe"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-SucKhoe&amp;vn_term=Desktop"
+                                     data-itm-added="1">Sức khỏe</a></li>
+            <li class="item-menu"><a href="doi-song" data-medium="Menu-DoiSong" title="Đời sống"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-DoiSong&amp;vn_term=Desktop"
+                                     data-itm-added="1">Đời sống</a></li>
+            <li class="item-menu"><a href="y-kien" data-medium="Menu-YKien" title="Ý kiến"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-YKien&amp;vn_term=Desktop"
+                                     data-itm-added="1">Ý kiến</a></li>
+            <li class="item-menu"><a href="tam-su" data-medium="Menu-TamSu" title="Tâm sự"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-TamSu&amp;vn_term=Desktop"
+                                     data-itm-added="1">Tâm sự</a></li>
+            <li class="item-menu"><a href="hai" data-medium="Menu-Hai" title="Hài"
+                                     data-itm-source="#vn_source=Home&amp;vn_campaign=Footer&amp;vn_medium=Menu-Hai&amp;vn_term=Desktop"
+                                     data-itm-added="1">Hài</a></li>
+        </ul>
+        <ul class="list-menu-footer">
+            <li class="item-menu"><a target="_blank"
+                                     href="https://raovat.vnexpress.net/?utm_campaign=VNEXPRESS&amp;utm_source=footer&amp;utm_medium=menu"
+                                     title="Rao vặt">Rao vặt</a></li>
+
+            <li class="item-menu"><a target="_blank"
+                                     href="https://shop.vnexpress.net/?utm_campaign=VNEXPRESS&amp;utm_source=footer&amp;utm_medium=menu"
+                                     title="Shop VnExpress">Shop VnExpress</a></li>
+
+            <li class="item-menu"><a target="_blank" href="https://startup.vnexpress.net/" title="Startup">Startup</a>
+            </li>
+
+            <li class="item-menu"><a target="_blank" href="https://pay.vnexpress.net/" title="Pay VnExpress">Pay
+                VnExpress</a></li>
+
+            <li class="item-menu"><a target="_blank"
+                                     href="https://my.vnexpress.net/qua-tang/?utm_campaign=VNEXPRESS&amp;utm_source=footer&amp;utm_medium=menu"
+                                     title="Quà tặng">Quà tặng</a></li>
+
+            <li class="item-menu"><a target="_blank" href="https://kidlab.vnexpress.net/" title="Kid-lab">Kid-lab</a>
+            </li>
+
+            <li class="item-menu"><a target="_blank" href="https://vlight.vnexpress.net/" title="Mua ảnh VnExpress">Mua
+                ảnh VnExpress</a></li>
+
+            <li class="item-menu"><a target="_blank" href="https://vhome.vnexpress.net/" title="Vhome">Vhome</a></li>
+        </ul>
+    </div>
+    <div class="copyright width_common">
+        <p><a title="VnExpress - Báo tiếng Việt nhiều người xem nhất" href=""
+              class="logo_ft"
+        >
+            <svg class="ic ic-logovn">
+                <use xlink:href="#logovn"></use>
+            </svg>
+        </a><span
+                class="txt-copyright">© 1997-2020. Toàn bộ bản quyền thuộc VnExpress<br><strong>Báo tiếng Việt nhiều người xem nhất.</strong> Thuộc Bộ Khoa học Công nghệ.</span>
+        </p>
+        <div class="right flexbox">
+
+            <span class="txt-follow">Theo dõi VnExpress trên</span>
+            <a href="" class="social_ft face_ft" title="Facebook">
+                <svg class="ic ic-facebook">
+                    <use xlink:href="#Facebook"></use>
+                </svg>
+            </a>
+            <a href="" class="social_ft twitter_ft" title="Twitter">
+                <svg class="ic ic-twitter">
+                    <use xlink:href="#Twitter"></use>
+                </svg>
+            </a>
+            <a target="_blank" href=""
+               class="social_ft youtube_ft" title="Youtube">
+                <svg class="ic ic-youtube">
+                    <use xlink:href="#Youtube"></use>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+</footer>
+
+</body>
+
+{% block script %}
+
+{% endblock %}
+
+</html>

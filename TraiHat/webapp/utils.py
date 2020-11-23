@@ -27,7 +27,7 @@ def generate_password(pw):
 
 def encodeID(input="-"):
     # print("input:",input)
-    temp = input
+    temp = str(input)
     output = ""
     try:
         # tạo chuỗi gây nhiễu

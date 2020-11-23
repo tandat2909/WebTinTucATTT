@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <form action="{{ url_for("change_Account_Information") }}" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+
+            {{ form.userName_New.label }}<br>
+            {{ form.userName_New(size=32) }}
+        </p>
+        <p>
+
+            {{ form.fullName_New.label }}<br>
+            {{ form.fullName_New(size=32) }}
+        </p>
+        <p>
+
+            {{ form.phoneNumber_New.label }}<br>
+            {{ form.phoneNumber_New(size=32) }}
+        </p>
+        <p>
+            {{ form.email_New.label }}<br>
+            {{ form.email_New(size=32) }}
+        </p>
+         <p>
+            {{ form.gender_New.label }}<br>
+            {{ form.gender_New(size=32) }}
+        </p>
+            <p>
+            {{ form.pseudonym_New.label }}<br>
+            {{ form.pseudonym_New(size=32) }}
+        </p>
+         <p>
+
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}
+
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</body>
+</html>
