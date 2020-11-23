@@ -9,7 +9,7 @@ from markupsafe import Markup
 from wtforms import validators, PasswordField, HiddenField, StringField, Field, widgets, ValidationError
 from wtforms.compat import text_type
 from wtforms.widgets.core import Input
-from webapp import app, db, models, login
+from webapp import app, db, models, login,jinja_filters
 from flask_login import login_user, current_user, logout_user, AnonymousUserMixin
 from webapp.models import User
 # from webapp.admin.routeAdmin import *
@@ -81,9 +81,8 @@ def login_admin():
     if form.validate_on_submit():
         user = form.get_user()
         next_url = request.args.get('next')
-        print(user)
+
         if user and user.active == models.EStatus.Active and user.user_role_id == models.EUserRole.admin.value:
-            print(user)
             login_user(user=user)
 
             flash("Login Success", category='success')
@@ -142,7 +141,7 @@ def blog_list():
     }
 
     if current_user.user_role.id == models.EUserRole.admin.value:
-        print(listblog)
+
         return render_template('bloglist.html', params=params)
     return render_template('bloglist.html', params=params)
 

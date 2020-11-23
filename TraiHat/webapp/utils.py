@@ -57,8 +57,8 @@ def encodeID(input="-"):
 
         return output
 
-    except:
-        return 'Error encode'
+    except Exception as ex:
+        raise ex
 
 
 def decodeID(input):
@@ -86,14 +86,17 @@ def decodeID(input):
 
         return result
 
-    except:
-        return "Decode Error"
+    except Exception as ex:
+      raise ex
 
 
 if __name__ == '__main__':
-    for i in range(100):
-        data = 's-s'
-        en = encodeID(data)
-        de = decodeID(en)
-        print("encode:", en, len(data))
-        print("decode:", de, len(de))
+    id = models.User.query.all()[0].id
+    print(encodeID(str(id)))
+    #for i in range(100):
+    #    data = 's-s'
+    #    en = encodeID(data)
+    #    de = decodeID(en)
+    #    print("encode:", en, len(data))
+    #    print("decode:", de, len(de))
+#
