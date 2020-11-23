@@ -105,7 +105,7 @@
                         }
                     </style>
                     <ul class="dropdown-menu  style-dropdown-menu-right dropdown-lg animated fadeInRight ">
-                        <li><a href="{{ url_for('profile') }}"><i class="fa fa-user"></i>My Profile</a></li>
+                        <li><a href="{{ url_for('profile',id = current_user.id|encodeID)}}"><i class="fa fa-user"></i>My Profile</a></li>
                         <li><a href="{{ url_for('change_password') }}">Change password</a></li>
                         <li class="divider"></li>
                         <li><a href="#"><i class="fa fa-lock"></i>Screen lock</a></li>

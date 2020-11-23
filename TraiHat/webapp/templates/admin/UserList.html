@@ -2,7 +2,7 @@
 {{ super() }}
 
 {% block title %}
-    <title> {{ title }}</title>
+    <title> {{ params.get('title') }}</title>
 {% endblock %}
 
 {% block css_header %}
@@ -19,7 +19,7 @@
                 <div class="user-col">
 
                     <div class="media">
-                        <a class="pull-left" href="{{ url_for('profile',id = item.id) }}">
+                        <a class="pull-left" href="{{ url_for('profile',id = item.id|encodeID)}}">
                             <img class="media-object img-circle"
                                  src="{{ url_for('static',filename= 'admin2/images/avtar-2.jpg') }}" alt="100x100"
                                  data-src="holder.js/100x100" style="width: 100px; height: 100px;">
@@ -41,7 +41,7 @@
 
                             <div class="btn-toolbar">
                                 <div class="btn-group">
-                                    <a href="{{ url_for('profile',id = item.id) }}">
+                                    <a href="{{ url_for('profile',id = item.id|encodeID)}}">
                                         <button class="btn btn-success btn-3d btn-sm"> Profile
                                         </button>
                                     </a>
