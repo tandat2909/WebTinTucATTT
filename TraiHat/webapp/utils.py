@@ -134,7 +134,7 @@ def deleteBlog(blogid,user):
 
 if __name__ == '__main__':
 
-   id = models.User.query.all()[0].id
+    id = models.User.query.all()[0].id
    #print(encodeID(str(id)))
     #for i in range(100):
     #    data = 's-s'
