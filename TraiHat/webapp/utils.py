@@ -89,6 +89,23 @@ def decodeID(input):
     except Exception as ex:
       raise ex
 
+def deleteBlog(blogid,user):
+
+    try:
+        blog = models.QL_BaiViet.query.get(decodeID(blogid))
+        if blog:
+            if user.user_role_id == models.EUserRole.admin.value:
+
+                return True
+            elif user.id == blog.user_id:
+                return True
+
+            else:
+                raise
+        else:
+           raise
+    except:
+        return False
 
 if __name__ == '__main__':
     id = models.User.query.all()[0].id

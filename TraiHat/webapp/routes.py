@@ -9,12 +9,12 @@ from markupsafe import Markup
 from wtforms import validators, PasswordField, HiddenField, StringField, Field, widgets, ValidationError
 from wtforms.compat import text_type
 from wtforms.widgets.core import Input
-from webapp import app, db, models, login,jinja_filters
+from webapp import utils,app, db, models, login,jinja_filters
 from flask_login import login_user, current_user, logout_user, AnonymousUserMixin
 from webapp.models import User
 # from webapp.admin.routeAdmin import *
 from webapp.Forms.FormLogin import LoginForm
-from webapp.Forms import FormChange
+from webapp.Forms import FormChange,FormDelete
 from werkzeug.security import generate_password_hash
 
 
@@ -244,8 +244,8 @@ def change_password():
     return render_template('ChangePassword.html', form=form)
 
 
-@app.route('/user/delete/blog', methods=["POST"])
-@app.route('/admin/delete/blog', methods=["POST"])
+@app.route('/user/delete/blog', methods=["GET","POST"])
+@app.route('/admin/delete/blog', methods=['GET',"POST"])
 @login_required
 def delete_blog():
     """
@@ -255,8 +255,17 @@ def delete_blog():
     gửi lên dạng post form có csrf
     :return: trang bloglist dùng redirect()
     """
+    form = FormDelete.delete()
+    params={
+        'form': form
+    }
+    if form.validate_on_submit():
+        print(form.ids.data)
+        ms = utils.deleteBlog(form.ids.data, current_user)
+        flash(ms,category='success')
+    return  render_template('delete.html',params=params)
 
-    pass
+
 
 
 @app.route('/admin/delete/user', methods=["POST"])
