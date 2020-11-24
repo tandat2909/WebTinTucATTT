@@ -1,8 +1,8 @@
 class thamso:
-    server = 'LAPTOP-NABDMQNG'
-    database = 'dbtintuc'
-    username = 'user1'
-    password = 'khongbietphaidatgi'
+    server = 'LAPTOP-HAKATAKI'
+    database = 'hoangdo'
+    username = 'sa'
+    password = 'root'
     driver = 'ODBC+Driver+17+for+SQL+Server'
 class Config(object):
     SQLALCHEMY_DATABASE_URI=str.format(f"mssql+pyodbc://{thamso.username}:{thamso.password}@{thamso.server}/{thamso.database}?driver={thamso.driver}")

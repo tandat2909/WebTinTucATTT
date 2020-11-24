@@ -14,7 +14,7 @@ from flask_login import login_user, current_user, logout_user, AnonymousUserMixi
 from webapp.models import User
 # from webapp.admin.routeAdmin import *
 from webapp.Forms.FormLogin import LoginForm
-from webapp.Forms import FormChange
+from webapp.Forms import FormChange,FormDelete
 from werkzeug.security import generate_password_hash
 
 
@@ -239,11 +239,11 @@ def change_password():
             db.Session.add(user)
             db.session.commit()
         return redirect(url_for('login'))
-    return render_template('ChangePassword.html', form=form,message_login = "lõi")
+    return render_template('ChangePassword.html', form=form)
 
 
-@app.route('/user/delete/blog', methods=["POST","DELETE"])
-@app.route('/admin/delete/blog', methods=["POST","DELETE"])
+@app.route('/user/delete/blog', methods=["GET","POST"])
+@app.route('/admin/delete/blog', methods=['GET',"POST"])
 @login_required
 def delete_blog():
     """
@@ -252,6 +252,19 @@ def delete_blog():
     nhận id bài viết
     gửi lên dạng post form có csrf
     :return: trang bloglist dùng redirect()
+    """
+    """
+    code đô
+    form = FormDelete.delete()
+    params={
+        'form': form
+    }
+    if form.validate_on_submit():
+        print(form.ids.data)
+        ms = utils.deleteBlog(form.ids.data, current_user)
+        flash(ms,category='success')
+    return  render_template('delete.html',params=params)
+
     """
     if request.method == "POST":
         idF = request.form.get('idform')
