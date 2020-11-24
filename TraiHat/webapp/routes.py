@@ -9,7 +9,7 @@ from markupsafe import Markup
 from wtforms import validators, PasswordField, HiddenField, StringField, Field, widgets, ValidationError
 from wtforms.compat import text_type
 from wtforms.widgets.core import Input
-from webapp import app, db, models, login,jinja_filters
+from webapp import app, db, models, login,jinja_filters,utils
 from flask_login import login_user, current_user, logout_user, AnonymousUserMixin
 from webapp.models import User
 # from webapp.admin.routeAdmin import *
@@ -131,25 +131,23 @@ def blog_list():
     user: hiển bài viết của user đó
     :return:
     """
-
-    listblog = models.QL_BaiViet.query.all()
-
     params = {
         'title': "Blog List",
         'nav_blog': 'active',
-        'listblog': listblog
+
     }
 
     if current_user.user_role.id == models.EUserRole.admin.value:
-
+        params['listblog'] = models.QL_BaiViet.query.all()
         return render_template('bloglist.html', params=params)
+    params['listblog'] = utils.get_blog_by_userID(current_user.id)
     return render_template('bloglist.html', params=params)
 
 
 
 
-@app.route("/user/blog")
-@app.route("/admin/blog")
+@app.route("/user/blogdetail")
+@app.route("/admin/blogdetail")
 def blog_detail():
     """
     hiển thị detail blog
@@ -241,11 +239,11 @@ def change_password():
             db.Session.add(user)
             db.session.commit()
         return redirect(url_for('login'))
-    return render_template('ChangePassword.html', form=form)
+    return render_template('ChangePassword.html', form=form,message_login = "lõi")
 
 
-@app.route('/user/delete/blog', methods=["POST"])
-@app.route('/admin/delete/blog', methods=["POST"])
+@app.route('/user/delete/blog', methods=["POST","DELETE"])
+@app.route('/admin/delete/blog', methods=["POST","DELETE"])
 @login_required
 def delete_blog():
     """
@@ -255,8 +253,17 @@ def delete_blog():
     gửi lên dạng post form có csrf
     :return: trang bloglist dùng redirect()
     """
+    if request.method == "POST":
+        idF = request.form.get('idform')
+        if idF and utils.check_form_exist(idF):
+            flash(utils.check_form_exist(idF))
+            flash(request.form.get("ids"))
+            flash(request.form.get(idF))
+        else:
+            flash("Lõi chét dủi mẹ",category='error')
 
-    pass
+    return redirect(url_for('blog_list'))
+
 
 
 @app.route('/admin/delete/user', methods=["POST"])

@@ -1,22 +1,64 @@
 {% extends 'admin/base.html' if current_user.user_role.name == "Admin" else 'user/base.html'  %}
 
 {% block css_head %}
-    {{ super() }}
-    <!--
-    render dưới cùng thẻ head
-    vd: <link href="style.css" rel="stylesheet">
-     -->
+{{ super() }}
+<!--
+render dưới cùng thẻ head
+vd: <link href="style.css" rel="stylesheet">
+ -->
 
 {% endblock %}
 
 {% block script %}
-    {{ super() }}
-    <!--
-        render sau thẻ đóng </body>
-    vd: <script src="" ></script>
-     -->
+{{ super() }}
+<!--
+    render sau thẻ đóng </body>
+vd: <script src="" ></script>
+ -->
 {% endblock %}
-
 {% block body %}
-
+<div class="row">
+        <div class="blog-single-post">
+            <div class="post-header">
+                <h2>
+                    Praesent bibendum eros urna, in mattis est.
+                </h2>
+                <span class="blog-meta"><a href="#">By Admin</a> 24 July 2015 <a href="#">934 Comments</a></span>
+            </div>
+            <p class="lead">
+                Hay muchas variaciones de los pasajes de Lorem Ipsum disponibles, pero la mayoría sufrió alteraciones en
+                alguna manera, ya sea porque se le agregó humor, o palabras aleatorias que no parecen ni un poco
+                creíbles. Si vas a utilizar un pasaje de Lorem Ipsum, necesitás estar seguro de que no hay nada
+                avergonzante escondido en el medio del texto. Todos los generadores de Lorem Ipsum que se encuentran en
+                Internet tienden a repetir trozos predefinidos cuando sea necesario, haciendo a este el único generador
+                verdadero (válido) en la Internet. Usa un diccionario de mas de 200 palabras provenientes del latín,
+                combinadas con estructuras muy útiles de sentencias, para generar texto de Lorem Ipsum que parezca
+                razonable. Este Lorem Ipsum generado siempre estará libre de repeticiones, humor agregado o palabras no
+                características del lenguaje, etc.
+            </p>
+            <p class="lead">
+                Hay muchas variaciones de los pasajes de Lorem Ipsum disponibles, pero la mayoría sufrió alteraciones en
+                alguna manera, ya sea porque se le agregó humor, o palabras aleatorias que no parecen ni un poco
+                creíbles. Si vas a utilizar un pasaje de Lorem Ipsum
+            </p>
+            <blockquote>
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
+                rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
+                explicabo.
+            </blockquote>
+            <p class="lead">
+                Hay muchas variaciones de los pasajes de Lorem Ipsum disponibles, pero la mayoría sufrió alteraciones en
+                alguna manera, ya sea porque se le agregó humor, o palabras aleatorias que no parecen ni un poco
+                creíbles. Si vas a utilizar un pasaje de Lorem Ipsum
+            </p>
+            <hr>
+            <ul class="socials list-inline">
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                <li><a href="#"><i class="fa fa-share-alt"></i></a></li>
+            </ul>
+        </div>
+</div>
 {% endblock %}

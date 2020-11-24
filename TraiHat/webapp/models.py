@@ -152,7 +152,7 @@ def inserPost(user1 ,user2):
                      noiDung="ờ thằng này tào lao thật",
                      user_id=user1.id,
                      chuDe_id=1,
-                     image="không có ảnh"
+                     image="admin2/images/img-1.jpg"
                       )
     ps2 = QL_BaiViet(title="Bitcoin tăng vọt, tiến sát 19.000 USD một đồng",
                      noiDung='Giá Bitcoin tăng 4% hôm qua (20/11) sau khi BlackRock nhận định tiền ảo này có thể thay thế vàng.'
@@ -165,7 +165,7 @@ def inserPost(user1 ,user2):
                              'thiết lập tháng 12/2017',
                      user_id=user2.id,
                      chuDe_id=3,
-                     image="không có ảnh"
+                     image="admin2/images/img-2.jpg"
                       )
     ps3 = QL_BaiViet(title="là dấu hiệu mới nhất cho thấy Bitcoin ",
                      noiDung="BlackRock hiện là công ty đầu tư hàng đầu thế giới, quản ",

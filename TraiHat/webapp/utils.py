@@ -7,9 +7,10 @@ import random
 import re
 
 import uuid
+from webapp import models
 
 from webapp.config import Config
-from webapp import models
+from webapp import models,listFormID
 
 
 def check_password(pw_hash='', pw_check=''):
@@ -62,7 +63,7 @@ def encodeID(input="-"):
 
 
 def decodeID(input):
-    temp = input
+    temp = str(input)
     result = ''
     try:
         temp = temp[:-4]
@@ -89,10 +90,35 @@ def decodeID(input):
     except Exception as ex:
       raise ex
 
+def get_blog_by_userID(id:str):
+    blogs = models.QL_BaiViet.query.filter(id == models.QL_BaiViet.user_id)
+    return blogs
+def get_blog_by_ID(id:str):
+    blog = models.QL_BaiViet.query.get(decodeID(id))
+    return blog
+
+def check_form_exist(formID:str):
+    try:
+        #print(listFormID.get('FormDelete'))
+        listFormID.get('FormDelete').remove(decodeID(str(formID)))
+       # print(listFormID.get('FormDelete'))
+        return True
+    except:
+        return False
+def add_form_id(formid):
+    try:
+
+        listFormID.get('FormDelete').append(str(formid))
+        print(listFormID.get('FormDelete'))
+        return True
+    except:
+        return ''
+
 
 if __name__ == '__main__':
-    id = models.User.query.all()[0].id
-    print(encodeID(str(id)))
+
+   #id = models.User.query.all()[0].id
+   #print(encodeID(str(id)))
     #for i in range(100):
     #    data = 's-s'
     #    en = encodeID(data)
@@ -100,3 +126,10 @@ if __name__ == '__main__':
     #    print("encode:", en, len(data))
     #    print("decode:", de, len(de))
 #
+
+    for i in range(6):
+        add_form_id()
+    print(listFormID.get("FormDelete"))
+    for i in range(6):
+        print(check_form_exist(encodeID(listFormID.get("FormDelete")[i])))
+    print(listFormID.get("FormDelete"))
