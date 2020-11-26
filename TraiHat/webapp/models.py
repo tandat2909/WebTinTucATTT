@@ -129,14 +129,19 @@ def insertUser():
                email='tandat@12.com',
                name=u'Tấn Đạt',
                comfirm=True,
-               user_role_id=EUserRole.admin.value)
+               user_role_id=EUserRole.admin.value,
+               pseudonym = 'Giang pro'
+               )
+
     us2 = User(user_name='user',
                password='d047de6de9348ed903f6ac3631731f26dc3795e09b07f6d3ac993d5f48045558',
                name='User',
                address=u"3773, nguyễn kiệm gò vấp tphcm",
                comfirm=True,
                user_role_id=EUserRole.editor.value,
-               email='vutandat29092000@gmail.com')
+               email='vutandat29092000@gmail.com',
+               pseudonym = 'Giang pro'
+               )
     db.session.add(us1)
     db.session.add(us2)
 

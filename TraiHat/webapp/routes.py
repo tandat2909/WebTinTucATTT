@@ -154,10 +154,14 @@ def blog_detail():
     dùng template admin (blog.html)
     :return:
     """
+    id_blog = request.args.get("id")
+    print(id_blog)
+    if id_blog is None:
+        abort(404)
     params = {
         'title': "title bài viết",
         'nav_blog': 'active',
-
+        'blog': utils.get_blog_by_ID(id_blog)
     }
     if current_user.user_role.id == models.EUserRole.admin.value:
         return render_template('blogdetail.html', params=params)
@@ -290,7 +294,6 @@ def index():
 
     params = {
         'title': "Home",
-
     }
 
     return render_template("home/index.html", params=params)

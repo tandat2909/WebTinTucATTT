@@ -94,6 +94,7 @@ def get_blog_by_userID(id:str):
     blogs = models.QL_BaiViet.query.filter(id == models.QL_BaiViet.user_id)
     return blogs
 def get_blog_by_ID(id:str):
+    print(id)
     blog = models.QL_BaiViet.query.get(decodeID(id))
     return blog
 
@@ -118,6 +119,7 @@ def add_form_id(formid):
 if __name__ == '__main__':
 
    #id = models.User.query.all()[0].id
+    print(decodeID('xADMEFTR2UTQtQzM3ITLENENG1CN0cDOtEENxYULwkzNwAzNBREN0AzM4372'))
    #print(encodeID(str(id)))
     #for i in range(100):
     #    data = 's-s'
@@ -127,9 +129,3 @@ if __name__ == '__main__':
     #    print("decode:", de, len(de))
 #
 
-    for i in range(6):
-        add_form_id()
-    print(listFormID.get("FormDelete"))
-    for i in range(6):
-        print(check_form_exist(encodeID(listFormID.get("FormDelete")[i])))
-    print(listFormID.get("FormDelete"))
