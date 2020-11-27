@@ -339,6 +339,15 @@ def contact():
 
     return render_template('home/contact.html', params=params)
 
+@app.route("/user/addblog")
+def addblog():
+
+    params = {
+        'title': "Add Blog",
+        'nav_contact': 'active'
+    }
+    return render_template('user/addblog.html', params=params)
+
 
 @app.errorhandler(404)
 def page_not_found(error):
