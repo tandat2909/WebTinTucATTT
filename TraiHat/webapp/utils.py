@@ -1,8 +1,9 @@
 import hashlib, datetime, base64, os, random, re, uuid
 from sqlalchemy import or_
 from webapp.config import Config
-from webapp import models, db, app
+from webapp import models, db
 import yagmail
+
 
 def check_password(pw_hash='', pw_check=''):
     pw_check_hash = hashlib.sha256(pw_check.encode("utf-8")).hexdigest()
@@ -18,6 +19,13 @@ def generate_password(pw):
 
 
 def encodeID(input="-"):
+    """
+
+    :param input:
+    :return:
+    :exception Exception
+    """
+
     # print("input:",input)
     temp = str(input)
     output = ""
@@ -54,8 +62,13 @@ def encodeID(input="-"):
 
 
 def decodeID(input):
+    """
+
+    :param input:
+    :return:
+    :exception Exception
+    """
     temp = str(input)
-    result = ''
     try:
         temp = temp[:-4]
         temp = temp[::-1]
@@ -83,6 +96,12 @@ def decodeID(input):
 
 
 def check_form_register(form):
+    """
+     kiểm tra đầu vào form
+    :param form:
+    :return:
+    :exception ValueError
+    """
     if form:
         # validate password
         if form.password.data != form.confirm.data:
@@ -100,7 +119,13 @@ def check_form_register(form):
     raise ValueError("Error Form")
 
 
-def save_user(form):
+def save_user(form, confirm: bool):
+    """
+    :param confirm:
+    :param form: type dict()
+    :return: Return True if it commit to database success else False which commit or password hashing failde
+    """
+
     try:
         if form:
             password = generate_password(form.get('password', None))
@@ -109,10 +134,13 @@ def save_user(form):
                                   email=form.get('email', None),
                                   pseudonym=form.get('pseudonym', None),
                                   user_role_id=models.EUserRole.editor.value,
-                                  name=form.get('firstname', None),
+                                  name=' '.join([form.get('firstname', None), form.get('lastname', None)]),
                                   firstname=form.get('firstname', None),
                                   lastname=form.get('lastname', None),
                                   gender=form.get('gender', None),
+                                  address=form.get('address', None),
+                                  phone_number=form.get('phone_number', None),
+                                  confirm=confirm
                                   )
             db.session.add(usernew)
             db.session.commit()
@@ -122,7 +150,13 @@ def save_user(form):
         return False
 
 
-def sent_mail_confirm_code(email, code):
+def sent_mail_confirm_code(email: str, code: str):
+    """
+    gửi mã xác nhận
+    :param email:
+    :param code:
+    :return:
+    """
     if email and code:
         sender_email = "antoanhethongthongtin13@gmail.com"
         receiver_email = email
@@ -142,17 +176,26 @@ def sent_mail_confirm_code(email, code):
 
 
 def generate_codeConfirm():
+    """
+    tạo mã xác nhận
+    :return:
+    """
     temp = str(uuid.uuid4().hex)[:6]
     return temp
 
 
 def check_timeout(date: str):
+    """
+    kiểm tra timeout
+    :param date:
+    :return:
+    """
     if date:
         # 10 phút
-        timeout = 600
+        timeout = 60
         current_time = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
         timedelta = (datetime.datetime.now() - current_time).total_seconds()
-        print(timedelta)
+        # print(timedelta)
         if 0 < timedelta < timeout:
             return True
     return False

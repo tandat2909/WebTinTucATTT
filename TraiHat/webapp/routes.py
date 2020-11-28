@@ -1,7 +1,6 @@
 import datetime
 from functools import wraps
 import hashlib
-
 import uuid
 from flask import url_for, request, redirect, render_template, session, abort, Response, g, flash, current_app
 from flask_admin.babel import gettext
@@ -61,7 +60,7 @@ def login_us():
     if form.validate_on_submit():
         user = form.get_user()
         next_url = request.args.get('next')
-        if user and user.active == models.EStatus.Active and user.user_role_id != models.EUserRole.anonymous:
+        if user and user.active == models.EStatus.Active and user.confirm and user.user_role_id != models.EUserRole.anonymous:
             flash("Login Success", category='success')
             login_user(user=user)
             if next_url:
@@ -86,7 +85,7 @@ def login_admin():
         user = form.get_user()
         next_url = request.args.get('next')
 
-        if user and user.active == models.EStatus.Active and user.user_role_id == models.EUserRole.admin.value:
+        if user and user.active == models.EStatus.Active and user.confirm and user.user_role_id == models.EUserRole.admin.value:
             login_user(user=user)
 
             flash("Login Success", category='success')
@@ -235,7 +234,7 @@ def change_password():
     if form.validate_on_submit():
         user = form.get_user()
         if user:
-            user.password = generate_password_hash(form.password_Comfirm.data)
+            user.password = generate_password_hash(form.password_Confirm.data)
             print(user.user_name, user.password)
             db.Session.add(user)
             db.session.commit()
@@ -245,6 +244,7 @@ def change_password():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    logout_user()
     """
     đăng ký tài khoản cho user
     :return:
@@ -276,7 +276,8 @@ def register():
         except ValueError as e:
             flash(str(e), category='error')
         except Exception as e:
-            flash('looi router regitser: ' + str(e))
+            print('register error:' + e)
+            # flash('looi router regitser: ' + str(e))
 
     params['form'] = form
     return render_template('register.html', params=params)
@@ -287,18 +288,16 @@ def confirm_account():
     idf = None
     # kiểm tra id và time của form còn tồn tại hay không
     try:
-        #print('session commit', session.items())
+        # print('session commit', session.items())
         idf = utils.decodeID(request.args.get('idf', None))
         time = session['register_form'][idf]['current_time']
         if not utils.check_timeout(time):
             raise TimeoutError('Code timeout đăng ký lại')
 
     except TimeoutError as ex:
-        print(ex)
         session['register_form'].pop(idf)
         abort(404)
     except:
-        #print('chạy vo day')
         abort(404)
 
     # method POST
@@ -306,14 +305,16 @@ def confirm_account():
         try:
             code = request.form.get('confemail', None)
             data_form = session['register_form'].get(idf, None)
+
             if data_form and code:
                 if code == data_form.get('code_confirm'):
-                    if utils.save_user(data_form.get('form')):
+                    if utils.save_user(data_form.get('form'), confirm=True):
                         session['register_form'].pop(idf)
-                        #print('session comfirm success : ', session.items())
                         flash("Confirm Email Success", category='success')
                         return redirect(url_for('login_us'))
-                raise KeyError('Code Comfirm Invalid')
+
+                raise KeyError('Code Confirm Invalid')
+
             raise TimeoutError('Code timeout đăng ký lại')
 
         except KeyError as ex:
@@ -325,12 +326,7 @@ def confirm_account():
             abort(404)
 
     # method GET
-    params = {
-        'title': 'Confirm Email',
-        'email': None,
-    }
-    email = session['register_form'][idf]['form'].get('email')
-    params['email'] = email
+    params = {'title': 'Confirm Email', 'email': session['register_form'][idf]['form'].get('email')}
     return render_template('confirmCode.html', params=params)
 
 

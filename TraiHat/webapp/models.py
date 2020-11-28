@@ -70,7 +70,7 @@ class User(BaseModel, UserMixin):
     # bút danh
     pseudonym = Column(Unicode)
     gender = Column(Unicode, default="")
-    comfirm = Column(Boolean, nullable=False, default=False)
+    confirm = Column(Boolean, nullable=False, default=False)
 
     # relationship
 
@@ -130,7 +130,7 @@ def insertUser():
                password='d047de6de9348ed903f6ac3631731f26dc3795e09b07f6d3ac993d5f48045558',
                email='tandat@12.com',
                name=u'Tấn Đạt',
-               comfirm=True,
+               confirm=True,
                user_role_id=EUserRole.admin.value)
     us2 = User(user_name='user',
                password='d047de6de9348ed903f6ac3631731f26dc3795e09b07f6d3ac993d5f48045558',
@@ -138,7 +138,7 @@ def insertUser():
                address=u"3773, nguyễn kiệm gò vấp tphcm",
                firstname="Tấn",
                lastname = "Đạt",
-               comfirm=True,
+               confirm=True,
                user_role_id=EUserRole.editor.value,
                email='vutandat290s92000@gmail.com')
     db.session.add(us1)
