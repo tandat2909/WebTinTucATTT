@@ -192,7 +192,7 @@ def check_timeout(date: str):
     """
     if date:
         # 10 phút
-        timeout = 60
+        timeout = 600
         current_time = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
         timedelta = (datetime.datetime.now() - current_time).total_seconds()
         # print(timedelta)
