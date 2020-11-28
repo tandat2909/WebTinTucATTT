@@ -59,6 +59,8 @@ class User(BaseModel, UserMixin):
 
     user_name = Column(String, nullable=False)
     password = Column(String, nullable=False)
+    lastname = Column(String)
+    firstname = Column(String)
     # role = Column(String)
     regiter_date = Column(DATETIME, nullable=False, default=datetime.datetime.now())
     address = Column(String)
@@ -134,9 +136,11 @@ def insertUser():
                password='d047de6de9348ed903f6ac3631731f26dc3795e09b07f6d3ac993d5f48045558',
                name='User',
                address=u"3773, nguyễn kiệm gò vấp tphcm",
+               firstname="Tấn",
+               lastname = "Đạt",
                comfirm=True,
                user_role_id=EUserRole.editor.value,
-               email='vutandat29092000@gmail.com')
+               email='vutandat290s92000@gmail.com')
     db.session.add(us1)
     db.session.add(us2)
 

@@ -1,16 +1,8 @@
-import hashlib
-import datetime
-import base64
-import datetime
-import os
-import random
-import re
-
-import uuid
-
+import hashlib, datetime, base64, os, random, re, uuid
+from sqlalchemy import or_
 from webapp.config import Config
-from webapp import models
-
+from webapp import models, db, app
+import yagmail
 
 def check_password(pw_hash='', pw_check=''):
     pw_check_hash = hashlib.sha256(pw_check.encode("utf-8")).hexdigest()
@@ -49,7 +41,7 @@ def encodeID(input="-"):
         # đảo ngược chuỗi và in hoa các ký tự thường
         temp = temp[::-1].upper()
         # mã hóa đoạn chuỗi trên bằng thuật toán base64
-        output = base64.urlsafe_b64encode((temp).encode('utf-8')).decode("utf-8").replace('=','')
+        output = base64.urlsafe_b64encode((temp).encode('utf-8')).decode("utf-8").replace('=', '')
         # đảo ngược chuỗi mã hóa
         output = output[::-1]
         # thêm 4 ký tự gây nhiễu vào cuối chuỗi mã hóa
@@ -62,7 +54,7 @@ def encodeID(input="-"):
 
 
 def decodeID(input):
-    temp = input
+    temp = str(input)
     result = ''
     try:
         temp = temp[:-4]
@@ -87,16 +79,85 @@ def decodeID(input):
         return result
 
     except Exception as ex:
-      raise ex
+        raise ex
+
+
+def check_form_register(form):
+    if form:
+        # validate password
+        if form.password.data != form.confirm.data:
+            raise ValueError("Incorrect confirm password")
+        user = models.User.query.filter(
+            or_(models.User.user_name == form.username.data, models.User.email == form.email.data)).first()
+
+        # validate email, user
+        if user:
+            if user.user_name == form.username.data:
+                raise ValueError("Invalid Username")
+            if user.email == form.email.data:
+                raise ValueError("Invalid Email")
+        return True
+    raise ValueError("Error Form")
+
+
+def save_user(form):
+    try:
+        if form:
+            password = generate_password(form.get('password', None))
+            usernew = models.User(user_name=form.get('username', None),
+                                  password=password,
+                                  email=form.get('email', None),
+                                  pseudonym=form.get('pseudonym', None),
+                                  user_role_id=models.EUserRole.editor.value,
+                                  name=form.get('firstname', None),
+                                  firstname=form.get('firstname', None),
+                                  lastname=form.get('lastname', None),
+                                  gender=form.get('gender', None),
+                                  )
+            db.session.add(usernew)
+            db.session.commit()
+            return True
+        return False
+    except:
+        return False
+
+
+def sent_mail_confirm_code(email, code):
+    if email and code:
+        sender_email = "antoanhethongthongtin13@gmail.com"
+        receiver_email = email
+        password = decodeID("ETUXVUUXVUMyMDQtgjRwMEMClTL8F0C")[0:-1].capitalize()
+        subject = "Bloger"
+        body = f"Confirm Account \n Code: {code}"
+
+        yag = yagmail.SMTP(user=sender_email, password=password)
+        status = yag.send(
+            to=receiver_email,
+            subject=subject,
+            contents=body,
+
+        )
+        return False if status == False else True
+    return False
+
+
+def generate_codeConfirm():
+    temp = str(uuid.uuid4().hex)[:6]
+    return temp
+
+
+def check_timeout(date: str):
+    if date:
+        # 10 phút
+        timeout = 600
+        current_time = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
+        timedelta = (datetime.datetime.now() - current_time).total_seconds()
+        print(timedelta)
+        if 0 < timedelta < timeout:
+            return True
+    return False
 
 
 if __name__ == '__main__':
-    id = models.User.query.all()[0].id
-    print(encodeID(str(id)))
-    #for i in range(100):
-    #    data = 's-s'
-    #    en = encodeID(data)
-    #    de = decodeID(en)
-    #    print("encode:", en, len(data))
-    #    print("decode:", de, len(de))
-#
+    print(check_timeout('2020-11-28 22:03:55.171404'))
+    print(decodeID('gMxkDOENUQFVTL1MTM00CREN0QyMENC1CN3cjQtgzQxYULzIkQzYkQEFEN4QDODDCC'))
