@@ -90,6 +90,7 @@ def decodeID(input):
       raise ex
 
 
+
 if __name__ == '__main__':
     id = models.User.query.all()[0].id
     print(encodeID(str(id)))

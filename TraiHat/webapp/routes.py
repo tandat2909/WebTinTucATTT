@@ -280,11 +280,11 @@ def index():
     hiểm thị list các blog xắp xếp theo time giảm dần
     :return:
     """
-
     params = {
         'title': "Home",
-
     }
+    bv = models.QL_BaiViet.query.all()
+    params['QL_BaiViet'] = bv
     return render_template("home/index.html", params=params)
 
 
@@ -296,7 +296,14 @@ def blog():
     :return:
     """
 
-    pass
+    t = models.QL_BaiViet.title
+
+    params = {
+        'title': t,
+        'nav-bd': 'active'
+    }
+
+    return render_template('profile.html', params=params)
 
 
 @app.route("/aboutus")
