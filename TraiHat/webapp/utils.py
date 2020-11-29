@@ -9,7 +9,7 @@ import re
 import uuid
 
 from webapp.config import Config
-from webapp import models
+from webapp.models import User
 
 
 def check_password(pw_hash='', pw_check=''):
@@ -88,6 +88,12 @@ def decodeID(input):
 
     except:
         return "Decode Error"
+
+def get_user_id(user_id):
+
+    user_id = decodeID(user_id)
+
+    return User.query.get(user_id)
 
 
 if __name__ == '__main__':

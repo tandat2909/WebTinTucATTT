@@ -125,7 +125,7 @@ def insertUserType():
 
 def insertUser():
     us1 = User(user_name='admin', address=u"3773, nguyễn kiệm gò vấp tphcm",
-               password='d047de6de9348ed903f6ac3631731f26dc3795e09b07f6d3ac993d5f48045558',
+               password='d047de6de9348ed903f6ac3631731f26dc3795e09b07f6d3ac993d5f48045558', #"""admin@123"""
                email='tandat@12.com',
                name=u'Tấn Đạt',
                comfirm=True,

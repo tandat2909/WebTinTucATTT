@@ -9,7 +9,7 @@ from markupsafe import Markup
 from wtforms import validators, PasswordField, HiddenField, StringField, Field, widgets, ValidationError
 from wtforms.compat import text_type
 from wtforms.widgets.core import Input
-from webapp import app, db, models, login
+from webapp import app, db, models, login, utils
 from flask_login import login_user, current_user, logout_user, AnonymousUserMixin
 from webapp.models import User
 # from webapp.admin.routeAdmin import *
@@ -99,21 +99,20 @@ def login_admin():
     return render_template('login.html', form=form, title='Login Admin', action='login_admin')
 
 
-@app.route("/user/profile")
-@app.route("/admin/profile")
+@app.route("/user/profile/")
+@app.route("/admin/profile/")
 @login_required
 def profile():
     # request.args.get('id')
     # http: // 127.0.0.1: 5000 / admin / profile?id = 3f7d454b - 0283 - 4389 - a439 - b5e0b3a4c650
-    """
-    hiển thị thong tin chi tiết của user
-    :return:
-    """
 
+    # hiển thị thong tin chi tiết của user
+    # :return:
+    # """
+    # pro = utils.get_user_id(request.args.get('id'))
     params = {
         'title': "Profile",
         'nav_user': 'active',
-
     }
     if current_user.user_role.id == models.EUserRole.admin.value:
         params['user'] = models.User.query.filter(models.User.user_name == "user").first()
@@ -260,7 +259,7 @@ def delete_blog():
     pass
 
 
-@app.route('/admin/delete/user', methods=["POST"])
+@app.route('/admin/userlist/delete', methods=["POST"])
 @login_required_Admin
 def delete_user():
     """
@@ -269,7 +268,15 @@ def delete_user():
 
     :return: userlist dùng  redirect()
     """
+    # if request.form.get('test'):
+    #     User.active = models.EStatus.InActive
+    # else:
+    #     User.active = True
+
+    # return redirect('/admin/UserList.html')
     pass
+
+
 
 
 # ================== làm cho anonymous ========================================
