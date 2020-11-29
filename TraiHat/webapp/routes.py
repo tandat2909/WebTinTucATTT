@@ -9,7 +9,7 @@ from markupsafe import Markup
 from wtforms import validators, PasswordField, HiddenField, StringField, Field, widgets, ValidationError
 from wtforms.compat import text_type
 from wtforms.widgets.core import Input
-from webapp import app, db, models, login,jinja_filters
+from webapp import app, db, models, login,jinja_filters, utils
 from flask_login import login_user, current_user, logout_user, AnonymousUserMixin
 from webapp.models import User
 # from webapp.admin.routeAdmin import *
@@ -180,7 +180,10 @@ def index_admin():
         'nav_dashboard': 'active',
 
     }
-
+    listuser = models.User.query.all()
+    params['listuser'] = listuser
+    listblog = models.QL_BaiViet.query.all()
+    params['listblog'] = listblog
     return render_template('admin/index.html', params=params)
 
 
@@ -214,7 +217,7 @@ def index_user():
         'title': 'Dashboard',
         'nav_dashboard': 'active',
     }
-
+    params['listblog'] = utils.get_blog_by_userID(current_user.id)
     return render_template('user/index.html', params=params)
 
 

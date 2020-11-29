@@ -89,6 +89,9 @@ def decodeID(input):
     except Exception as ex:
       raise ex
 
+def get_blog_by_userID(id:str):
+    blogs = models.QL_BaiViet.query.filter(id == models.QL_BaiViet.user_id)
+    return blogs
 
 if __name__ == '__main__':
     id = models.User.query.all()[0].id
