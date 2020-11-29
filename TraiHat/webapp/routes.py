@@ -285,8 +285,6 @@ def index():
         'title': "Home",
 
     }
-    bv = models.QL_BaiViet.query.all()
-    params['QL_BaiViet'] = bv
     return render_template("home/index.html", params=params)
 
 
@@ -298,14 +296,7 @@ def blog():
     :return:
     """
 
-    t = models.QL_BaiViet.title
-
-    params = {
-        'title': t,
-        'nav-bd': 'active'
-    }
-
-    return render_template('profile.html', params=params)
+    pass
 
 
 @app.route("/aboutus")

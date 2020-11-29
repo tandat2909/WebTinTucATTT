@@ -17,13 +17,13 @@
                     <a href="singlepage.html"><img src="{{ url_for('static',filename = 'base2/images/t4.jpg')}}" class="img-responsive" alt=""></a>
                 </div>
 
-                <h3 class="tilte-post" style="text-align:center;text-tranform:uppercase"><a href="{{ url_for('blog', id = item.id) }}" > {{ item.title }} Lorem Ipsum is simply</a></h3>
-                <h6 class="author" style="text-align:right">BY <a href="{{ url_for('blog', id = item.id) }}">{{ item.user_name }}Diego Santos </a>{{ item.ngayDangTin }}JULY 10 2016.</h6>
-                    <p class="content" maxlength="30"><a href="{{ url_for('blog', id = item.id) }}">{{ item.noiDung }}Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                <h3><a href="singlepage.html" >Lorem Ipsum is simply</a></h3>
+                <h6>BY <a href="singlepage.html">Diego Santos</a>JULY 10 2016.</h6>
+                    <p ><a href="singlepage.html">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                     dolore magna aliqua. Ut enim ad minim veniam, quis nostrud eiusmod tempor incididunt ut labore et dolore
                 magna aliqua exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</a> </p>
-                <div class="bht1">
-                    <a href="{{ url_for('blog',id = item.id) }}">Continue Reading</a>title
+                <div>
+                    <a href="singlepage.html">Continue Reading</a>
                 </div>
                 {% endfor %}
                 {% include 'Icon_soci.html' %}
