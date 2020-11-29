@@ -25,13 +25,28 @@
 
     </script>
     <script >
-
-
         function getvalue(){
-            db = $('#edithtml').html()
+            $('#imageblog').val(getimage())
+            let db = $('#edithtml').html()
+            let title =$('#titledata').val()
+            $('#titleblog').val(title)
             console.log(db)
             $('#datablog').val(db)
+        }
+        function getimage(){
+            data_img = ""
+            img = $('#edithtml img')
+            for(i = 0; i < img.length; i++)
+            {
+                let x = img[i]
+                data_img +=  '"'+i+'"' + ':"'+ x.src +'",'
+                x.src = ''
+                x.alt = i + ".png"
+                x.className = "img_blog"
 
+            }
+            data_img = '{' + data_img.substring(0, data_img.length - 1) + '}'
+            return data_img
         }
     </script>
 {% endblock %}
@@ -1127,6 +1142,7 @@
                             </div>
                         </div>
                         <textarea class="note-codable"></textarea>
+                        <input id="titledata" placeholder="Title ở đây" class="form-control" style="margin-top: 10px">
                         <div class="note-editable" id="edithtml" contenteditable="true">
                             <h3>Lorem Ipsum is simply</h3>
                             dummy text of the printing and typesetting industry. <strong>Lorem Ipsum has been the
@@ -1147,10 +1163,11 @@
 
                 </div>
                 <form action="{{url_for('addblog')}}" method="post">
-                    <input type="hidden" value="" id="datablog">
-                    <button type="submit" onclick="getvalue() class="btn btn-success">Thêm bài viết</button>
+                    <input type="hidden" name="datablog" value="" id="datablog">
+                    <input type="hidden" name="titleblog" value="" id="titleblog">
+                    <input type="hidden" name="imageblog" value="" id="imageblog">
+                    <button type="submit" onclick="getvalue()" class="btn btn-success">Thêm bài viết</button>
                 </form>
-
             </div><!-- End .panel -->
         </div>
     </div>

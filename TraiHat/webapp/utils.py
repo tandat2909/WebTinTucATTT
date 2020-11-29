@@ -2,6 +2,7 @@ import hashlib
 import datetime
 import base64
 import datetime
+import json
 import os
 import random
 import re
@@ -10,7 +11,7 @@ import uuid
 from webapp import models
 
 from webapp.config import Config
-from webapp import models,listFormID
+from webapp import models, listFormID, db
 
 
 def check_password(pw_hash='', pw_check=''):
@@ -50,7 +51,7 @@ def encodeID(input="-"):
         # đảo ngược chuỗi và in hoa các ký tự thường
         temp = temp[::-1].upper()
         # mã hóa đoạn chuỗi trên bằng thuật toán base64
-        output = base64.urlsafe_b64encode((temp).encode('utf-8')).decode("utf-8").replace('=','')
+        output = base64.urlsafe_b64encode((temp).encode('utf-8')).decode("utf-8").replace('=', '')
         # đảo ngược chuỗi mã hóa
         output = output[::-1]
         # thêm 4 ký tự gây nhiễu vào cuối chuỗi mã hóa
@@ -88,24 +89,30 @@ def decodeID(input):
         return result
 
     except Exception as ex:
-      raise ex
+        raise ex
 
-def get_blog_by_userID(id:str):
+
+def get_blog_by_userID(id: str):
     blogs = models.QL_BaiViet.query.filter(id == models.QL_BaiViet.user_id)
     return blogs
-def get_blog_by_ID(id:str):
+
+
+def get_blog_by_ID(id: str):
     print(id)
     blog = models.QL_BaiViet.query.get(decodeID(id))
     return blog
 
-def check_form_exist(formID:str):
+
+def check_form_exist(formID: str):
     try:
-        #print(listFormID.get('FormDelete'))
+        # print(listFormID.get('FormDelete'))
         listFormID.get('FormDelete').remove(decodeID(str(formID)))
-       # print(listFormID.get('FormDelete'))
+        # print(listFormID.get('FormDelete'))
         return True
     except:
         return False
+
+
 def add_form_id(formid):
     try:
 
@@ -116,16 +123,34 @@ def add_form_id(formid):
         return ''
 
 
+def save_blog(title, data, user, chude, imgs):
+    try:
+        if title and data and user and user.user_role_id != models.EUserRole.admin.value:
+
+            post = models.QL_BaiViet(id=uuid.uuid4(), title=title, noiDung=data, user_id=user.id, chuDe_id=chude)
+            if imgs:
+                imgjson = json.loads(imgs)
+                path = 'static/image/blog/' + str(post.id) + '/'
+                os.mkdir(path)
+                for k, v in imgjson.items():
+                    img = v[v.find(",") + 1:]
+                    with open(path + k + ".png", 'wb') as file_to_save:
+                        decoded_image_data = base64.decodebytes(img.encode('utf-8'))
+                        file_to_save.write(decoded_image_data)
+                post.image = path
+            db.session.add(post)
+            db.session.commit()
+            return True, str(post.id)
+        return False, None
+    except:
+        return False, None
+
+
 if __name__ == '__main__':
-
-   #id = models.User.query.all()[0].id
-    print(decodeID('xADMEFTR2UTQtQzM3ITLENENG1CN0cDOtEENxYULwkzNwAzNBREN0AzM4372'))
-   #print(encodeID(str(id)))
-    #for i in range(100):
-    #    data = 's-s'
-    #    en = encodeID(data)
-    #    de = decodeID(en)
-    #    print("encode:", en, len(data))
-    #    print("decode:", de, len(de))
-#
-
+    print(get_blog_by_ID(decodeID('ETOBFDOwATO30CM1YTRGNTLCBzQ10CNBNUMtgDOzITL4MUQyIUM1UDOwEUN056E')).title)
+    print(decodeID('0kTQxgDMwkzNtIEMDVTL0E0Qx0CO4MjMtcTREF0QykTL4MUQyIUM1UDOwEUN7EDA'))
+    img = '{"0":"sdf","1":"sdf"}'
+    ids = json.loads(img)
+    print(ids)
+    os.mkdir('static/image/blog/sd')
+    print(img)

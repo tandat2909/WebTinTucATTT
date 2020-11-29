@@ -6,24 +6,35 @@
 {% endblock %}
 {% block body %}
 <div class="row">
+
+    {% set urlblog = url_for('blog_detail',id ='').replace('/admin/','/user/',1) %}
+
+    {% if current_user.user_role.name == "Admin" %}
+        {% set urlblog = url_for('blog_detail',id ='') %}
+    {% endif %}
     {%for item in params.get('listblog')%}
     <div class="col-md-4 margin-b-30">
         <div class="blog-post">
-            <a href="{{url_for('blog_detail',id =item.id|encodeID)}}">
-                <img src="{{url_for('static',filename = item.image)}}" alt="" class="img-responsive">
+
+            <a href="{{ urlblog + item.id|encodeID }}">
+                <img src="{# {{url_for('static',filename = item.image)}}#}" alt="" class="img-responsive">
             </a>
+
             <div class="blog-desc">
-                <h3><a href="{{url_for('blog_detail',id =item.id|encodeID)}}">{{item.title}}</a></h3>
-                <span class="blog-meta"><a href="{{url_for('profile', id = item.user.id|encodeID)}}">{{item.user.pseudonym}}</a> {{item.ngaytaobaiviet}} <a href="#">934 Comments</a></span>
+                <h3><a href="{{ urlblog + item.id|encodeID }}">{{item.title}}</a></h3>
+                <span class="blog-meta"><a href="{{url_for('profile', id = item.user.id|encodeID)}}">{{item.user.pseudonym}}</a> {{item.ngaytaobaiviet}} <a
+                        href="#">934 Comments</a></span>
                 <p>
-                    {{item.noiDung}}
+                    {{item.noiDung |safe}}
                 </p>
-                <p><a href="{{url_for('blog_detail',id =item.id|encodeID)}}">Continue Reading</a></p>
-                <form method="post" action="{{url_for('delete_blog')}}" >
-                     <input type="hidden" value="{{ loop.index|insert_id_form}}" name="idform">
+                <p><a href="{{ urlblog + item.id|encodeID }}">Continue Reading</a></p>
+                <form method="post" action="{{url_for('delete_blog')}}">
+                    <input type="hidden" value="{{ loop.index|insert_id_form}}" name="idform">
 
                     <input type="hidden" value="{{item.id|encodeID}}" name="ids">
-                     <a href="javascript:void(0)"><button type="submit"  class="btn btn-danger btn-3d">Delete</button></a>
+                    <a href="javascript:void(0)">
+                        <button type="submit" class="btn btn-danger btn-3d">Delete</button>
+                    </a>
                 </form>
 
             </div>

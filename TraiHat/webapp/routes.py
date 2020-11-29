@@ -155,7 +155,7 @@ def blog_detail():
     :return:
     """
     id_blog = request.args.get("id")
-    print(id_blog)
+    #print(id_blog)
     if id_blog is None:
         abort(404)
     params = {
@@ -339,13 +339,24 @@ def contact():
 
     return render_template('home/contact.html', params=params)
 
-@app.route("/user/addblog")
+@app.route("/user/addblog",methods=["POST", "GET"])
+@login_required
 def addblog():
 
     params = {
         'title': "Add Blog",
         'nav_contact': 'active'
     }
+    if request.method == "POST":
+        data = request.form.get('datablog')
+        imgs = request.form.get('imageblog')
+        #print("addblog",imgs)
+        title = request.form.get('titleblog')
+        status, idblog = utils.save_blog(title=title,data=data,user=current_user,chude=1,imgs = imgs)
+        flash(status,idblog)
+        if status:
+            flash("okla")
+            return redirect("/user/blogdetail?id=" + utils.encodeID(idblog))
     return render_template('user/addblog.html', params=params)
 
 

@@ -23,9 +23,9 @@ vd: <script src="" ></script>
                 <h2>
                     {{params.get('blog').title}}
                 </h2>
-                <span class="blog-meta"><a href="{{ url_for('profile', id = params.get('blog').user.id)}}">{{params.get('blog').user.pseudonym}}</a> {{params.get('blog').ngaytaobaiviet}} <a href="#">934 Comments</a></span>
+                <span class="blog-meta"><a href="{{ url_for('profile', id = params.get('blog').user.id).re}}">{{params.get('blog').user.pseudonym}}</a> {{params.get('blog').ngaytaobaiviet}} <a href="#">934 Comments</a></span>
             </div>
-                {{params.get('blog').noiDung}}
+                {{params.get('blog').noiDung | safe}}
             <hr>
             <ul class="socials list-inline">
                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>

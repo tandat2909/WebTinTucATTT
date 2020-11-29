@@ -1,7 +1,7 @@
 from webapp import app, db, login
 import uuid, datetime
 from sqlalchemy import Column, Enum as EnumSQL, Integer, String, DATETIME, Float, ForeignKey, BigInteger, Boolean, \
-    Unicode, UnicodeText
+    Unicode, UnicodeText,NVARCHAR
 # from webapp.Enums import Enum_Gender,Enum_Status_Account
 from flask_login import UserMixin, AnonymousUserMixin
 from sqlalchemy.orm import relationship, lazyload
@@ -94,7 +94,7 @@ class QL_BaiViet(BaseModel):
     __tablename__ = "QL_BaiViet"
 
     title = Column(String,nullable=False,default="")
-    noiDung = Column(String)
+    noiDung = Column(NVARCHAR)
     ngayDangTin = Column(DATETIME)
     ngaytaobaiviet = Column(DATETIME,nullable=False,default=datetime.datetime.now())
     pheDuyet = Column(Boolean,nullable=False,default=True)
