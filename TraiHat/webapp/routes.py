@@ -1,23 +1,16 @@
 import datetime
+import uuid
 from functools import wraps
-import hashlib, uuid
-from flask import url_for, request, redirect, render_template, session, abort, Response, g, flash, current_app, jsonify
-from flask_admin.babel import gettext
-from flask_admin.contrib.sqla import ModelView
-from flask_admin.form import SecureForm
-from flask_login import login_user, login_required
-from markupsafe import Markup
-from wtforms import validators, PasswordField, HiddenField, StringField, Field, widgets, ValidationError
-from wtforms.compat import text_type
-from wtforms.widgets.core import Input
-from webapp import app, db, models, login, jinja_filters, utils
-from flask_login import login_user, current_user, logout_user, AnonymousUserMixin
-from webapp.models import User
+
+from flask import url_for, request, redirect, render_template, session, abort, flash, jsonify
+from flask_login import login_required
+from flask_login import login_user, current_user, logout_user
+
+from webapp import app, models, utils, jinja_filters
+from webapp.Forms import FormChange
 # from webapp.admin.routeAdmin import *
 from webapp.Forms.FormLogin import LoginForm
 from webapp.Forms.FormRegister import RegisterForm
-from webapp.Forms import FormChange, FormRegister
-from werkzeug.security import generate_password_hash
 
 
 def login_required_Admin(f):
@@ -53,7 +46,6 @@ def login_required_editor(f):
 
     return decorated_function
 
-
 @app.route("/admin/logout")
 @app.route("/user/logout")
 @login_required
@@ -76,7 +68,7 @@ def login_us():
     if form.validate_on_submit():
         user = form.get_user()
         next_url = request.args.get('next')
-        if user and user.active == models.EStatus.Active and user.confirm and user.user_role_id != models.EUserRole.anonymous:
+        if user and user.active == models.EStatus.Active and user.confirm and user.user_role_id != models.EUserRole.anonymous.value:
             flash("Login Success", category='success')
             login_user(user=user)
             if next_url:
@@ -137,7 +129,7 @@ def profile():
         'nav_user': 'active'
     }
     if current_user.user_role.id == models.EUserRole.admin.value:
-        params['user'] = models.User.query.filter(models.User.user_name == "user").first()
+        params['user'] = utils.get_user_by_ID(id=id_user)
         return render_template('profile.html', params=params)
 
     params['user'] = current_user
@@ -179,7 +171,7 @@ def blog_detail():
     if id_blog is None:
         abort(404)
     params = {
-        'title': "title bài viết",
+        'title': "Blog",
         'nav_blog': 'active',
         'blog': utils.get_blog_by_ID(id_blog)
     }
@@ -261,7 +253,7 @@ def change_password():
         pwold = form.password_Old.data
         pwnew = form.password_New.data
         pwconf = form.password_Comfirm.data
-        flash(pwold+" " + pwnew +" " + pwconf)
+
         if current_user.is_authenticated:
             if len(pwold) >= 8 and utils.check_password(current_user.password, pwold):
                 if [len(pwnew), len(pwconf)] >= [8, 8]:
@@ -492,7 +484,7 @@ def contact():
 
 
 @app.route("/user/addblog", methods=["POST", "GET"])
-@login_required
+@login_required_editor
 def addblog():
     params = {
         'title': "Add Blog",

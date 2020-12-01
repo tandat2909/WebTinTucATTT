@@ -20,7 +20,7 @@
                 <a href="#" class="dropdown-toggle button-wave" data-toggle="dropdown">
                      <span>
                         <img alt="image" class="img-circle"
-                             src="{{ url_for('static',filename = 'admin2/images/avtar-1.jpg') }}"
+                             src="{{ url_for('static',filename = current_user.avatar or "admin2/images/avatar2.jpg") }}"
                              width="50">
                          {{ current_user.name }}
                          <b class="caret"></b>

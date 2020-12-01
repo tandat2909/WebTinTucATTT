@@ -4,6 +4,7 @@ Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 --*/
+
 html, body{
 font-family: 'Raleway', sans-serif;
 	font-size: 100%;
@@ -429,6 +430,8 @@ i.glyphicon.glyphicon-comment {
     margin-bottom: 2em;
     background: #fff;
     padding: 2em 2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .insta li {
     display: inline-block;
@@ -514,6 +517,9 @@ i.glyphicon.glyphicon-comment {
     float: left;
     width: 60%;
     margin-left: 0.5em;
+    overflow: hidden;
+    word-break: break-all;
+
 }
 .tech-btm p {
     margin: 1em 0;
@@ -2435,4 +2441,14 @@ label.icon-search span {
 .coment-form input[type="submit"] {
     width: 74%;
 }
+}
+.tch-img{
+    height: 204px;
+
+}
+.img-responsive{
+    display: block;
+    height: 100%;
+    width: 100%;
+
 }

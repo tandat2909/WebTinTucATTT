@@ -5,7 +5,7 @@
 {% endblock head %}
 {% block body_left%}
 <div class="agileinfo">
-    <h2 class="w3">{{params.get('blog').title}}</h2>
+    <h2 class="w3" style="word-break: break-all;">{{params.get('blog').title}}</h2>
     <div class="single">
         {{params.get('blog').noiDung |safe}}
     </div>
@@ -20,7 +20,7 @@
             <input type="submit" value=" ">
         </form>
     </div>
-    <h4>BÀI VIẾT NỔI BẬT</h4>
+    <h4 class="wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">BÀI VIẾT NỔI BẬT</h4>
     {% for item in params.get('blogs') %}
     {% if loop.index >= 5 %}
     {{break}}

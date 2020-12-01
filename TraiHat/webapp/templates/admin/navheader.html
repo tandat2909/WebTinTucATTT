@@ -10,7 +10,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Be-Admin</a>
+            <a class="navbar-brand" href="#">{{ params.get('title') }}</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
 
@@ -18,7 +18,7 @@
                 <li class="dropdown"><a href="#" class="dropdown-toggle button-wave" data-toggle="dropdown">
                              <span>
                                         <img alt="image" class="img-circle"
-                                             src="{{url_for('static',filename = 'admin2/images/avtar-1.jpg')}}"
+                                             src="{{url_for('static',filename = current_user.avatar or "admin2/images/avatar2.jpg")}}"
                                              width="50">
                                  {{current_user.name}}
                                  <b class="caret"></b>

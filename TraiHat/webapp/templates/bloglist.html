@@ -13,8 +13,15 @@
         {% if current_user.user_role.name == "Admin" %}
             {% set urlblog = url_for('blog_detail',id ='') %}
         {% endif %}
+        <style>
+            .content-short {
+                height: 135px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        </style>
         {% for item in params.get('listblog') %}
-            <div class="col-md-4 margin-b-30">
+            <div class="col-md-6 col-sm-11 col-lg-4 margin-b-30">
                 <div class="blog-post">
 
                     <a href="{{ urlblog + item.id|encodeID }}">
@@ -23,17 +30,21 @@
                     </a>
 
                     <div class="blog-desc">
-                        <h3><a href="{{ urlblog + item.id|encodeID }}">{{ item.title }}</a></h3>
+                        <a href="{{ urlblog + item.id|encodeID }}"><h3 style=" white-space: nowrap;
+                                                                       overflow: hidden;
+                                                                       text-overflow: ellipsis;">{{ item.title }}</h3>
+                        </a>
                         <span class="blog-meta"><a
                                 href="{{ url_for('profile', id = item.user.id|encodeID) }}">{{ item.user.pseudonym }}</a> {{ item.ngaytaobaiviet |format_datetime }} <a
                                 href="#">934 Comments</a></span>
-                        <p>
+                        <div class="content-short">
                             {{ item.noiDung |safe }}
-                        </p>
+                        </div>
                         <p><a href="{{ urlblog + item.id|encodeID }}">Continue Reading</a></p>
 
 
-                        <button value="{{ item.id|encodeID }}" onclick="delblog(this)" class="btn btn-danger btn-3d">Delete
+                        <button value="{{ item.id|encodeID }}" onclick="delblog(this)" class="btn btn-danger btn-3d">
+                            Delete
                         </button>
 
 

@@ -36,7 +36,7 @@
                         <a href="#"><i class="fa fa-users"></i> <span class="nav-label">Users</span><span
                                 class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
-                            <li><a href="{{ url_for('profile') }}">profile</a></li>
+                            <li><a href="{{ url_for('profile',id = current_user.id | encodeID) }}">profile</a></li>
                             <li><a href="{{url_for('user_list')}}">User list</a></li>
                             <li><a href="{{ url_for('change_password') }}">Change password</a></li>
 
@@ -48,7 +48,7 @@
                                 class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                             <li><a href="{{ url_for('blog_list') }}">Blog list</a></li>
-                            <li><a href="{{ url_for('blog_detail') }}">Blog post</a></li>
+                            
                         </ul>
                     </li>
 

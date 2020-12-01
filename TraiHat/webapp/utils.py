@@ -139,7 +139,9 @@ def save_user(form, confirm: bool):
                                   gender=form.get('gender', None),
                                   address=form.get('address', None),
                                   phone_number=form.get('phone_number', None),
-                                  confirm=confirm
+                                  confirm=confirm,
+                                  avatar='admin2/images/avatar2.jpg'
+
                                   )
             db.session.add(usernew)
             db.session.commit()
