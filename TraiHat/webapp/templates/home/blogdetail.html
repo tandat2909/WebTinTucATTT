@@ -1,0 +1,58 @@
+{% extends 'home/base2.html'%}
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('static',filename='css/HomeStyle.css') }}">
+{% endblock head %}
+{% block body_left%}
+<div class="agileinfo">
+    <h2 class="w3">{{params.get('blog').title}}</h2>
+    <div class="single">
+        {{params.get('blog').noiDung |safe}}
+    </div>
+</div>
+{% endblock %}
+{%block body_right%}
+    <div class="tech-btm">
+    <div class="search-1 wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
+        <form action="#" method="post">
+            <input type="search" name="Search" value="Search" onfocus="this.value = '';"
+                   onblur="if (this.value == '') {this.value = 'Search';}" required="">
+            <input type="submit" value=" ">
+        </form>
+    </div>
+    <h4>BÀI VIẾT NỔI BẬT</h4>
+    {% for item in params.get('blogs') %}
+    {% if loop.index >= 5 %}
+    {{break}}
+    {% endif %}
+    <div class="blog-grids wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
+        <div class="blog-grid-left">
+            <a href="{{url_for('blog', id = item.id|encodeID)}}"><img src="{{item.image}}0.png"
+                                                                      class="img-responsive" alt=""></a>
+        </div>
+        <div class="blog-grid-right">
+
+            <h5><a href="{{url_for('blog', id = item.id|encodeID)}}">{{item.title}}</a></h5>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock%}
+{% block script %}
+<script>
+    function path_image(){
+        images = $('.img_blog')
+        for(i = 0; i < images.length; i ++)
+        {
+            let x = images[i]
+            path = '{{params.get('blog').image}}' + x.alt
+            x.src = path
+        }
+
+    }
+    path_image()
+</script>
+{% endblock %}

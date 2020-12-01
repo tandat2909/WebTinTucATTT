@@ -1,22 +1,45 @@
 {% extends 'admin/base.html' if current_user.user_role.name == "Admin" else 'user/base.html'  %}
 
 {% block css_head %}
-    {{ super() }}
-    <!--
-    render dưới cùng thẻ head
-    vd: <link href="style.css" rel="stylesheet">
-     -->
+{{ super() }}
+
 
 {% endblock %}
 
 {% block script %}
-    {{ super() }}
-    <!--
-        render sau thẻ đóng </body>
-    vd: <script src="" ></script>
-     -->
+{{ super() }}
+<script>
+    function path_image(){
+        images = $('.img_blog')
+        for(i = 0; i < images.length; i ++)
+        {
+            let x = images[i]
+            path = '{{params.get('blog').image}}' + x.alt
+            x.src = path
+        }
+
+    }
+    path_image()
+</script>
 {% endblock %}
-
 {% block body %}
-
+<div class="row">
+        <div class="blog-single-post">
+            <div class="post-header">
+                <h2>
+                    {{params.get('blog').title}}
+                </h2>
+                <span class="blog-meta"><a href="{{ url_for('profile', id = params.get('blog').user.id).re}}">{{params.get('blog').user.pseudonym}}</a> {{params.get('blog').ngaytaobaiviet |format_datetime}} <a href="#">934 Comments</a></span>
+            </div>
+                {{params.get('blog').noiDung | safe}}
+            <hr>
+            <ul class="socials list-inline">
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                <li><a href="#"><i class="fa fa-share-alt"></i></a></li>
+            </ul>
+        </div>
+</div>
 {% endblock %}

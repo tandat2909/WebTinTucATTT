@@ -1,4 +1,12 @@
 {% extends "home/base2.html" %}
+{% block script%}
+<script>
+    images = $('.img_blog')
+    images.remove()
+
+
+</script>
+{% endblock %}
 
 {% block head %}
 {{ super() }}
@@ -7,35 +15,87 @@
 
 
 {% block body_left %}
+<div class="tech-no">
+    <!-- technology-top -->
+    {% for item in params.get('blog') %}
+    {% if loop.index <= 1 %}
 
+    <div class="tc-ch wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
 
-        <div class="tech-no">
-            <!-- technology-top -->
-            <div class="tc-ch wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
-                {% for item in params.get('bv') %}
-                <div class="tch-img">
-                    <a href="singlepage.html"><img src="{{ url_for('static',filename = 'base2/images/t4.jpg')}}" class="img-responsive" alt=""></a>
-                </div>
-
-                <h3><a href="singlepage.html" >Lorem Ipsum is simply</a></h3>
-                <h6>BY <a href="singlepage.html">Diego Santos</a>JULY 10 2016.</h6>
-                    <p ><a href="singlepage.html">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud eiusmod tempor incididunt ut labore et dolore
-                magna aliqua exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</a> </p>
-                <div>
-                    <a href="singlepage.html">Continue Reading</a>
-                </div>
-                {% endfor %}
-                {% include 'Icon_soci.html' %}
-                <div class="clearfix"></div>
-
-            </div>
+        <div class="tch-img">
+            <a href="{{url_for('blog', id = item.id|encodeID)}}"><img src="{{item.image}}0.png" class="img-responsive" alt="" style="width:100%"></a>
         </div>
 
+        <h3><a href="{{url_for('blog', id = item.id|encodeID)}}">{{item.title}}</a></h3>
+        <h6>BY <a href="{{url_for('profile', id = item.user.id|encodeID)}}">{{item.user.pseudonym}} </a>{{item.ngaytaobaiviet |format_datetime}}</h6>
+        <p>{{item.noiDung|safe}}</p>
+        <div class="bht1">
+            <a href="singlepage.html">Continue Reading</a>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+    {% endif %}
+    {{break}}
+    {%endfor%}
+    {%for item in params.get('blog')%}
+    <div class="wthree">
+        <div class="col-md-6 wthree-left wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
+            <div class="tch-img">
+                <a href="{{url_for('blog', id = item.id|encodeID)}}"><img src="{{item.image}}0.png"
+                                                                          class="img-responsive" alt=""
+                                                                          style="width:100%"></a>
+            </div>
+        </div>
+        <div class="col-md-6 wthree-right wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
+            <h3><a href="{{url_for('blog', id = item.id|encodeID)}}">{{item.title}}</a></h3>
+            <h6>BY <a href="{{url_for('profile', id = item.user.id|encodeID)}}">{{item.user.pseudonym}}</a>{{item.ngaytaobaiviet |format_datetime}}
+            </h6>
+            <p>{{item.noiDung|safe}}</p>
+            <div class="bht1">
+                <a href="{{url_for('blog', id = item.id|encodeID)}}">Read More</a>
+            </div>
+            <div class="clearfix"></div>
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
 {% endblock %}
+{%block body_right%}
 
+<div class="tech-btm">
+    <div class="search-1 wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
+        <form action="#" method="post">
+            <input type="search" name="Search" value="Search" onfocus="this.value = '';"
+                   onblur="if (this.value == '') {this.value = 'Search';}" required="">
+            <input type="submit" value=" ">
+        </form>
+    </div>
+    <h4>BÀI VIẾT NỔI BẬT</h4>
+    {% for item in params.get('blog') %}
+    {% if loop.index >= 5 %}
+    {{break}}
+    {% endif %}
+    <div class="blog-grids wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
+        <div class="blog-grid-left">
+            <a href="{{url_for('blog', id = item.id|encodeID)}}"><img src="{{item.image}}0.png"
+                                                                      class="img-responsive" alt=""></a>
+        </div>
+        <div class="blog-grid-right">
 
+            <h5><a href="{{url_for('blog', id = item.id|encodeID)}}">{{item.title}}</a></h5>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    {% endfor %}
 
-{% block script %}
+</div>
 
-{% endblock %}
+{% endblock%}
+

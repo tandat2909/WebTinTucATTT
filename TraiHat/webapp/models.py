@@ -1,7 +1,7 @@
 from webapp import app, db, login
 import uuid, datetime
 from sqlalchemy import Column, Enum as EnumSQL, Integer, String, DATETIME, Float, ForeignKey, BigInteger, Boolean, \
-    Unicode, UnicodeText
+    Unicode, UnicodeText,NVARCHAR
 # from webapp.Enums import Enum_Gender,Enum_Status_Account
 from flask_login import UserMixin, AnonymousUserMixin
 from sqlalchemy.orm import relationship, lazyload
@@ -59,6 +59,8 @@ class User(BaseModel, UserMixin):
 
     user_name = Column(String, nullable=False)
     password = Column(String, nullable=False)
+    lastname = Column(String)
+    firstname = Column(String)
     # role = Column(String)
     regiter_date = Column(DATETIME, nullable=False, default=datetime.datetime.now())
     address = Column(String)
@@ -68,7 +70,7 @@ class User(BaseModel, UserMixin):
     # bút danh
     pseudonym = Column(Unicode)
     gender = Column(Unicode, default="")
-    comfirm = Column(Boolean, nullable=False, default=False)
+    confirm = Column(Boolean, nullable=False, default=False)
 
     # relationship
 
@@ -94,7 +96,7 @@ class QL_BaiViet(BaseModel):
     __tablename__ = "QL_BaiViet"
 
     title = Column(String,nullable=False,default="")
-    noiDung = Column(String)
+    noiDung = Column(NVARCHAR)
     ngayDangTin = Column(DATETIME)
     ngaytaobaiviet = Column(DATETIME,nullable=False,default=datetime.datetime.now())
     pheDuyet = Column(Boolean,nullable=False,default=True)
@@ -128,15 +130,21 @@ def insertUser():
                password='d047de6de9348ed903f6ac3631731f26dc3795e09b07f6d3ac993d5f48045558',
                email='tandat@12.com',
                name=u'Tấn Đạt',
-               comfirm=True,
-               user_role_id=EUserRole.admin.value)
+               confirm=True,
+               user_role_id=EUserRole.admin.value,
+               pseudonym="ADMIN"
+
+    )
     us2 = User(user_name='user',
                password='d047de6de9348ed903f6ac3631731f26dc3795e09b07f6d3ac993d5f48045558',
                name='User',
                address=u"3773, nguyễn kiệm gò vấp tphcm",
-               comfirm=True,
+               firstname="Tấn",
+               lastname = "Đạt",
+               confirm=True,
                user_role_id=EUserRole.editor.value,
-               email='vutandat29092000@gmail.com')
+               pseudonym = 'Giang pro',
+               email='vutandat290s92000@gmail.com')
     db.session.add(us1)
     db.session.add(us2)
 
@@ -152,7 +160,7 @@ def inserPost(user1 ,user2):
                      noiDung="ờ thằng này tào lao thật",
                      user_id=user1.id,
                      chuDe_id=1,
-                     image="không có ảnh"
+                     image="admin2/images/img-1.jpg"
                       )
     ps2 = QL_BaiViet(title="Bitcoin tăng vọt, tiến sát 19.000 USD một đồng",
                      noiDung='Giá Bitcoin tăng 4% hôm qua (20/11) sau khi BlackRock nhận định tiền ảo này có thể thay thế vàng.'
@@ -165,7 +173,7 @@ def inserPost(user1 ,user2):
                              'thiết lập tháng 12/2017',
                      user_id=user2.id,
                      chuDe_id=3,
-                     image="không có ảnh"
+                     image="admin2/images/img-2.jpg"
                       )
     ps3 = QL_BaiViet(title="là dấu hiệu mới nhất cho thấy Bitcoin ",
                      noiDung="BlackRock hiện là công ty đầu tư hàng đầu thế giới, quản ",
