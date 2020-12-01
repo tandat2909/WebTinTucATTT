@@ -222,6 +222,9 @@ def get_blog_by_userID(id: str):
 def get_blog_by_ID(id: str):
     blog = models.QL_BaiViet.query.get(decodeID(id))
     return blog
+def get_user_by_ID(id: str):
+    user = models.User.query.get(decodeID(id))
+    return user
 
 
 def save_blog(title, data, user, chude, imgs):

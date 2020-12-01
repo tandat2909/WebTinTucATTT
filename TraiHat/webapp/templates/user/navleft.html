@@ -31,7 +31,7 @@
                     <a href="#"><i class="fa fa-users"></i> <span class="nav-label">Users</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        <li><a href="{{ url_for('profile').replace("/admin/","/user/",1) }}">profile</a></li>
+                        <li><a href="{{ url_for('profile', id = current_user.id|encodeID).replace("/admin/","/user/",1) }}">profile</a></li>
                         <li><a href="{{ url_for('change_password') }}">Change password</a></li>
 
 

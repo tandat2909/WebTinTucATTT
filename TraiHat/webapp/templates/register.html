@@ -1,44 +1,42 @@
 {% extends 'login.html' %}
 {% block title %}
-    <title>{{ params.get('title') }}</title>
+<title>{{ params.get('title') }}</title>
 {% endblock %}
 {% block body %}
-    <div class="register">
-        <div class="container">
-            <div class="row">
-                <form class="m-t" method="post" action="{{ url_for('register') }}">
-                    {% set form = params.get('form') %}
-                    {{ form.csrf_token() }}
-                    <div class="register-col">
-                        <div class="text-center">
-                            <h1>{{ params.get('title') }}</h1>
-                            <h3>Create New account</h3>
+<div class="register" style="padding-top: 15px">
+    <div class="container">
+        <div class="row" style="margin: 0 auto;width:50%; font-size: 1.3em;">
+            <form class="m-t" method="post" action="{{ url_for('register') }}">
+                {% set form = params.get('form') %}
+                {{ form.csrf_token() }}
+                <div class="register-col">
+                    <div class="text-center">
+                        <h1>{{ params.get('title') }}</h1>
+                        <h3>Create New account</h3>
+                    </div>
+                    {% for i in form %}
+                    <div class="form-row row">
+                        <div>
+                            {% if i.name != 'csrf_token' %}
+                            {{i.label }}
+                            {% endif %}
+
+                            {{ i (class='form-control', placeholder=i.label.text ,minlength = 8, maxlength =
+                            50) }}
                         </div>
-                        {% for i in form %}
-                        <div class="form-row row">
-                            <div class="col-sm-3">
-                                {% if i.name != 'csrf_token' %}
-                                    {{i.label }}
-                                {% endif %}
-
-                                {{ i (class='form-control', placeholder=i.label.text ,minlength = 8, maxlength =
-                                50) }}
-                            </div>
-                        </div>
-                        {% endfor %}
-
-
-
-
-                        <button type="submit" class="btn btn-primary btn-block ">Signup</button>
+                    </div>
+                    {% endfor %}
+                    <div class=" form-row row">
+                        <p> </p>
+                        <button type="submit" class="btn btn-primary btn-block ">Sign up</button>
                         <a href="#"><small></small></a>
                         <p class=" text-center"><small>Already have an account?</small></p>
                         <a class="btn  btn-default btn-block" href="{{ url_for('login_us') }}">Login to account</a>
-                        <p>Be-Admin Admin &copy; 2015</p>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
 {% endblock %}

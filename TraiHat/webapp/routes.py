@@ -72,7 +72,6 @@ def login_us():
     login cho trang user
     :return:
     """
-    lock_user()
     form = LoginForm()
     if form.validate_on_submit():
         user = form.get_user()
@@ -129,11 +128,13 @@ def profile():
     hiển thị thong tin chi tiết của user
     :return:
     """
-
+    id_user = request.args.get("id")
+    # print(id_blog)
+    if id_user is None:
+        abort(404)
     params = {
         'title': "Profile",
-        'nav_user': 'active',
-
+        'nav_user': 'active'
     }
     if current_user.user_role.id == models.EUserRole.admin.value:
         params['user'] = models.User.query.filter(models.User.user_name == "user").first()
