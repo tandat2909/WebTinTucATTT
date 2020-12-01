@@ -201,6 +201,20 @@ def check_timeout(date: str):
     return False
 
 
+def lock_account(current_user, user_id, lock: bool = None):
+    try:
+        if current_user.user_role_id == models.EUserRole.admin.value and user_id and lock is not None:
+            if current_user.id != decodeID(user_id):
+                user = models.User.query.get(decodeID(user_id))
+                user.active = models.EStatus.InActive if lock else models.EStatus.Active
+                db.session.add(user)
+                db.session.commit()
+                return True
+        return False
+    except:
+        return False
+
+
 if __name__ == '__main__':
     print(check_timeout('2020-11-28 22:03:55.171404'))
     print(decodeID('gMxkDOENUQFVTL1MTM00CREN0QyMENC1CN3cjQtgzQxYULzIkQzYkQEFEN4QDODDCC'))

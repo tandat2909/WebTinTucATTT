@@ -2,7 +2,7 @@ import datetime
 from functools import wraps
 import hashlib
 import uuid
-from flask import url_for, request, redirect, render_template, session, abort, Response, g, flash, current_app
+from flask import url_for, request, redirect, render_template, session, abort, Response, g, flash, current_app, jsonify
 from flask_admin.babel import gettext
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
@@ -33,6 +33,23 @@ def login_required_Admin(f):
         if current_user.is_anonymous or not current_user.is_authenticated or current_user.user_role_id != models.EUserRole.admin.value:
             flash('Please login to access this page.')
             return redirect(url_for('login_admin', next=request.url_rule))
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+def login_required_editor(f):
+    """
+    bắt buộc đăng nhập với quyền editor
+    :param f: function
+    :return:
+    """
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.is_anonymous or not current_user.is_authenticated or current_user.user_role_id != models.EUserRole.editor.value:
+            flash('Please login to access this page.')
+            return redirect(url_for('login_us', next=request.url_rule))
         return f(*args, **kwargs)
 
     return decorated_function
@@ -194,8 +211,8 @@ def user_list():
         'nav_profile': 'active',
 
     }
-    # test lấy dữ liệu
-    listuser = models.User.query.all()
+
+    listuser = models.User.query.filter(models.User.id != current_user.id)
     params['listuser'] = listuser
     return render_template('admin/UserList.html', params=params)
 
@@ -345,16 +362,41 @@ def delete_blog():
     pass
 
 
-@app.route('/admin/delete/user', methods=["POST"])
+@app.route('/admin/lock/user', methods=["POST"])
 @login_required_Admin
-def delete_user():
+def lock_user():
     """
     xóa user bằng cách cho trường active của user đó  = False or user.active = models.EStatus.InActive
     gửi yêu cầu dạng form có csrf
 
-    :return: userlist dùng  redirect()
+    :return: trả về thông báo xóa thành công hay không
+
     """
-    pass
+
+    try:
+        if current_user.user_role.id == models.EUserRole.admin.value:
+            data = request.json
+            lock = data.get('lock')
+            user_id = data.get("idu")
+            #print(user_id, lock)
+            if lock == 'lock':
+                if utils.lock_account(current_user=current_user, user_id=user_id, lock=True):
+                    return jsonify({
+                        "status": 200,
+                        "data": "unlock"
+                    })
+            if lock == 'unlock':
+                if utils.lock_account(current_user=current_user, user_id=user_id, lock=False):
+                    return jsonify({
+                        "status": 200,
+                        "data": "lock"
+                    })
+        raise
+    except:
+        return jsonify({
+            "status": 404,
+            "data": "Error"
+        })
 
 
 # ================== làm cho anonymous ========================================

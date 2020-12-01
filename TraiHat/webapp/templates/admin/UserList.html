@@ -53,13 +53,18 @@
                                         </button>
                                     </a>
                                 </div><!-- btn-group -->
+                                <style>
+                                    .btn {
+                                        margin: 2px;
+                                    }
+                                </style>
                                 <div class="btn-group">
 
-                                    <button class="warning-alert btn-sweet-alert btn btn-success btn-3d btn-sm"
+                                    <button onclick="delUser('{{ item.id | encodeID }}',this)"  class="btn btn-success btn-3d btn-sm"
                                             {% if item.active.value %}
-                                            value="true"> Lock Account
+                                            value="lock"> Lock Account
                                             {% else %}
-                                                value="false"> UnLock
+                                                value="unlock"> UnLock
                                             {% endif %}
                                     </button>
 
@@ -101,4 +106,5 @@
                 });
         };
     </script>
+    <script src="{{ url_for('static',filename = 'admin2/js/main.js') }}"></script>
 {% endblock %}
