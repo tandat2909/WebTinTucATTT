@@ -127,11 +127,13 @@ def profile():
     hiển thị thong tin chi tiết của user
     :return:
     """
-
+    id_user = request.args.get("id")
+    # print(id_blog)
+    if id_user is None:
+        abort(404)
     params = {
         'title': "Profile",
-        'nav_user': 'active',
-
+        'nav_user': 'active'
     }
     if current_user.user_role.id == models.EUserRole.admin.value:
         params['user'] = models.User.query.filter(models.User.user_name == "user").first()
@@ -506,5 +508,4 @@ def special_exception_handler(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True,host="192.168.1.4",port="5000")
-    #app.run(debug=True)
+    app.run(debug=True)

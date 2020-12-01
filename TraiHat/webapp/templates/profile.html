@@ -2,14 +2,85 @@
 
 {% block css_head %}
     {{ super() }}
+    <!--
+    render dưới cùng thẻ head
+    vd: <link href="style.css" rel="stylesheet">
+     -->
 
 {% endblock %}
 
 {% block script %}
     {{ super() }}
-   
+    <!--
+        render sau thẻ đóng </body>
+    vd: <script src="" ></script>
+     -->
 {% endblock %}
 
 {% block body %}
+<div class="row" style="margin: 0 auto;width:50%; font-size: 1.3em;">
+     <div class="col-12 margin-b-30 ">
+                        <div class="profile-overview">
+                            <div class="avtar text-center">
+                                <img src="{{url_for('static', filename='/admin2/images')}}" alt="" class="img-thumbnail">
+                                <h3>{{params.get('user').name}}</h3>
+                                <hr>
+                                <ul class="socials list-inline">
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-github"></i></a></li>
+                                </ul>
+                                <hr>
+                            </div>
+                            <table class="table profile-detail table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3">Contact Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>
+                                            <a href="#">{{ params.get('user').name }}</a>
+                                        </td>
+                                        <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Username</td>
+                                        <td>
+                                            <a href="#">{{ params.get('user').user_name }}</a></td>
+                                        <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td>
+                                            <a href="#">{{ params.get('user').email }}</a></td>
+                                        <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address:</td>
+                                        <td>{{ params.get('user').address }}</td>
+                                        <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pseudonym</td>
+                                        <td>{{ params.get('user').pseudonym }}</td>
+                                        <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gender</td>
+                                        <td>{{ params.get('user').gender }}</td>
+                                        <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a href="{{url_for('blog_list').replace('/admin/','/user/',1)}}" class="btn btn-default " style="margin-top:1em">Bài viết</a>
+                        </div>
+
+     </div>
+</div>
 
 {% endblock %}
