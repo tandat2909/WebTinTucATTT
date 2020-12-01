@@ -1,3 +1,4 @@
+import datetime
 from functools import wraps
 import hashlib,uuid
 from flask import url_for, request, redirect, render_template, session, abort, Response, g, flash, current_app, jsonify
@@ -487,9 +488,9 @@ def addblog():
         #print("addblog",imgs)
         title = request.form.get('titleblog')
         status, idblog = utils.save_blog(title=title,data=data,user=current_user,chude=1,imgs = imgs)
-        flash(status,idblog)
+        #print(status,idblog)
         if status:
-            flash("okla")
+            flash("Add Blog Success")
             return redirect("/user/blogdetail?id=" + utils.encodeID(idblog))
     return render_template('user/addblog.html', params=params)
 
@@ -505,5 +506,5 @@ def special_exception_handler(error):
 
 
 if __name__ == "__main__":
-    # app.run(debug=True,host="192.168.1.7",port="5000")
-    app.run(debug=True)
+    app.run(debug=True,host="192.168.1.4",port="5000")
+    #app.run(debug=True)

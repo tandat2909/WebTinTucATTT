@@ -2,7 +2,7 @@ import hashlib, datetime, base64, os, random, re, uuid
 from sqlalchemy import or_
 from webapp.config import Config
 from webapp import models, db
-import yagmail,json
+import yagmail, json
 
 
 def check_password(pw_hash='', pw_check=''):
@@ -221,7 +221,6 @@ def get_blog_by_userID(id: str):
 
 
 def get_blog_by_ID(id: str):
-    print(id)
     blog = models.QL_BaiViet.query.get(decodeID(id))
     return blog
 
@@ -229,23 +228,22 @@ def get_blog_by_ID(id: str):
 def save_blog(title, data, user, chude, imgs):
     try:
         if title and data and user and user.user_role_id != models.EUserRole.admin.value:
-
             post = models.QL_BaiViet(id=uuid.uuid4(), title=title, noiDung=data, user_id=user.id, chuDe_id=chude)
-            if imgs:
-                imgjson = json.loads(imgs)
-                path = 'static/image/blog/' + str(post.id) + '/'
-                os.mkdir(path)
-                for k, v in imgjson.items():
-                    img = v[v.find(",") + 1:]
-                    with open(path + k + ".png", 'wb') as file_to_save:
-                        decoded_image_data = base64.decodebytes(img.encode('utf-8'))
-                        file_to_save.write(decoded_image_data)
-                post.image = '/'+path
+            path = 'static/image/blog/' + str(post.id) + '/'
+            os.makedirs(path)
+            imgjson = json.loads(imgs)
+            for k, v in imgjson.items():
+                img = v[v.find(",") + 1:]
+                with open(path + k + ".png", 'wb') as file_to_save:
+                    decoded_image_data = base64.decodebytes(img.encode('utf-8'))
+                    file_to_save.write(decoded_image_data)
+            post.image = '/' + path
             db.session.add(post)
             db.session.commit()
             return True, str(post.id)
         return False, None
-    except:
+    except Exception as e:
+
         return False, None
 
 
