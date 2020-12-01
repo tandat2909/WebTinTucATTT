@@ -1,6 +1,6 @@
 import datetime
 from functools import wraps
-import hashlib,uuid
+import hashlib, uuid
 from flask import url_for, request, redirect, render_template, session, abort, Response, g, flash, current_app, jsonify
 from flask_admin.babel import gettext
 from flask_admin.contrib.sqla import ModelView
@@ -10,7 +10,7 @@ from markupsafe import Markup
 from wtforms import validators, PasswordField, HiddenField, StringField, Field, widgets, ValidationError
 from wtforms.compat import text_type
 from wtforms.widgets.core import Input
-from webapp import app, db, models, login,jinja_filters,utils
+from webapp import app, db, models, login, jinja_filters, utils
 from flask_login import login_user, current_user, logout_user, AnonymousUserMixin
 from webapp.models import User
 # from webapp.admin.routeAdmin import *
@@ -72,6 +72,7 @@ def login_us():
     login cho trang user
     :return:
     """
+    lock_user()
     form = LoginForm()
     if form.validate_on_submit():
         user = form.get_user()
@@ -96,6 +97,7 @@ def login_admin():
     login cho trang admin
     :return:
     """
+    logout_user()
     form = LoginForm()
     if form.validate_on_submit():
         user = form.get_user()
@@ -163,8 +165,6 @@ def blog_list():
     return render_template('bloglist.html', params=params)
 
 
-
-
 @app.route("/user/blogdetail")
 @app.route("/admin/blogdetail")
 def blog_detail():
@@ -174,7 +174,7 @@ def blog_detail():
     :return:
     """
     id_blog = request.args.get("id")
-    #print(id_blog)
+    # print(id_blog)
     if id_blog is None:
         abort(404)
     params = {
@@ -246,25 +246,36 @@ def index_user():
 def change_password():
     """
     thay đổi password
-    chưa làm : mã hóa mật khẩu
+
     :return:
     """
     params = {
         'title': "Change password",
-        'nav_blog': 'active',
+        'nav_user': 'active',
 
     }
-
     form = FormChange.FormChangePassword()
+    params['form'] = form
     if form.validate_on_submit():
-        user = form.get_user()
-        if user:
-            user.password = generate_password_hash(form.password_Confirm.data)
-            print(user.user_name, user.password)
-            db.Session.add(user)
-            db.session.commit()
-        return redirect(url_for('login'))
-    return render_template('ChangePassword.html', form=form)
+        pwold = form.password_Old.data
+        pwnew = form.password_New.data
+        pwconf = form.password_Comfirm.data
+        flash(pwold+" " + pwnew +" " + pwconf)
+        if current_user.is_authenticated:
+            if len(pwold) >= 8 and utils.check_password(current_user.password, pwold):
+                if [len(pwnew), len(pwconf)] >= [8, 8]:
+                    if utils.change_password(user=current_user,pwold=pwold,pwnew=pwnew):
+                        flash('Change password success')
+                        return redirect(url_for('login_admin' if current_user.user_role.name == "Admin" else 'login_us'))
+                    else:
+                        flash("Change password error")
+                else:
+                    flash("Nhập password trên 8 ký tự")
+            else:
+                flash('Password old incorrect')
+        else:
+            abort(404)
+    return render_template('ChangePassword.html', params=params)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -355,8 +366,7 @@ def confirm_account():
     return render_template('confirmCode.html', params=params)
 
 
-@app.route('/user/delete/blog', methods=["POST"])
-@app.route('/admin/delete/blog', methods=["POST"])
+@app.route('/api/delete/blog', methods=["POST"])
 @login_required
 def delete_blog():
     """
@@ -366,14 +376,20 @@ def delete_blog():
     gửi lên dạng post form có csrf
     :return: trang bloglist dùng redirect()
     """
-    if request.method == "POST":
-        idF = request.form.get('ids ')
-        if idF:
-            flash(request.form.get(idF))
-        else:
-            flash("Lõi chét dủi mẹ",category='error')
-    return redirect(url_for('blog_list'))
-
+    try:
+        data = request.json
+        id_blog = data.get("idblog", None)
+        if id_blog and utils.delete_blog(id_blog=id_blog, current_user=current_user):
+            return jsonify({
+                "status": 200,
+                "data": True
+            })
+        raise
+    except:
+        return jsonify({
+            "status": 404,
+            "data": False
+        })
 
 
 @app.route('/admin/lock/user', methods=["POST"])
@@ -392,18 +408,18 @@ def lock_user():
             data = request.json
             lock = data.get('lock')
             user_id = data.get("idu")
-            #print(user_id, lock)
+            # print(user_id, lock)
             if lock == 'lock':
                 if utils.lock_account(current_user=current_user, user_id=user_id, lock=True):
                     return jsonify({
                         "status": 200,
-                        "data": "unlock"
+                        "data": "UnLock"
                     })
             if lock == 'unlock':
                 if utils.lock_account(current_user=current_user, user_id=user_id, lock=False):
                     return jsonify({
                         "status": 200,
-                        "data": "lock"
+                        "data": "Lock"
                     })
         raise
     except:
@@ -437,9 +453,9 @@ def blog():
     if id_blog is None:
         abort(404)
     params = {'title': "Home",
-            'blogs' : models.QL_BaiViet.query.all(),
-            'blog': utils.get_blog_by_ID(id_blog)
-    }
+              'blogs': models.QL_BaiViet.query.all(),
+              'blog': utils.get_blog_by_ID(id_blog)
+              }
 
     return render_template("home/blogdetail.html", params=params)
 
@@ -473,10 +489,10 @@ def contact():
 
     return render_template('home/contact.html', params=params)
 
-@app.route("/user/addblog",methods=["POST", "GET"])
+
+@app.route("/user/addblog", methods=["POST", "GET"])
 @login_required
 def addblog():
-
     params = {
         'title': "Add Blog",
         'nav_contact': 'active'
@@ -484,10 +500,10 @@ def addblog():
     if request.method == "POST":
         data = request.form.get('datablog')
         imgs = request.form.get('imageblog')
-        #print("addblog",imgs)
+        # print("addblog",imgs)
         title = request.form.get('titleblog')
-        status, idblog = utils.save_blog(title=title,data=data,user=current_user,chude=1,imgs = imgs)
-        #print(status,idblog)
+        status, idblog = utils.save_blog(title=title, data=data, user=current_user, chude=1, imgs=imgs)
+        # print(status,idblog)
         if status:
             flash("Add Blog Success")
             return redirect("/user/blogdetail?id=" + utils.encodeID(idblog))
@@ -505,5 +521,5 @@ def special_exception_handler(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True,host="192.168.1.4",port="5000")
-    #app.run(debug=True)
+    # app.run(debug=True,host="192.168.1.4",port="5000")
+    app.run(debug=True)

@@ -1,49 +1,46 @@
-{% extends 'admin/base.html' if current_user.user_role.name == "Admin" else 'user/base.html'  %}
+{% extends 'admin/base.html' if current_user.user_role.name == "Admin" else 'user/base.html' %}
 {% block script %}
-{{super()}}
-{% import 'admin/lib.html' as lib with context -%}
-<script>
-    images = $('.img_blog')
-    images.remove()
-</script>
+    {{ super() }}
+    {% import 'admin/lib.html' as lib with context -%}
+
+    <script src="{{ url_for('static',filename = 'admin2/js/blog/mainblog.js') }}"></script>
 {% endblock %}
 {% block body %}
-<div class="row">
+    <div class="row">
 
-    {% set urlblog = url_for('blog_detail',id ='').replace('/admin/','/user/',1) %}
+        {% set urlblog = url_for('blog_detail',id ='').replace('/admin/','/user/',1) %}
 
-    {% if current_user.user_role.name == "Admin" %}
-        {% set urlblog = url_for('blog_detail',id ='') %}
-    {% endif %}
-    {%for item in params.get('listblog')%}
-    <div class="col-md-4 margin-b-30">
-        <div class="blog-post">
+        {% if current_user.user_role.name == "Admin" %}
+            {% set urlblog = url_for('blog_detail',id ='') %}
+        {% endif %}
+        {% for item in params.get('listblog') %}
+            <div class="col-md-4 margin-b-30">
+                <div class="blog-post">
 
-            <a href="{{ urlblog + item.id|encodeID }}">
-                <img src="{{item.image}}0.png" alt="" class="img img-thumbnail " style="width:100% ; height: 250px" >
-            </a>
-
-            <div class="blog-desc">
-                <h3><a href="{{ urlblog + item.id|encodeID }}">{{item.title}}</a></h3>
-                <span class="blog-meta"><a href="{{url_for('profile', id = item.user.id|encodeID)}}">{{item.user.pseudonym}}</a> {{item.ngaytaobaiviet |format_datetime}} <a
-                        href="#">934 Comments</a></span>
-                <p>
-                    {{item.noiDung |safe}}
-                </p>
-                <p><a href="{{ urlblog + item.id|encodeID }}">Continue Reading</a></p>
-                <form method="post" action="{{url_for('delete_blog')}}">
-                    <input type="hidden" value="{{ loop.index}}" name="idform">
-
-                    <input type="hidden" value="{{item.id|encodeID}}" name="ids">
-                    <a href="javascript:void(0)">
-                        <button type="submit" class="btn btn-danger btn-3d">Delete</button>
+                    <a href="{{ urlblog + item.id|encodeID }}">
+                        <img src="{{ item.image }}0.png" alt="" class="img img-thumbnail "
+                             style="width:100% ; height: 250px">
                     </a>
-                </form>
 
+                    <div class="blog-desc">
+                        <h3><a href="{{ urlblog + item.id|encodeID }}">{{ item.title }}</a></h3>
+                        <span class="blog-meta"><a
+                                href="{{ url_for('profile', id = item.user.id|encodeID) }}">{{ item.user.pseudonym }}</a> {{ item.ngaytaobaiviet |format_datetime }} <a
+                                href="#">934 Comments</a></span>
+                        <p>
+                            {{ item.noiDung |safe }}
+                        </p>
+                        <p><a href="{{ urlblog + item.id|encodeID }}">Continue Reading</a></p>
+
+
+                        <button value="{{ item.id|encodeID }}" onclick="delblog(this)" class="btn btn-danger btn-3d">Delete
+                        </button>
+
+
+                    </div>
+
+                </div>
             </div>
-
-        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
 {% endblock %}

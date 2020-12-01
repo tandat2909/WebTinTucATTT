@@ -33,7 +33,7 @@ class LoginForm(FlaskForm):
         if self._user:
             # flash(self._user.password + "\n" +self.password.data +"\n" +current_app.config.get('KEYPASS') + str( check_password_hash(self._user.password,self.password.data + current_app.config.get('KEYPASS'))))
 
-            if not utils.check_password(self._user.password, self.password.data + current_app.config.get('KEYPASS')):
+            if not utils.check_password(self._user.password, self.password.data):
                 flash("Invalid username or password", category='error')
                 self._user = None
             return

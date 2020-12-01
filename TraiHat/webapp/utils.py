@@ -6,15 +6,14 @@ import yagmail, json
 
 
 def check_password(pw_hash='', pw_check=''):
-    pw_check_hash = hashlib.sha256(pw_check.encode("utf-8")).hexdigest()
-
+    pw_check_hash = hashlib.sha256((pw_check + str(Config.KEYPASS)).encode("utf-8")).hexdigest()
     if pw_hash == pw_check_hash:
         return True
     return False
 
 
 def generate_password(pw):
-    pw_hash = hashlib.sha256((pw + Config.KEYPASS).encode('utf-8')).hexdigest()
+    pw_hash = hashlib.sha256((pw + str(Config.KEYPASS)).encode("utf-8")).hexdigest()
     return pw_hash
 
 
@@ -245,6 +244,37 @@ def save_blog(title, data, user, chude, imgs):
     except Exception as e:
 
         return False, None
+
+
+def delete_blog(id_blog=None, current_user=None):
+    try:
+        if id_blog and current_user:
+            blog = models.QL_BaiViet.query.get(decodeID(id_blog))
+            if current_user.user_role_id == models.EUserRole.admin.value:
+                db.session.delete(blog)
+            elif current_user.id == blog.user_id:
+                db.session.delete(blog)
+            else:
+                raise
+            db.session.commit()
+            return True
+        return False
+    except:
+        return False
+
+
+def change_password(user=None, pwold: str = None, pwnew: str = None):
+    try:
+        if user and pwnew and pwold:
+            if check_password(user.password, pwold):
+                user.password = generate_password(pwnew)
+                # print("pw hashmới: " + user.password)
+                db.session.add(user)
+                db.session.commit()
+                return True
+        raise
+    except:
+        return False
 
 
 if __name__ == '__main__':

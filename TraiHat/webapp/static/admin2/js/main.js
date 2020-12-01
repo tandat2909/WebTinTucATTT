@@ -10,10 +10,11 @@ function delUser(idu, btn) {
 
         if (data.status == 200) {
 
-            btn.innerHTML = data.data;
-            btn.value = data.data;
-            btn.parentElement.parentElement.parentElement.children[0].children[1].innerHTML = (data.data == "lock" ? "Active" : "InActive")
-            alert(data.data + " Success");
+            btn.innerHTML = data.data + " Account";
+            btn.value = data.data.toLowerCase();
+            btn.parentElement.parentElement.parentElement.children[0].children[1].innerHTML = (data.data.toLowerCase() == "lock" ? "Active" : "InActive")
+
+            alert((data.data.toLowerCase() == "lock" ? 'UnLock' : 'Lock') + " Success");
         }
 
 
