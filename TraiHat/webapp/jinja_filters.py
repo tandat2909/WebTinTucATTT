@@ -1,7 +1,9 @@
 import os
+from datetime import datetime
 
 from webapp import utils
 from webapp import app
+import datetime
 import uuid
 
 def encodeID(value):
@@ -10,15 +12,10 @@ def encodeID(value):
         return en
     except:
         return ''
-def insert_id_form(value):
-    try:
-        formid = os.urandom(10).hex() + '-' + str(value)
-        if utils.add_form_id(formid):
-            return encodeID(formid)
-        raise
-    except Exception as ev:
-        return ''
+def format_datetime(value):
+
+    return value.strftime("%d-%m-%Y")
 
 
 app.jinja_env.filters['encodeID'] = encodeID
-app.jinja_env.filters['insert_id_form'] =insert_id_form
+app.jinja_env.filters['format_datetime'] = format_datetime

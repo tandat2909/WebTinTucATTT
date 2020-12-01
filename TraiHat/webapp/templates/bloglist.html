@@ -2,7 +2,10 @@
 {% block script %}
 {{super()}}
 {% import 'admin/lib.html' as lib with context -%}
-{{lib.lib_dataTables()}}
+<script>
+    images = $('.img_blog')
+    images.remove()
+</script>
 {% endblock %}
 {% block body %}
 <div class="row">
@@ -17,19 +20,19 @@
         <div class="blog-post">
 
             <a href="{{ urlblog + item.id|encodeID }}">
-                <img src="{# {{url_for('static',filename = item.image)}}#}" alt="" class="img-responsive">
+                <img src="{{item.image}}0.png" alt="" class="img img-thumbnail " style="width:100% ; height: 250px" >
             </a>
 
             <div class="blog-desc">
                 <h3><a href="{{ urlblog + item.id|encodeID }}">{{item.title}}</a></h3>
-                <span class="blog-meta"><a href="{{url_for('profile', id = item.user.id|encodeID)}}">{{item.user.pseudonym}}</a> {{item.ngaytaobaiviet}} <a
+                <span class="blog-meta"><a href="{{url_for('profile', id = item.user.id|encodeID)}}">{{item.user.pseudonym}}</a> {{item.ngaytaobaiviet |format_datetime}} <a
                         href="#">934 Comments</a></span>
                 <p>
                     {{item.noiDung |safe}}
                 </p>
                 <p><a href="{{ urlblog + item.id|encodeID }}">Continue Reading</a></p>
                 <form method="post" action="{{url_for('delete_blog')}}">
-                    <input type="hidden" value="{{ loop.index|insert_id_form}}" name="idform">
+                    <input type="hidden" value="{{ loop.index}}" name="idform">
 
                     <input type="hidden" value="{{item.id|encodeID}}" name="ids">
                     <a href="javascript:void(0)">

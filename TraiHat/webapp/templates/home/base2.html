@@ -97,7 +97,7 @@
 
 
             <div class="blo-top1">
-
+                {%block body_right%}
                 <div class="tech-btm">
                     <div class="search-1 wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
                         <form action="#" method="post">
@@ -106,7 +106,7 @@
                             <input type="submit" value=" ">
                         </form>
                     </div>
-                    <h4>Popular Posts </h4>
+                    <h4>BÀI VIẾT NỔI BẬT</h4>
                     <div class="blog-grids wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
                         <div class="blog-grid-left">
                             <a href="singlepage.html"><img src="{{url_for('static',filename = 'base2/images/t2.jpg')}}"
@@ -162,52 +162,6 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="insta wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
-                        <h4>Instagram</h4>
-                        <ul>
-
-                            <li><a href="singlepage.html"><img
-                                    src="{{url_for('static',filename = 'base2/images/t1.jpg')}}" class="img-responsive"
-                                    alt=""></a>
-                            </li>
-                            <li><a href="singlepage.html"><img
-                                    src="{{url_for('static',filename = 'base2/images/m1.jpg')}}" class="img-responsive"
-                                    alt=""></a>
-                            </li>
-                            <li><a href="singlepage.html"><img
-                                    src="{{url_for('static',filename = 'base2/images/f1.jpg')}}" class="img-responsive"
-                                    alt=""></a>
-                            </li>
-                            <li><a href="singlepage.html"><img
-                                    src="{{url_for('static',filename = 'base2/images/m2.jpg')}}" class="img-responsive"
-                                    alt=""></a>
-                            </li>
-                            <li><a href="singlepage.html"><img
-                                    src="{{url_for('static',filename = 'base2/images/f2.jpg')}}" class="img-responsive"
-                                    alt=""></a>
-                            </li>
-                            <li><a href="singlepage.html"><img
-                                    src="{{url_for('static',filename = 'base2/images/t2.jpg')}}" class="img-responsive"
-                                    alt=""></a>
-                            </li>
-                            <li><a href="singlepage.html"><img
-                                    src="{{url_for('static',filename = 'base2/images/f3.jpg')}}" class="img-responsive"
-                                    alt=""></a>
-                            </li>
-                            <li><a href="singlepage.html"><img
-                                    src="{{url_for('static',filename = 'base2/images/t3.jpg')}}" class="img-responsive"
-                                    alt=""></a>
-                            </li>
-                            <li><a href="singlepage.html"><img
-                                    src="{{url_for('static',filename = 'base2/images/m3.jpg')}}" class="img-responsive"
-                                    alt=""></a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <p>Lorem ipsum ex vix illud nonummy, novum tation et his. At vix scripta patrioque scribentur, at
-                        pro</p>
-                    <div class="twt">
 
                         <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true"
                                 class="twitter-hashtag-button twitter-hashtag-button-rendered twitter-tweet-button"
@@ -227,8 +181,7 @@
                         }(document, 'script', 'twitter-wjs');</script>
                     </div>
                 </div>
-
-
+                {% endblock %}
             </div>
         </div>
     </div>

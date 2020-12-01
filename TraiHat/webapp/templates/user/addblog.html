@@ -42,7 +42,8 @@
                 data_img +=  '"'+i+'"' + ':"'+ x.src +'",'
                 x.src = ''
                 x.alt = i + ".png"
-                x.className = "img_blog"
+                x.className = "img_blog img-responsive"
+
 
             }
             data_img = '{' + data_img.substring(0, data_img.length - 1) + '}'

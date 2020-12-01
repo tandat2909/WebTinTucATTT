@@ -11,7 +11,7 @@ import uuid
 from webapp import models
 
 from webapp.config import Config
-from webapp import models, listFormID, db
+from webapp import models, db
 
 
 def check_password(pw_hash='', pw_check=''):
@@ -103,26 +103,6 @@ def get_blog_by_ID(id: str):
     return blog
 
 
-def check_form_exist(formID: str):
-    try:
-        # print(listFormID.get('FormDelete'))
-        listFormID.get('FormDelete').remove(decodeID(str(formID)))
-        # print(listFormID.get('FormDelete'))
-        return True
-    except:
-        return False
-
-
-def add_form_id(formid):
-    try:
-
-        listFormID.get('FormDelete').append(str(formid))
-        print(listFormID.get('FormDelete'))
-        return True
-    except:
-        return ''
-
-
 def save_blog(title, data, user, chude, imgs):
     try:
         if title and data and user and user.user_role_id != models.EUserRole.admin.value:
@@ -137,7 +117,7 @@ def save_blog(title, data, user, chude, imgs):
                     with open(path + k + ".png", 'wb') as file_to_save:
                         decoded_image_data = base64.decodebytes(img.encode('utf-8'))
                         file_to_save.write(decoded_image_data)
-                post.image = path
+                post.image = '/'+path
             db.session.add(post)
             db.session.commit()
             return True, str(post.id)

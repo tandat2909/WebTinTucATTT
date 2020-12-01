@@ -213,11 +213,16 @@ def index_user():
     """
     # paramenter chứa danh sách tham số truyền ra template
     params = {
-        'title': 'Dashboard',
-        'nav_dashboard': 'active',
+        'title': "Blog List",
+        'nav_blog': 'active',
+
     }
 
-    return render_template('user/index.html', params=params)
+    if current_user.user_role.id == models.EUserRole.admin.value:
+        params['listblog'] = models.QL_BaiViet.query.all()
+        return render_template('bloglist.html', params=params)
+    params['listblog'] = utils.get_blog_by_userID(current_user.id)
+    return render_template('bloglist.html', params=params)
 
 
 @app.route('/changepw', methods=["POST", "GET"])
@@ -258,14 +263,11 @@ def delete_blog():
     :return: trang bloglist dùng redirect()
     """
     if request.method == "POST":
-        idF = request.form.get('idform')
-        if idF and utils.check_form_exist(idF):
-            flash(utils.check_form_exist(idF))
-            flash(request.form.get("ids"))
+        idF = request.form.get('ids ')
+        if idF:
             flash(request.form.get(idF))
         else:
             flash("Lõi chét dủi mẹ",category='error')
-
     return redirect(url_for('blog_list'))
 
 
@@ -294,6 +296,8 @@ def index():
 
     params = {
         'title': "Home",
+        'blog': models.QL_BaiViet.query.all()
+
     }
 
     return render_template("home/index.html", params=params)
@@ -301,13 +305,15 @@ def index():
 
 @app.route('/blog')
 def blog():
-    """
-        blog detail
-        kế thừa page.html tạo trang mới để hiển thị nội dung blog
-    :return:
-    """
+    id_blog = request.args.get("id")
+    if id_blog is None:
+        abort(404)
+    params = {'title': "Home",
+            'blogs' : models.QL_BaiViet.query.all(),
+            'blog': utils.get_blog_by_ID(id_blog)
+    }
 
-    pass
+    return render_template("home/blogdetail.html", params=params)
 
 
 @app.route("/aboutus")

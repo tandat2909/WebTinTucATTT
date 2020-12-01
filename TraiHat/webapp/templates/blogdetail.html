@@ -2,19 +2,25 @@
 
 {% block css_head %}
 {{ super() }}
-<!--
-render dưới cùng thẻ head
-vd: <link href="style.css" rel="stylesheet">
- -->
+
 
 {% endblock %}
 
 {% block script %}
 {{ super() }}
-<!--
-    render sau thẻ đóng </body>
-vd: <script src="" ></script>
- -->
+<script>
+    function path_image(){
+        images = $('.img_blog')
+        for(i = 0; i < images.length; i ++)
+        {
+            let x = images[i]
+            path = '{{params.get('blog').image}}' + x.alt
+            x.src = path
+        }
+
+    }
+    path_image()
+</script>
 {% endblock %}
 {% block body %}
 <div class="row">
@@ -23,7 +29,7 @@ vd: <script src="" ></script>
                 <h2>
                     {{params.get('blog').title}}
                 </h2>
-                <span class="blog-meta"><a href="{{ url_for('profile', id = params.get('blog').user.id).re}}">{{params.get('blog').user.pseudonym}}</a> {{params.get('blog').ngaytaobaiviet}} <a href="#">934 Comments</a></span>
+                <span class="blog-meta"><a href="{{ url_for('profile', id = params.get('blog').user.id).re}}">{{params.get('blog').user.pseudonym}}</a> {{params.get('blog').ngaytaobaiviet |format_datetime}} <a href="#">934 Comments</a></span>
             </div>
                 {{params.get('blog').noiDung | safe}}
             <hr>
