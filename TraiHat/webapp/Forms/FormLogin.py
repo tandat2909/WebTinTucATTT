@@ -20,7 +20,7 @@ class LoginForm(FlaskForm):
         super(LoginForm, self).__init__(*k, **kk)
 
     def validate(self):
-        print(self.username.data)
+        #print(self.username.data)
         self._user = User.query.filter(User.user_name == self.username.data,User.active == EStatus.Active).first()
         return super(LoginForm, self).validate()
 

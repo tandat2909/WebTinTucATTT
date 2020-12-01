@@ -1,17 +1,8 @@
-import hashlib
-import datetime
-import base64
-import datetime
-import json
-import os
-import random
-import re
-
-import uuid
-from webapp import models
-
+import hashlib, datetime, base64, os, random, re, uuid
+from sqlalchemy import or_
 from webapp.config import Config
 from webapp import models, db
+import yagmail,json
 
 
 def check_password(pw_hash='', pw_check=''):
@@ -28,6 +19,13 @@ def generate_password(pw):
 
 
 def encodeID(input="-"):
+    """
+
+    :param input:
+    :return:
+    :exception Exception
+    """
+
     # print("input:",input)
     temp = str(input)
     output = ""
@@ -64,8 +62,13 @@ def encodeID(input="-"):
 
 
 def decodeID(input):
+    """
+
+    :param input:
+    :return:
+    :exception Exception
+    """
     temp = str(input)
-    result = ''
     try:
         temp = temp[:-4]
         temp = temp[::-1]
@@ -90,6 +93,126 @@ def decodeID(input):
 
     except Exception as ex:
         raise ex
+
+
+def check_form_register(form):
+    """
+     kiểm tra đầu vào form
+    :param form:
+    :return:
+    :exception ValueError
+    """
+    if form:
+        # validate password
+        if form.password.data != form.confirm.data:
+            raise ValueError("Incorrect confirm password")
+        user = models.User.query.filter(
+            or_(models.User.user_name == form.username.data, models.User.email == form.email.data)).first()
+
+        # validate email, user
+        if user:
+            if user.user_name == form.username.data:
+                raise ValueError("Invalid Username")
+            if user.email == form.email.data:
+                raise ValueError("Invalid Email")
+        return True
+    raise ValueError("Error Form")
+
+
+def save_user(form, confirm: bool):
+    """
+    :param confirm:
+    :param form: type dict()
+    :return: Return True if it commit to database success else False which commit or password hashing failde
+    """
+
+    try:
+        if form:
+            password = generate_password(form.get('password', None))
+            usernew = models.User(user_name=form.get('username', None),
+                                  password=password,
+                                  email=form.get('email', None),
+                                  pseudonym=form.get('pseudonym', None),
+                                  user_role_id=models.EUserRole.editor.value,
+                                  name=' '.join([form.get('firstname', None), form.get('lastname', None)]),
+                                  firstname=form.get('firstname', None),
+                                  lastname=form.get('lastname', None),
+                                  gender=form.get('gender', None),
+                                  address=form.get('address', None),
+                                  phone_number=form.get('phone_number', None),
+                                  confirm=confirm
+                                  )
+            db.session.add(usernew)
+            db.session.commit()
+            return True
+        return False
+    except:
+        return False
+
+
+def sent_mail_confirm_code(email: str, code: str):
+    """
+    gửi mã xác nhận
+    :param email:
+    :param code:
+    :return:
+    """
+    if email and code:
+        sender_email = "antoanhethongthongtin13@gmail.com"
+        receiver_email = email
+        password = decodeID("ETUXVUUXVUMyMDQtgjRwMEMClTL8F0C")[0:-1].capitalize()
+        subject = "Bloger"
+        body = f"Confirm Account \n Code: {code}"
+
+        yag = yagmail.SMTP(user=sender_email, password=password)
+        status = yag.send(
+            to=receiver_email,
+            subject=subject,
+            contents=body,
+
+        )
+        return False if status == False else True
+    return False
+
+
+def generate_codeConfirm():
+    """
+    tạo mã xác nhận
+    :return:
+    """
+    temp = str(uuid.uuid4().hex)[:6]
+    return temp
+
+
+def check_timeout(date: str):
+    """
+    kiểm tra timeout
+    :param date:
+    :return:
+    """
+    if date:
+        # 10 phút
+        timeout = 600
+        current_time = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
+        timedelta = (datetime.datetime.now() - current_time).total_seconds()
+        # print(timedelta)
+        if 0 < timedelta < timeout:
+            return True
+    return False
+
+
+def lock_account(current_user, user_id, lock: bool = None):
+    try:
+        if current_user.user_role_id == models.EUserRole.admin.value and user_id and lock is not None:
+            if current_user.id != decodeID(user_id):
+                user = models.User.query.get(decodeID(user_id))
+                user.active = models.EStatus.InActive if lock else models.EStatus.Active
+                db.session.add(user)
+                db.session.commit()
+                return True
+        return False
+    except:
+        return False
 
 
 def get_blog_by_userID(id: str):
@@ -127,10 +250,5 @@ def save_blog(title, data, user, chude, imgs):
 
 
 if __name__ == '__main__':
-    print(get_blog_by_ID(decodeID('ETOBFDOwATO30CM1YTRGNTLCBzQ10CNBNUMtgDOzITL4MUQyIUM1UDOwEUN056E')).title)
-    print(decodeID('0kTQxgDMwkzNtIEMDVTL0E0Qx0CO4MjMtcTREF0QykTL4MUQyIUM1UDOwEUN7EDA'))
-    img = '{"0":"sdf","1":"sdf"}'
-    ids = json.loads(img)
-    print(ids)
-    os.mkdir('static/image/blog/sd')
-    print(img)
+    print(check_timeout('2020-11-28 22:03:55.171404'))
+    print(decodeID('gMxkDOENUQFVTL1MTM00CREN0QyMENC1CN3cjQtgzQxYULzIkQzYkQEFEN4QDODDCC'))

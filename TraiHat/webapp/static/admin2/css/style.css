@@ -1,4 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,500italic,500,400italic,300italic,300,100italic,100);
 
 
 /***********
@@ -468,6 +467,67 @@ h6 {
     background-color: transparent;
 }
 
+.register{
+    background:  #2f323b;
+    padding-top: 150px;
+}
+.register-col{
+    width:80%px;
+    margin: 0 auto;
+    text-align: left;
+}
+.register-col h1{
+    color:#aeaeae;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-shadow: 1px 1px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+}
+.register-col h3{
+    color:#888;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight:400;
+    text-transform: capitalize;
+}
+.register-col .form-control{
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.register-col .btn-primary{
+    border: 0px;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    background-color: #DF3D82;
+    margin-bottom: 20px;
+}
+.register-col a, .account-col p{
+    color: #848c94;
+}
+.register-col a:hover{
+    color:#DF3D82;
+}
+.register-col .btn-default{
+    border:0px;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    background-color:transparent;
+    margin-bottom: 20px;
+    color:#DF3D82;
+}
+.register-col .btn-default:hover{
+    color:#999;
+    background-color: transparent;
+}
+
+.confirm-col{
+    width:80%;
+    margin: 150px auto;
+    text-align: center;
+
+}
 
 /**************data tables************/
 /* -----------------------------------------
@@ -660,6 +720,18 @@ ul.wysihtml5-toolbar a.btn.wysihtml5-command-active {
     color:#fff;
     background-color: transparent;
 }
+
+select.form-control option{
+    background-color: #2f323b;
+    padding-top: 3px;
+}
+select.form-control option:hover{
+    cursor: pointer;
+}
+select.form-control{
+    cursor: pointer;
+}
+
 .btn-primary{
     background-color: #DF3D82;
 }

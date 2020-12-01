@@ -1,6 +1,6 @@
 from functools import wraps
-import hashlib
-from flask import url_for, request, redirect, render_template, session, abort, Response, g, flash, current_app
+import hashlib,uuid
+from flask import url_for, request, redirect, render_template, session, abort, Response, g, flash, current_app, jsonify
 from flask_admin.babel import gettext
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
@@ -14,7 +14,8 @@ from flask_login import login_user, current_user, logout_user, AnonymousUserMixi
 from webapp.models import User
 # from webapp.admin.routeAdmin import *
 from webapp.Forms.FormLogin import LoginForm
-from webapp.Forms import FormChange
+from webapp.Forms.FormRegister import RegisterForm
+from webapp.Forms import FormChange, FormRegister
 from werkzeug.security import generate_password_hash
 
 
@@ -30,6 +31,23 @@ def login_required_Admin(f):
         if current_user.is_anonymous or not current_user.is_authenticated or current_user.user_role_id != models.EUserRole.admin.value:
             flash('Please login to access this page.')
             return redirect(url_for('login_admin', next=request.url_rule))
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+def login_required_editor(f):
+    """
+    bắt buộc đăng nhập với quyền editor
+    :param f: function
+    :return:
+    """
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.is_anonymous or not current_user.is_authenticated or current_user.user_role_id != models.EUserRole.editor.value:
+            flash('Please login to access this page.')
+            return redirect(url_for('login_us', next=request.url_rule))
         return f(*args, **kwargs)
 
     return decorated_function
@@ -57,7 +75,7 @@ def login_us():
     if form.validate_on_submit():
         user = form.get_user()
         next_url = request.args.get('next')
-        if user and user.active == models.EStatus.Active and user.user_role_id != models.EUserRole.anonymous:
+        if user and user.active == models.EStatus.Active and user.confirm and user.user_role_id != models.EUserRole.anonymous:
             flash("Login Success", category='success')
             login_user(user=user)
             if next_url:
@@ -82,7 +100,7 @@ def login_admin():
         user = form.get_user()
         next_url = request.args.get('next')
 
-        if user and user.active == models.EStatus.Active and user.user_role_id == models.EUserRole.admin.value:
+        if user and user.active == models.EStatus.Active and user.confirm and user.user_role_id == models.EUserRole.admin.value:
             login_user(user=user)
 
             flash("Login Success", category='success')
@@ -168,8 +186,6 @@ def blog_detail():
     return render_template('blogdetail.html', params=params)
 
 
-
-
 @app.route('/admin')
 @login_required_Admin
 def index_admin():
@@ -198,8 +214,8 @@ def user_list():
         'nav_profile': 'active',
 
     }
-    # test lấy dữ liệu
-    listuser = models.User.query.all()
+
+    listuser = models.User.query.filter(models.User.id != current_user.id)
     params['listuser'] = listuser
     return render_template('admin/UserList.html', params=params)
 
@@ -213,9 +229,8 @@ def index_user():
     """
     # paramenter chứa danh sách tham số truyền ra template
     params = {
-        'title': "Blog List",
-        'nav_blog': 'active',
-
+        'title': 'Dashboard',
+        'nav_dashboard': 'active',
     }
 
     if current_user.user_role.id == models.EUserRole.admin.value:
@@ -243,16 +258,104 @@ def change_password():
     if form.validate_on_submit():
         user = form.get_user()
         if user:
-            user.password = generate_password_hash(form.password_Comfirm.data)
+            user.password = generate_password_hash(form.password_Confirm.data)
             print(user.user_name, user.password)
             db.Session.add(user)
             db.session.commit()
         return redirect(url_for('login'))
-    return render_template('ChangePassword.html', form=form,message_login = "lõi")
+    return render_template('ChangePassword.html', form=form)
 
 
-@app.route('/user/delete/blog', methods=["POST","DELETE"])
-@app.route('/admin/delete/blog', methods=["POST","DELETE"])
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    logout_user()
+    """
+    đăng ký tài khoản cho user
+    :return:
+    """
+    params = {
+        'title': 'Register',
+    }
+
+    form = RegisterForm()
+    if session and session.get('register_form', None) is None:
+        session['register_form'] = {}
+    if form.validate_on_submit():
+        try:
+            if utils.check_form_register(form):
+                idf = str(uuid.uuid4()).lower()
+                session['register_form'][idf] = {}
+                data_form_in_session = session['register_form'][idf]
+                data_form_in_session['form'] = form.get_dict()
+                code = utils.generate_codeConfirm()
+                data_form_in_session['code_confirm'] = code
+                utils.sent_mail_confirm_code(form.email.data, code)
+                data_form_in_session['current_time'] = str(datetime.datetime.now())
+                session['register_form'][idf] = data_form_in_session
+                params['email'] = form.email.data
+                params['idf'] = utils.encodeID(idf)
+                params['title'] = "Confirm Email"
+                return render_template('confirmCode.html', params=params)
+
+        except ValueError as e:
+            flash(str(e), category='error')
+        except Exception as e:
+            print('register error:' + e)
+            # flash('looi router regitser: ' + str(e))
+
+    params['form'] = form
+    return render_template('register.html', params=params)
+
+
+@app.route('/register/confirm', methods=["POST", "GET"])
+def confirm_account():
+    idf = None
+    # kiểm tra id và time của form còn tồn tại hay không
+    try:
+        # print('session commit', session.items())
+        idf = utils.decodeID(request.args.get('idf', None))
+        time = session['register_form'][idf]['current_time']
+        if not utils.check_timeout(time):
+            raise TimeoutError('Code timeout đăng ký lại')
+
+    except TimeoutError as ex:
+        session['register_form'].pop(idf)
+        abort(404)
+    except:
+        abort(404)
+
+    # method POST
+    if request.method == "POST":
+        try:
+            code = request.form.get('confemail', None)
+            data_form = session['register_form'].get(idf, None)
+
+            if data_form and code:
+                if code == data_form.get('code_confirm'):
+                    if utils.save_user(data_form.get('form'), confirm=True):
+                        session['register_form'].pop(idf)
+                        flash("Confirm Email Success", category='success')
+                        return redirect(url_for('login_us'))
+
+                raise KeyError('Code Confirm Invalid')
+
+            raise TimeoutError('Code timeout đăng ký lại')
+
+        except KeyError as ex:
+            flash(ex)
+        except TimeoutError as ex:
+            session['register_form'].pop(idf)
+            abort(404)
+        except:
+            abort(404)
+
+    # method GET
+    params = {'title': 'Confirm Email', 'email': session['register_form'][idf]['form'].get('email')}
+    return render_template('confirmCode.html', params=params)
+
+
+@app.route('/user/delete/blog', methods=["POST"])
+@app.route('/admin/delete/blog', methods=["POST"])
 @login_required
 def delete_blog():
     """
@@ -272,16 +375,41 @@ def delete_blog():
 
 
 
-@app.route('/admin/delete/user', methods=["POST"])
+@app.route('/admin/lock/user', methods=["POST"])
 @login_required_Admin
-def delete_user():
+def lock_user():
     """
     xóa user bằng cách cho trường active của user đó  = False or user.active = models.EStatus.InActive
     gửi yêu cầu dạng form có csrf
 
-    :return: userlist dùng  redirect()
+    :return: trả về thông báo xóa thành công hay không
+
     """
-    pass
+
+    try:
+        if current_user.user_role.id == models.EUserRole.admin.value:
+            data = request.json
+            lock = data.get('lock')
+            user_id = data.get("idu")
+            #print(user_id, lock)
+            if lock == 'lock':
+                if utils.lock_account(current_user=current_user, user_id=user_id, lock=True):
+                    return jsonify({
+                        "status": 200,
+                        "data": "unlock"
+                    })
+            if lock == 'unlock':
+                if utils.lock_account(current_user=current_user, user_id=user_id, lock=False):
+                    return jsonify({
+                        "status": 200,
+                        "data": "lock"
+                    })
+        raise
+    except:
+        return jsonify({
+            "status": 404,
+            "data": "Error"
+        })
 
 
 # ================== làm cho anonymous ========================================
