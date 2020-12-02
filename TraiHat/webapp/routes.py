@@ -1,9 +1,10 @@
 import datetime
+import json
 import uuid
 from functools import wraps
 
 from flask import url_for, request, redirect, render_template, session, abort, flash, jsonify
-from flask_login import login_required
+from flask_login import login_required, fresh_login_required
 from flask_login import login_user, current_user, logout_user
 
 from webapp import app, models, utils, jinja_filters
@@ -24,6 +25,7 @@ def login_required_Admin(f):
     def decorated_function(*args, **kwargs):
         if current_user.is_anonymous or not current_user.is_authenticated or current_user.user_role_id != models.EUserRole.admin.value:
             flash('Please login to access this page.')
+
             return redirect(url_for('login_admin', next=request.url_rule))
         return f(*args, **kwargs)
 
@@ -45,6 +47,7 @@ def login_required_editor(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
 
 @app.route("/admin/logout")
 @app.route("/user/logout")
@@ -68,9 +71,11 @@ def login_us():
     if form.validate_on_submit():
         user = form.get_user()
         next_url = request.args.get('next')
+        login_info = json.loads(request.form.get("info_connect"))
         if user and user.active == models.EStatus.Active and user.confirm and user.user_role_id != models.EUserRole.anonymous.value:
             flash("Login Success", category='success')
-            login_user(user=user)
+            login_user(user=user, duration=datetime.timedelta(hours=1), remember=True)
+            utils.sent_mail_login(current_user.email, login_info)
             if next_url:
                 return redirect(next_url)
             return redirect(url_for('index_user'))
@@ -93,10 +98,11 @@ def login_admin():
     if form.validate_on_submit():
         user = form.get_user()
         next_url = request.args.get('next')
-
+        login_info = json.loads(request.form.get("info_connect"))
         if user and user.active == models.EStatus.Active and user.confirm and user.user_role_id == models.EUserRole.admin.value:
-            login_user(user=user)
+            login_user(user=user, remember=True, duration=datetime.timedelta(hours=1))
 
+            utils.sent_mail_login(current_user.email, login_info)
             flash("Login Success", category='success')
             if next_url:
                 return redirect(next_url)
@@ -180,7 +186,7 @@ def blog_detail():
     return render_template('blogdetail.html', params=params)
 
 
-@app.route('/admin')
+@app.route('/admin/')
 @login_required_Admin
 def index_admin():
     """
@@ -214,7 +220,7 @@ def user_list():
     return render_template('admin/UserList.html', params=params)
 
 
-@app.route('/user')
+@app.route('/user/')
 @login_required
 def index_user():
     """
@@ -235,7 +241,7 @@ def index_user():
 
 
 @app.route('/changepw', methods=["POST", "GET"])
-@login_required
+@fresh_login_required
 def change_password():
     """
     thay đổi password
@@ -257,9 +263,10 @@ def change_password():
         if current_user.is_authenticated:
             if len(pwold) >= 8 and utils.check_password(current_user.password, pwold):
                 if [len(pwnew), len(pwconf)] >= [8, 8]:
-                    if utils.change_password(user=current_user,pwold=pwold,pwnew=pwnew):
+                    if utils.change_password(user=current_user, pwold=pwold, pwnew=pwnew):
                         flash('Change password success')
-                        return redirect(url_for('login_admin' if current_user.user_role.name == "Admin" else 'login_us'))
+                        return redirect(
+                            url_for('login_admin' if current_user.user_role.name == "Admin" else 'login_us'))
                     else:
                         flash("Change password error")
                 else:
@@ -401,7 +408,7 @@ def lock_user():
             data = request.json
             lock = data.get('lock')
             user_id = data.get("idu")
-            # print(user_id, lock)
+
             if lock == 'lock':
                 if utils.lock_account(current_user=current_user, user_id=user_id, lock=True):
                     return jsonify({
@@ -514,5 +521,6 @@ def special_exception_handler(error):
 
 
 if __name__ == "__main__":
-    # app.run(debug=True,host="192.168.1.4",port="5000")
-    app.run(debug=True)
+    app.run(debug=True, host="192.168.1.2", port=80)
+
+# app.run(debug=True)

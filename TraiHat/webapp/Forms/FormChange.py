@@ -9,8 +9,8 @@ from webapp import app,db,models
 
 
 class FormChangePassword(FlaskForm):
-    password_Old = PasswordField('Password Old', validators=[DataRequired()])
-    password_New = PasswordField('Password New', validators=[DataRequired()])
-    password_Comfirm = PasswordField('Password Comfirm', validators=[DataRequired()])
+    password_Old = PasswordField('Current Password', validators=[DataRequired()])
+    password_New = PasswordField('New Password', validators=[DataRequired()])
+    password_Comfirm = PasswordField('Confirm Password ', validators=[DataRequired()])
 
 

@@ -33,20 +33,20 @@ def encodeID(input="-"):
         rac = str(os.urandom(20).hex())
         # random vị trí cắt chuỗi gây nhiễu
         a = random.randint(4, len(rac) - 8)
-        # cắt lấy 4 ký tự gây nhiễu
-        rac = rac[a: a + random.randint(4, 8)]
-        # cắt chuỗi theo lý tự '-'
+        # cắt lấy 4-8 ký tự gây nhiễu
+        rac = rac[a: a + random.randint(4, 8)]  # "xngfff"
+        # cắt chuỗi theo lý tự '- "83319B1A-2EF83FB-4A753-75CECA824D17" [83319B1A,2EF83FB,4753,75CECA824D17]
         blocks = temp.split('-')
         # random vị trí thêm rac
         vt = random.randint(1, len(blocks) - 1)
         # thêm chuỗi gây nhiễu
-        blocks.insert(vt, rac)
+        blocks.insert(vt, rac)  # [83319B1A,2EF83FB,"xngfff",4753,75CECA824D17]
         # nối lại chuỗi vừa cắt
         temp = "-".join(blocks)
         # thêm vị trí của chuỗi gây nhiễu vào chuỗi vừa nối
         temp = str(vt) + temp
         # đảo ngược chuỗi và in hoa các ký tự thường
-        temp = temp[::-1].upper()
+        temp = temp[::-1].upper()  # 83319B1A-2EF83FB-"xngfff"-4753-75CECA824D17
         # mã hóa đoạn chuỗi trên bằng thuật toán base64
         output = base64.urlsafe_b64encode((temp).encode('utf-8')).decode("utf-8").replace('=', '')
         # đảo ngược chuỗi mã hóa
@@ -164,7 +164,6 @@ def sent_mail_confirm_code(email: str, code: str):
         password = decodeID("ETUXVUUXVUMyMDQtgjRwMEMClTL8F0C")[0:-1].capitalize()
         subject = "Bloger"
         body = f"Confirm Account \n Code: {code}"
-
         yag = yagmail.SMTP(user=sender_email, password=password)
         status = yag.send(
             to=receiver_email,
@@ -174,6 +173,33 @@ def sent_mail_confirm_code(email: str, code: str):
         )
         return False if status == False else True
     return False
+
+
+def sent_mail_login(email, data):
+    try:
+        if email and data:
+            data["time"] = str(datetime.datetime.now().strftime("%X %p - %d %B %Y"))
+            sender_email = "antoanhethongthongtin13@gmail.com"
+            receiver_email = email
+            password = decodeID("ETUXVUUXVUMyMDQtgjRwMEMClTL8F0C")[0:-1].capitalize()
+            subject = f'[Blog] Successful Login From New IP  {data["ip"]} - {data["time"]}'
+
+            prettify_html = '<h1><strong>Successful Login From New IP</strong></h1>\
+                            <h3><strong>We&#39;ve noticed that you accessed your account from IP address new</strong></h3>\
+                            <p>Time: <strong style="color:red">' + data['time'] + '</strong></p>\
+                            <p>IP Address: <strong style="color:red">' + data['ip'] + ' - ' + data['location'] + '</strong></p>\
+                            <p>Application: <strong style="color:red">' + data['user_agent'].lower().capitalize() + ' - ' + data['os'] + '</strong></p>\
+                            '
+            yag = yagmail.SMTP(user=sender_email, password=password)
+            status = yag.send(
+                to=receiver_email,
+                subject=subject,
+                contents=prettify_html
+            )
+            return False if status == False else True
+        return False
+    except:
+        return False
 
 
 def generate_codeConfirm():
@@ -224,6 +250,8 @@ def get_blog_by_userID(id: str):
 def get_blog_by_ID(id: str):
     blog = models.QL_BaiViet.query.get(decodeID(id))
     return blog
+
+
 def get_user_by_ID(id: str):
     user = models.User.query.get(decodeID(id))
     return user
@@ -283,5 +311,4 @@ def change_password(user=None, pwold: str = None, pwnew: str = None):
 
 
 if __name__ == '__main__':
-    print(check_timeout('2020-11-28 22:03:55.171404'))
-    print(decodeID('gMxkDOENUQFVTL1MTM00CREN0QyMENC1CN3cjQtgzQxYULzIkQzYkQEFEN4QDODDCC'))
+   print(datetime.datetime.now().strftime("%X %p - %d %B %Y"))

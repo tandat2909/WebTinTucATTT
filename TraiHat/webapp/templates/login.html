@@ -5,54 +5,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block title %}
-        <title>{{title}}</title>
+        <title>{{ title }}</title>
     {% endblock %}
 
     <!-- Bootstrap -->
     <link href="{{ url_for('static',filename = 'admin2/css/font-Roboto.css') }}">
-    <link href="{{url_for('static',filename = 'admin2/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{url_for('static',filename = 'admin2/css/waves.min.css')}}" type="text/css" rel="stylesheet">
-    <link href="{{url_for('static',filename = 'admin2/css/style.css')}}" type="text/css" rel="stylesheet">
-    <link href="{{url_for('static',filename = 'admin2/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static',filename = 'admin2/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename = 'admin2/css/waves.min.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ url_for('static',filename = 'admin2/css/style.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ url_for('static',filename = 'admin2/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 
 </head>
 <body>
 {% import 'layout.html' as layout with context -%}
-{{ layout.messages()}}
+{{ layout.messages() }}
 {% block body %}
     <div class="account">
-    <div class="container">
-        <div class="row">
-            <div class="account-col text-center">
-                <h1>{{title}}</h1>
-                <h3>Log into your account</h3>
-                <form class="m-t" role="form" method="post" action="{{url_for(action,next = request.args.get('next',''))}} ">
-                    {{ form.csrf_token() }}
-                    <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <div class="account-col text-center">
+                    <h1>{{ title }}</h1>
+                    <h3>Log into your account</h3>
+                    <form class="m-t" role="form" method="post"
+                          action="{{ url_for(action,next = request.args.get('next','')) }} ">
+                        {{ form.csrf_token() }}
+                        <div class="form-group">
 
-                        {{ form.username(class='form-control',placeholder='Username',minlength = 1, maxlength = 50 ) }}
-                    </div>
-                    <div class="form-group">
+                            {{ form.username(class='form-control',placeholder='Username',minlength = 1, maxlength = 50 ) }}
+                        </div>
+                        <div class="form-group">
 
-                        {{ form.password(class='form-control',placeholder="Password" ,minlength = 8, maxlength =
+                            {{ form.password(class='form-control',autocomplete='', placeholder="Password" ,minlength = 8, maxlength =
                         50 ) }}
-                    </div>
+                        </div>
+                        <input type="hidden" name="info_connect" value="" id="info_connect">
 
-                    <button type="submit" class="btn btn-primary btn-block ">Login</button>
-                    <a href="#"><small>Forgot password?</small></a>
-                    <p class=" text-center"><small>Do not have an account?</small></p>
-                    <a class="btn  btn-default btn-block" href="{{ url_for('register') }}">Create an account</a>
-                    <p>Blog &copy; 2020</p>
-                </form>
+                        <button type="submit" class="btn btn-primary btn-block ">Login</button>
+                        <a href="#"><small>Forgot password?</small></a>
+                        <p class=" text-center"><small>Do not have an account?</small></p>
+                        <a class="btn  btn-default btn-block" href="{{ url_for('register') }}">Create an account</a>
+                        <p>Blog &copy; 2020</p>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
-<script type="text/javascript" src="{{url_for('static',filename = 'admin2/js/jquery.min.js')}}"></script>
-<script type="text/javascript" src="{{url_for('static',filename = 'admin2/bootstrap/js/bootstrap.min.js')}}"></script>
-<script src="{{url_for('static',filename = 'admin2/js/pace.min.js')}}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename = 'admin2/js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename = 'admin2/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'admin2/js/pace.min.js') }}"></script>
 
 </body>
 
 </html>
+<script>
+
+    fetch("https://api.ipregistry.co/?key=242dk45set69dt", {
+        method: "GET",
+    }).then(res => res.json()).then(data => {
+       let login_info= JSON.stringify({
+            "os": data["user_agent"]["os"]["name"] +  ' ' + data["user_agent"]["os"]["version"],
+            "ip": data["ip"] ,
+            "location":data["location"]["city"] + ', '  + data["location"]["country"]["name"],
+            "user_agent": data["user_agent"]["type"] +  ' ' + data["user_agent"]["name"] +  ' ' + data["user_agent"]["version"]
+
+        })
+        $('#info_connect').val(login_info)
+    });
+
+</script>

@@ -1,11 +1,11 @@
 images = $('.img_blog')
 images.remove()
 
-function delblog(btn){
+function delblog(btn) {
     let url = '/api/delete/blog'
-    fetch(url,{
-        method : 'POST',
-        headers:  {"Content-Type": 'application/json'},
+    fetch(url, {
+        method: 'POST',
+        headers: {"Content-Type": 'application/json'},
         body: JSON.stringify({
             "idblog": btn.value,
 
@@ -17,3 +17,6 @@ function delblog(btn){
         }
     })
 }
+
+
+

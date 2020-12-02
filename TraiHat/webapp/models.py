@@ -1,6 +1,6 @@
 from webapp import app, db, login
 import uuid, datetime
-from sqlalchemy import Column, Enum as EnumSQL, Integer, String, DATETIME, Float, ForeignKey, BigInteger, Boolean, \
+from sqlalchemy import Column, Enum as EnumSQL, Integer, NVARCHAR, DATETIME, Float, ForeignKey, BigInteger, Boolean, \
     Unicode, UnicodeText,NVARCHAR
 # from webapp.Enums import Enum_Gender,Enum_Status_Account
 from flask_login import UserMixin, AnonymousUserMixin
@@ -12,7 +12,7 @@ from enum import Enum
 class BaseModel(db.Model):
     __abstract__ = True
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
-    name = Column(String)
+    name = Column(NVARCHAR)
 
     def __str__(self):
         return self.name
@@ -57,16 +57,16 @@ class AnonymousUser(AnonymousUserMixin):
 class User(BaseModel, UserMixin):
     __tablename__ = "User"
 
-    user_name = Column(String, nullable=False)
-    password = Column(String, nullable=False)
-    lastname = Column(String)
-    firstname = Column(String)
-    # role = Column(String)
+    user_name = Column(NVARCHAR, nullable=False)
+    password = Column(NVARCHAR, nullable=False)
+    lastname = Column(NVARCHAR)
+    firstname = Column(NVARCHAR)
+    # role = Column(NVARCHAR)
     regiter_date = Column(DATETIME, nullable=False, default=datetime.datetime.now())
-    address = Column(String)
-    email = Column(String, nullable=True)
-    phone_number = Column(String(20), nullable=True)
-    avatar = Column(String)
+    address = Column(NVARCHAR)
+    email = Column(NVARCHAR, nullable=True)
+    phone_number = Column(NVARCHAR(20), nullable=True)
+    avatar = Column(NVARCHAR)
     # bút danh
     pseudonym = Column(Unicode)
     gender = Column(Unicode, default="")
@@ -95,12 +95,12 @@ class QL_LoaiBT(BaseModel):
 class QL_BaiViet(BaseModel):
     __tablename__ = "QL_BaiViet"
 
-    title = Column(String,nullable=False,default="")
+    title = Column(NVARCHAR,nullable=False,default="")
     noiDung = Column(NVARCHAR)
     ngayDangTin = Column(DATETIME)
     ngaytaobaiviet = Column(DATETIME,nullable=False,default=datetime.datetime.now())
     pheDuyet = Column(Boolean,nullable=False,default=True)
-    image = Column(String)
+    image = Column(NVARCHAR)
     chuDe_id = Column(Integer, ForeignKey(QL_LoaiBT.id), nullable=False)
     user_id = Column(UUIDType, ForeignKey(User.id), nullable=False)
 
@@ -128,7 +128,7 @@ def insertUserType():
 def insertUser():
     us1 = User(user_name='admin', address=u"3773, nguyễn kiệm gò vấp tphcm",
                password='d047de6de9348ed903f6ac3631731f26dc3795e09b07f6d3ac993d5f48045558',
-               email='tandat@12.com',
+               email='vutandat29092000@gmail.com',
                name=u'Tấn Đạt',
                confirm=True,
                user_role_id=EUserRole.admin.value,
@@ -144,7 +144,7 @@ def insertUser():
                confirm=True,
                user_role_id=EUserRole.editor.value,
                pseudonym = 'Giang pro',
-               email='vutandat290s92000@gmail.com')
+               email='vutandat29092000@gmail.com')
     db.session.add(us1)
     db.session.add(us2)
 

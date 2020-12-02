@@ -21,9 +21,9 @@
         {% for item in params.get('blog') %}
             {% if loop.index <= 1 %}
 
-                <div class="tc-ch wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
+                <div class="tc-ch wow fadeInDown" style="height: 50rem;text-overflow: ellipsis;overflow: hidden;" data-wow-duration=".8s" data-wow-delay=".2s">
 
-                    <div class="tch-img">
+                    <div class="" style="height: 50%">
                         <a href="{{ url_for('blog', id = item.id|encodeID) }}"><img src="{{ item.image }}0.png"
                                                                                     class="img-responsive" alt=""
                                                                                     style="width:100%"></a>
@@ -34,6 +34,8 @@
                             href="{{ url_for('profile', id = item.user.id|encodeID) }}">{{ item.user.pseudonym }} </a>{{ item.ngaytaobaiviet |format_datetime }}
                     </h6>
                     <p>{{ item.noiDung|safe }}</p>
+
+
 
 
                     <div class="clearfix"></div>
@@ -58,7 +60,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 wthree-right wow fadeInDown" data-wow-duration=".8s" data-wow-delay=".2s">
-                    <h3 style="word-break: break-all;"> <a  href="{{ url_for('blog', id = item.id|encodeID) }}"> {{ item.title }}</a></h3>
+                    <h3 style="word-break: break-all;"><a
+                            href="{{ url_for('blog', id = item.id|encodeID) }}"> {{ item.title }}</a></h3>
                     <h6>BY <a
                             href="{{ url_for('profile', id = item.user.id|encodeID) }}"> {{ item.user.pseudonym }}</a> {{ item.ngaytaobaiviet |format_datetime }}
                     </h6>

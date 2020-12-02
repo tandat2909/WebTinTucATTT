@@ -1,42 +1,75 @@
 {% extends 'login.html' %}
 {% block title %}
-<title>{{ params.get('title') }}</title>
+    <title>{{ params.get('title') }}</title>
 {% endblock %}
 {% block body %}
-<div class="register" style="padding-top: 15px">
-    <div class="container">
-        <div class="row" style="margin: 0 auto;width:50%; font-size: 1.3em;">
-            <form class="m-t" method="post" action="{{ url_for('register') }}">
-                {% set form = params.get('form') %}
-                {{ form.csrf_token() }}
-                <div class="register-col">
-                    <div class="text-center">
-                        <h1>{{ params.get('title') }}</h1>
-                        <h3>Create New account</h3>
-                    </div>
-                    {% for i in form %}
-                    <div class="form-row row">
-                        <div>
-                            {% if i.name != 'csrf_token' %}
-                            {{i.label }}
-                            {% endif %}
+    <div class="register" style="padding-top: 15px">
+        <div class="container">
+            <div class="row" style="margin: 0 auto;width:50%; font-size: 1.3em;">
+                <form class="m-t" method="post" action="{{ url_for('register') }}">
+                    {% set form = params.get('form') %}
+                    {{ form.csrf_token() }}
+                    <div class="register-col">
+                        <div class="text-center">
+                            <h1>{{ params.get('title') }}</h1>
+                            <h3>Create New account</h3>
+                        </div>
 
-                            {{ i (class='form-control', placeholder=i.label.text ,minlength = 8, maxlength =
-                            50) }}
+                        <div class="form-group row">
+                            {{ form.username.label }}
+                            {{ form.username(class='form-control',placeholder=form.username.label.text,minlength = 5, maxlength = 50 ) }}
+                        </div>
+                        <div class="form-group row">
+                            {{ form.email.label }}
+                            {{ form.email(class='form-control',placeholder=form.email.label.text, maxlength = 50 ) }}
+                        </div>
+                        <div class="form-group row">
+                            {{ form.password.label }}
+                            {{ form.password(class='form-control',autocomplete = "",placeholder=form.password.label.text,minlength = 8, maxlength = 50 ) }}
+                        </div>
+                        <div class="form-group row">
+                            {{ form.confirm.label }}
+                            {{ form.confirm(class='form-control', autocomplete ='', placeholder=form.confirm.label.text,minlength = 8, maxlength = 50 ) }}
+                        </div>
+                        <div class="form-group row">
+                            {{ form.firstname.label }}
+                            {{ form.firstname(class='form-control',  placeholder=form.firstname.label.text, minlength = 1, maxlength = 50,required='' ) }}
+                        </div>
+                        <div class="form-group row">
+                            {{ form.lastname.label }}
+                            {{ form.lastname(class='form-control',placeholder=form.lastname.label.text, minlength = 1, maxlength = 50 ) }}
+                        </div>
+                        <div class="form-group row">
+                            {{ form.pseudonym.label }}
+                            {{ form.pseudonym(class='form-control',placeholder=form.pseudonym.label.text, minlength = 1, maxlength = 50,required='' ) }}
+                        </div>
+                         <div class="form-group row">
+                            {{ form.gender.label }}
+                            {{ form.gender(class='form-control', minlength = 1, maxlength = 50 ) }}
+
+                        </div>
+                        <div class="form-group row">
+                            {{ form.phone_number.label }}
+                            {{ form.phone_number(class='form-control',placeholder=form.phone_number.label.text, minlength = 8, maxlength = 50 ) }}
+
+                        </div>
+                        <div class="form-group row">
+                            {{ form.address.label }}
+                            {{ form.address(class='form-control',placeholder=form.address.label.text, minlength = 1, maxlength = 50 ) }}
+                        </div>
+
+
+                        <div class=" form-row ">
+                            <p></p>
+                            <button type="submit" class="btn btn-primary btn-block ">Sign up</button>
+                            <a href="#"><small></small></a>
+                            <p class=" text-center"><small>Already have an account?</small></p>
+                            <a class="btn  btn-default btn-block" href="{{ url_for('login_us') }}">Login to account</a>
                         </div>
                     </div>
-                    {% endfor %}
-                    <div class=" form-row row">
-                        <p> </p>
-                        <button type="submit" class="btn btn-primary btn-block ">Sign up</button>
-                        <a href="#"><small></small></a>
-                        <p class=" text-center"><small>Already have an account?</small></p>
-                        <a class="btn  btn-default btn-block" href="{{ url_for('login_us') }}">Login to account</a>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 {% endblock %}
