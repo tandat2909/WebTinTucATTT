@@ -521,6 +521,6 @@ def special_exception_handler(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="192.168.1.2", port=80)
+    #app.run(debug=True, host="192.168.1.2", port=80)
 
-# app.run(debug=True)
+    app.run(debug=True)
