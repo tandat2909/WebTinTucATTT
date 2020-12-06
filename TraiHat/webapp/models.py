@@ -1,7 +1,7 @@
 from webapp import app, db, login
 import uuid, datetime
 from sqlalchemy import Column, Enum as EnumSQL, Integer, NVARCHAR, DATETIME, Float, ForeignKey, BigInteger, Boolean, \
-    Unicode, UnicodeText,NVARCHAR
+    Unicode, UnicodeText, NVARCHAR, String,BLOB
 # from webapp.Enums import Enum_Gender,Enum_Status_Account
 from flask_login import UserMixin, AnonymousUserMixin
 from sqlalchemy.orm import relationship, lazyload
@@ -13,6 +13,7 @@ class BaseModel(db.Model):
     __abstract__ = True
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
     name = Column(NVARCHAR)
+
 
     def __str__(self):
         return self.name

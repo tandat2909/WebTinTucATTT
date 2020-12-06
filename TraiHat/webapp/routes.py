@@ -75,7 +75,8 @@ def login_us():
         if user and user.active == models.EStatus.Active and user.confirm and user.user_role_id != models.EUserRole.anonymous.value:
             flash("Login Success", category='success')
             login_user(user=user, duration=datetime.timedelta(hours=1), remember=True)
-            utils.sent_mail_login(current_user.email, login_info)
+
+            utils.sent_mail_login(current_user, login_info)
             if next_url:
                 return redirect(next_url)
             return redirect(url_for('index_user'))
@@ -102,7 +103,7 @@ def login_admin():
         if user and user.active == models.EStatus.Active and user.confirm and user.user_role_id == models.EUserRole.admin.value:
             login_user(user=user, remember=True, duration=datetime.timedelta(hours=1))
 
-            utils.sent_mail_login(current_user.email, login_info)
+            utils.sent_mail_login(current_user, login_info)
             flash("Login Success", category='success')
             if next_url:
                 return redirect(next_url)
@@ -263,12 +264,14 @@ def change_password():
         if current_user.is_authenticated:
             if len(pwold) >= 8 and utils.check_password(current_user.password, pwold):
                 if [len(pwnew), len(pwconf)] >= [8, 8]:
+
                     if utils.change_password(user=current_user, pwold=pwold, pwnew=pwnew):
                         flash('Change password success')
                         return redirect(
                             url_for('login_admin' if current_user.user_role.name == "Admin" else 'login_us'))
                     else:
                         flash("Change password error")
+
                 else:
                     flash("Nhập password trên 8 ký tự")
             else:
@@ -450,9 +453,11 @@ def index():
 @app.route('/blog')
 def blog():
     id_blog = request.args.get("id")
+
     if id_blog is None:
         abort(404)
-    params = {'title': "Home",
+    blog = utils.get_blog_by_ID(id_blog)
+    params = {'title': blog.title,
               'blogs': models.QL_BaiViet.query.all(),
               'blog': utils.get_blog_by_ID(id_blog)
               }
@@ -517,10 +522,10 @@ def page_not_found(error):
 
 @app.errorhandler(500)
 def special_exception_handler(error):
-    return render_template('error.html', code=500, ms='connection failed'.capitalize()), 500
+    return render_template('error.html', code=500, ms='Error Page'.capitalize()), 500
 
 
 if __name__ == "__main__":
-    #app.run(debug=True, host="192.168.1.2", port=80)
+    # app.run(debug=False,host="192.168.137.1",port="80")
 
     app.run(debug=True)

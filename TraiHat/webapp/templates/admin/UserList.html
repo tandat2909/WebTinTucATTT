@@ -21,7 +21,7 @@
                     <div class="media">
                         <a class="pull-left" href="{{ url_for('profile',id = item.id|encodeID)}}">
                             <img class="media-object img-circle"
-                                 src="{{ url_for('static',filename= 'admin2/images/avtar-2.jpg') }}" alt="100x100"
+                                 src="{{ url_for('static',filename= item.avatar or 'admin2/images/avatar2.jpg') }}" alt="100x100"
                                  data-src="holder.js/100x100" style="width: 100px; height: 100px;">
                         </a>
                         <div class="media-body">

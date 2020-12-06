@@ -180,15 +180,16 @@ def sent_mail_login(email, data):
         if email and data:
             data["time"] = str(datetime.datetime.now().strftime("%X %p - %d %B %Y"))
             sender_email = "antoanhethongthongtin13@gmail.com"
-            receiver_email = email
+            receiver_email = email.email
             password = decodeID("ETUXVUUXVUMyMDQtgjRwMEMClTL8F0C")[0:-1].capitalize()
             subject = f'[Blog] Successful Login From New IP  {data["ip"]} - {data["time"]}'
 
-            prettify_html = '<h1><strong>Successful Login From New IP</strong></h1>\
+            prettify_html = f'<h1><strong>Successful Login <span style ="color:#0bff00"> {email.name} </span> From New IP</strong></h1>\
                             <h3><strong>We&#39;ve noticed that you accessed your account from IP address new</strong></h3>\
                             <p>Time: <strong style="color:red">' + data['time'] + '</strong></p>\
                             <p>IP Address: <strong style="color:red">' + data['ip'] + ' - ' + data['location'] + '</strong></p>\
-                            <p>Application: <strong style="color:red">' + data['user_agent'].lower().capitalize() + ' - ' + data['os'] + '</strong></p>\
+                            <p>Application: <strong style="color:red">' + data[
+                'user_agent'].lower().capitalize() + ' - ' + data['os'] + '</strong></p>\
                             '
             yag = yagmail.SMTP(user=sender_email, password=password)
             status = yag.send(
@@ -311,4 +312,4 @@ def change_password(user=None, pwold: str = None, pwnew: str = None):
 
 
 if __name__ == '__main__':
-   print(datetime.datetime.now().strftime("%X %p - %d %B %Y"))
+    print(datetime.datetime.now().strftime("%X %p - %d %B %Y"))
